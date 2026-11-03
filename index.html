@@ -34,6 +34,8 @@
             --app-bg: #f7f3f4;
             --card-bg: #ffffff;
             --text-main: #2d2d2d;
+            --text-sub: #737373;
+            --border-color: #e5e5e5;
         }
 
         body {
@@ -45,7 +47,9 @@
 
         .custom-card {
             background-color: var(--card-bg);
-            transition: background-color 0.3s ease;
+            color: var(--text-main);
+            border-color: var(--border-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .hide-scrollbar::-webkit-scrollbar {
@@ -126,11 +130,11 @@
                     </select>
                 </div>
 
-                <!-- App Theme Selector (20 Themes: Girly & Manly) -->
+                <!-- App Theme Selector (20 Themes: Light & Dark) -->
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider text-neutral-500 mb-1">App Color Theme</label>
                     <select id="setup-theme" onchange="previewTheme(this.value)" class="w-full px-4 py-3 rounded-xl border border-neutral-200 focus:border-brand focus:outline-none text-sm font-medium bg-neutral-50 text-neutral-900">
-                        <optgroup label="🌸 Girly & Pastel Themes">
+                        <optgroup label="☀️ Light Themes">
                             <option value="blush" selected>Blush Rose (Default Pink)</option>
                             <option value="lavender">Lavender Dream (Soft Purple)</option>
                             <option value="peach">Peach Sunset (Warm Peach)</option>
@@ -142,7 +146,7 @@
                             <option value="cottoncandy">Cotton Candy (Pastel Blue & Pink)</option>
                             <option value="emerald">Emerald Elegance (Soft Green)</option>
                         </optgroup>
-                        <optgroup label="🖤 Manly, Dark & Rugged Themes">
+                        <optgroup label="🌙 Dark Themes">
                             <option value="midnight">Midnight Obsidian (Sleek Dark & Blue)</option>
                             <option value="cyberpunk">Cyberpunk Neon (Dark & Crimson)</option>
                             <option value="stealth">Stealth Carbon (Matte Charcoal)</option>
@@ -214,17 +218,27 @@
         <div id="screen-app" class="hidden flex-col flex-1 overflow-hidden relative">
             
             <!-- TOP APP HEADER -->
-            <div class="custom-card px-6 pt-4 pb-3 flex justify-between items-center border-b border-neutral-200/20">
+            <div class="custom-card px-6 pt-4 pb-3 flex justify-between items-center border-b">
                 <div>
-                    <h3 class="text-xs font-semibold text-neutral-400" id="greeting-time">Good morning,</h3>
+                    <h3 class="text-xs font-semibold opacity-70" id="greeting-time">Good morning,</h3>
                     <h1 class="text-lg font-bold" id="header-user-name">Grimms Reselling ♡</h1>
                 </div>
-                <div class="relative cursor-pointer" onclick="toggleNotificationBadge()">
-                    <div class="w-10 h-10 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center text-neutral-700 dark:text-neutral-200 hover:opacity-80 transition">
-                        <i class="fa-regular fa-bell text-base"></i>
+                <div class="flex items-center space-x-3">
+                    <!-- Timeframe Picker Filter -->
+                    <select id="dashboard-timeframe" onchange="updateTimeframe(this.value)" class="text-xs font-semibold bg-brand-light text-brand px-2.5 py-1.5 rounded-lg border-0 outline-none cursor-pointer">
+                        <option value="this_month">This Month</option>
+                        <option value="today">Today</option>
+                        <option value="this_week">This Week</option>
+                        <option value="this_year">This Year</option>
+                        <option value="all_time">All Time</option>
+                    </select>
+
+                    <div class="relative cursor-pointer" onclick="toggleNotificationBadge()">
+                        <div class="w-9 h-9 rounded-full bg-neutral-200/40 flex items-center justify-center hover:opacity-80 transition">
+                            <i class="fa-regular fa-bell text-sm"></i>
+                        </div>
+                        <span id="notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
                     </div>
-                    <!-- Notification dot -->
-                    <span id="notif-dot" class="absolute top-2 right-2.5 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
                 </div>
             </div>
 
@@ -234,10 +248,10 @@
                 <!-- TAB 1: HOME -->
                 <div id="tab-home-content" class="app-tab space-y-4">
                     <!-- Revenue Card with True Line Chart -->
-                    <div class="custom-card p-5 rounded-3xl shadow-sm border border-neutral-200/20">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border">
                         <div class="flex justify-between items-start mb-2">
-                            <span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider">This Month's Revenue</span>
-                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full flex items-center space-x-1">
+                            <span class="text-xs font-semibold opacity-70 uppercase tracking-wider" id="rev-card-title">This Month's Revenue</span>
+                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full flex items-center space-x-1">
                                 <i class="fa-solid fa-arrow-up text-[10px]"></i> <span>12%</span>
                             </span>
                         </div>
@@ -258,7 +272,7 @@
                                 <circle cx="300" cy="5" r="4.5" fill="var(--brand-primary)" />
                             </svg>
                         </div>
-                        <div class="flex justify-between text-[10px] text-neutral-400 mt-2">
+                        <div class="flex justify-between text-[10px] opacity-60 mt-2" id="chart-dates">
                             <span>Oct 1</span>
                             <span>Oct 15</span>
                             <span>Oct 31</span>
@@ -267,57 +281,71 @@
 
                     <!-- Order Metrics & Goal Progress -->
                     <div class="grid grid-cols-2 gap-3">
-                        <div class="custom-card p-4 rounded-2xl shadow-sm border border-neutral-200/20 flex flex-col justify-between">
+                        <div class="custom-card p-4 rounded-2xl shadow-sm border flex flex-col justify-between">
                             <div class="flex items-center space-x-2 text-brand mb-2">
                                 <i class="fa-solid fa-bag-shopping"></i>
-                                <span class="text-xs font-semibold text-neutral-500">Total Orders</span>
+                                <span class="text-xs font-semibold opacity-70">Total Orders</span>
                             </div>
-                            <span class="text-2xl font-bold">52</span>
+                            <span class="text-2xl font-bold" id="metric-orders">52</span>
                         </div>
-                        <div class="custom-card p-4 rounded-2xl shadow-sm border border-neutral-200/20 flex flex-col justify-between">
+                        <div class="custom-card p-4 rounded-2xl shadow-sm border flex flex-col justify-between">
                             <div class="flex items-center space-x-2 text-emerald-600 mb-2">
                                 <i class="fa-solid fa-bullseye"></i>
-                                <span class="text-xs font-semibold text-neutral-500">Goal Progress</span>
+                                <span class="text-xs font-semibold opacity-70">Goal Progress</span>
                             </div>
                             <span class="text-2xl font-bold">76%</span>
                         </div>
                     </div>
 
-                    <!-- Order Fulfillment Pipeline Card (5 Stages) -->
-                    <div class="custom-card p-4 rounded-3xl shadow-sm border border-neutral-200/20">
-                        <h4 class="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-3">Order Fulfillment Pipeline</h4>
-                        <div class="grid grid-cols-5 gap-1.5 text-center">
-                            <div class="bg-neutral-50 dark:bg-neutral-800 p-2.5 rounded-xl border border-neutral-200/20">
-                                <span class="block text-base font-bold">3</span>
-                                <span class="text-[9px] font-medium text-neutral-500 leading-tight">Packaging</span>
+                    <!-- Order Fulfillment Pipeline Card (Exact 8 Stages) -->
+                    <div class="custom-card p-4 rounded-3xl shadow-sm border">
+                        <h4 class="text-xs font-bold uppercase tracking-wider opacity-70 mb-3">Order Fulfillment Pipeline</h4>
+                        <div class="grid grid-cols-4 gap-2 text-center mb-2">
+                            <div class="bg-neutral-100/60 dark:bg-neutral-800 p-2 rounded-xl border border-neutral-200/20">
+                                <span class="block text-sm font-bold">2</span>
+                                <span class="text-[9px] font-medium opacity-70">Need Packaging</span>
                             </div>
-                            <div class="bg-neutral-50 dark:bg-neutral-800 p-2.5 rounded-xl border border-neutral-200/20">
-                                <span class="block text-base font-bold text-brand">4</span>
-                                <span class="text-[9px] font-medium text-neutral-500 leading-tight">Shipping</span>
+                            <div class="bg-neutral-100/60 dark:bg-neutral-800 p-2 rounded-xl border border-neutral-200/20">
+                                <span class="block text-sm font-bold text-brand">3</span>
+                                <span class="text-[9px] font-medium opacity-70">Packaged</span>
                             </div>
-                            <div class="bg-neutral-50 dark:bg-neutral-800 p-2.5 rounded-xl border border-neutral-200/20">
-                                <span class="block text-base font-bold">12</span>
-                                <span class="text-[9px] font-medium text-neutral-500 leading-tight">Shipped</span>
+                            <div class="bg-neutral-100/60 dark:bg-neutral-800 p-2 rounded-xl border border-neutral-200/20">
+                                <span class="block text-sm font-bold">4</span>
+                                <span class="text-[9px] font-medium opacity-70">Needs Shipping</span>
                             </div>
-                            <div class="bg-neutral-50 dark:bg-neutral-800 p-2.5 rounded-xl border border-neutral-200/20">
-                                <span class="block text-base font-bold">8</span>
-                                <span class="text-[9px] font-medium text-neutral-500 leading-tight">Delivered</span>
+                            <div class="bg-neutral-100/60 dark:bg-neutral-800 p-2 rounded-xl border border-neutral-200/20">
+                                <span class="block text-sm font-bold">12</span>
+                                <span class="text-[9px] font-medium opacity-70">Shipped</span>
                             </div>
-                            <div class="bg-neutral-50 dark:bg-neutral-800 p-2.5 rounded-xl border border-neutral-200/20">
-                                <span class="block text-base font-bold text-emerald-600">25</span>
-                                <span class="text-[9px] font-medium text-neutral-500 leading-tight">Fulfilled</span>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-center">
+                            <div class="bg-neutral-100/60 dark:bg-neutral-800 p-2 rounded-xl border border-neutral-200/20">
+                                <span class="block text-sm font-bold">6</span>
+                                <span class="text-[9px] font-medium opacity-70">In Transit</span>
+                            </div>
+                            <div class="bg-neutral-100/60 dark:bg-neutral-800 p-2 rounded-xl border border-neutral-200/20">
+                                <span class="block text-sm font-bold">8</span>
+                                <span class="text-[9px] font-medium opacity-70">Delivered</span>
+                            </div>
+                            <div class="bg-neutral-100/60 dark:bg-neutral-800 p-2 rounded-xl border border-neutral-200/20">
+                                <span class="block text-sm font-bold text-amber-500">1</span>
+                                <span class="text-[9px] font-medium opacity-70">Awaiting Payment</span>
+                            </div>
+                            <div class="bg-neutral-100/60 dark:bg-neutral-800 p-2 rounded-xl border border-neutral-200/20">
+                                <span class="block text-sm font-bold text-emerald-600">25</span>
+                                <span class="text-[9px] font-medium opacity-70">Fulfilled</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Your Goals Section with Proportional Circular Ring -->
-                    <div class="custom-card p-5 rounded-3xl shadow-sm border border-neutral-200/20">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-sm font-bold">Your Goals</h3>
                             <span class="text-xs text-brand font-semibold cursor-pointer">View All &gt;</span>
                         </div>
                         <div class="flex items-center space-x-4">
-                            <!-- Circular Progress Ring (SVG Proportional) -->
+                            <!-- Circular Progress Ring -->
                             <div class="relative w-16 h-16 flex items-center justify-center shrink-0">
                                 <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                                     <path class="text-neutral-200 dark:text-neutral-700" stroke-width="3.8" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
@@ -327,8 +355,7 @@
                             </div>
                             <div class="flex-1">
                                 <h4 class="text-sm font-bold">Grow Sales</h4>
-                                <p class="text-xs text-neutral-500 mb-2" id="goal-target-text">Reach $6,000 this month</p>
-                                <!-- Progress Bar Line -->
+                                <p class="text-xs opacity-70 mb-2" id="goal-target-text">Reach $6,000 this month</p>
                                 <div class="w-full bg-neutral-200 dark:bg-neutral-700 h-2 rounded-full overflow-hidden">
                                     <div class="bg-brand h-full rounded-full" style="width: 76%"></div>
                                 </div>
@@ -337,7 +364,7 @@
                     </div>
 
                     <!-- Quick Actions -->
-                    <div class="custom-card p-5 rounded-3xl shadow-sm border border-neutral-200/20">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border">
                         <h3 class="text-sm font-bold mb-3">Quick Actions</h3>
                         <div class="grid grid-cols-4 gap-2 text-center">
                             <div onclick="alert('Opening Add Sale form...')" class="bg-brand-light/50 p-3 rounded-2xl cursor-pointer hover:opacity-80 transition">
@@ -362,30 +389,28 @@
 
                 <!-- TAB 2: TRACKING -->
                 <div id="tab-tracking-content" class="app-tab hidden space-y-4">
-                    <div class="custom-card p-5 rounded-3xl shadow-sm border border-neutral-200/20">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border">
                         <h3 class="font-bold mb-2">Sales Tracking</h3>
-                        <p class="text-xs text-neutral-500 mb-4">Detailed records across your active sales channels.</p>
-                        <div class="space-y-3" id="tracking-platforms-list">
-                            <!-- Populated dynamically -->
-                        </div>
+                        <p class="text-xs opacity-70 mb-4">Detailed records across your active sales channels.</p>
+                        <div class="space-y-3" id="tracking-platforms-list"></div>
                     </div>
                 </div>
 
                 <!-- TAB 3: REPORTS -->
                 <div id="tab-reports-content" class="app-tab hidden space-y-4">
-                    <div class="custom-card p-5 rounded-3xl shadow-sm border border-neutral-200/20">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border">
                         <h3 class="font-bold mb-2">Performance Reports</h3>
-                        <p class="text-xs text-neutral-500 mb-4">Net profit margins and top product analytics.</p>
-                        <div class="bg-neutral-50 dark:bg-neutral-800 p-4 rounded-2xl text-center">
-                            <span class="text-xs text-neutral-400 block mb-1">Net Profit This Month</span>
-                            <span class="text-2xl font-bold text-brand">$3,960</span>
+                        <p class="text-xs opacity-70 mb-4">Net profit margins and top product analytics.</p>
+                        <div class="bg-neutral-100/60 dark:bg-neutral-800 p-4 rounded-2xl text-center">
+                            <span class="text-xs opacity-70 block mb-1">Net Profit This Period</span>
+                            <span class="text-2xl font-bold text-brand" id="report-net-profit">$3,960</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- TAB 4: GOALS -->
                 <div id="tab-goals-content" class="app-tab hidden space-y-4">
-                    <div class="custom-card p-5 rounded-3xl shadow-sm border border-neutral-200/20 text-center py-8">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border text-center py-8">
                         <div class="relative w-24 h-24 mx-auto flex items-center justify-center mb-4">
                             <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
                                 <path class="text-neutral-200 dark:text-neutral-700" stroke-width="3.8" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
@@ -394,13 +419,13 @@
                             <div class="absolute text-xl font-bold text-brand">76%</div>
                         </div>
                         <h3 class="font-bold text-base mb-1">You're on track!</h3>
-                        <p class="text-xs text-neutral-500">Keep going, you're doing great ♡</p>
+                        <p class="text-xs opacity-70">Keep going, you're doing great ♡</p>
                     </div>
                 </div>
 
                 <!-- TAB 5: MORE -->
                 <div id="tab-more-content" class="app-tab hidden space-y-4">
-                    <div class="custom-card p-5 rounded-3xl shadow-sm border border-neutral-200/20 space-y-3">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border space-y-3">
                         <div class="flex items-center space-x-3 pb-3 border-b border-neutral-200/20">
                             <div class="w-12 h-12 rounded-full bg-brand-light flex items-center justify-center font-bold text-brand text-lg">G</div>
                             <div>
@@ -417,21 +442,21 @@
 
                 <!-- TAB 6: SETTINGS -->
                 <div id="tab-settings-content" class="app-tab hidden space-y-4">
-                    <div class="custom-card p-5 rounded-3xl shadow-sm border border-neutral-200/20 space-y-4">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border space-y-4">
                         <h3 class="font-bold">Business Settings</h3>
                         <div class="space-y-3 text-xs">
                             <div>
-                                <label class="block text-neutral-400 font-semibold mb-1">Business Name</label>
-                                <input type="text" id="settings-bus-name" class="w-full p-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 rounded-xl font-medium" value="Grimms Reselling">
+                                <label class="block opacity-70 font-semibold mb-1">Business Name</label>
+                                <input type="text" id="settings-bus-name" class="w-full p-2.5 bg-neutral-100 dark:bg-neutral-800 border rounded-xl font-medium" value="Grimms Reselling">
                             </div>
                             <div>
-                                <label class="block text-neutral-400 font-semibold mb-1">Currency</label>
-                                <input type="text" id="settings-currency" class="w-full p-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 rounded-xl font-medium" value="USD ($)">
+                                <label class="block opacity-70 font-semibold mb-1">Currency</label>
+                                <input type="text" id="settings-currency" class="w-full p-2.5 bg-neutral-100 dark:bg-neutral-800 border rounded-xl font-medium" value="USD ($)">
                             </div>
                             <div>
-                                <label class="block text-neutral-400 font-semibold mb-1">App Color Theme</label>
-                                <select id="settings-theme" onchange="previewTheme(this.value)" class="w-full p-2.5 bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 rounded-xl font-medium">
-                                    <optgroup label="🌸 Girly & Pastel Themes">
+                                <label class="block opacity-70 font-semibold mb-1">App Color Theme</label>
+                                <select id="settings-theme" onchange="previewTheme(this.value)" class="w-full p-2.5 bg-neutral-100 dark:bg-neutral-800 border rounded-xl font-medium">
+                                    <optgroup label="☀️ Light Themes">
                                         <option value="blush">Blush Rose (Default Pink)</option>
                                         <option value="lavender">Lavender Dream (Soft Purple)</option>
                                         <option value="peach">Peach Sunset (Warm Peach)</option>
@@ -443,7 +468,7 @@
                                         <option value="cottoncandy">Cotton Candy (Pastel Blue & Pink)</option>
                                         <option value="emerald">Emerald Elegance (Soft Green)</option>
                                     </optgroup>
-                                    <optgroup label="🖤 Manly, Dark & Rugged Themes">
+                                    <optgroup label="🌙 Dark Themes">
                                         <option value="midnight">Midnight Obsidian (Sleek Dark & Blue)</option>
                                         <option value="cyberpunk">Cyberpunk Neon (Dark & Crimson)</option>
                                         <option value="stealth">Stealth Carbon (Matte Charcoal)</option>
@@ -465,28 +490,28 @@
             </div>
 
             <!-- BOTTOM HOTBAR NAVIGATION -->
-            <div class="absolute bottom-0 left-0 right-0 custom-card backdrop-blur-md border-t border-neutral-200/20 px-4 py-2 flex justify-between items-center text-[10px] text-neutral-400 z-40">
+            <div class="absolute bottom-0 left-0 right-0 custom-card backdrop-blur-md border-t px-4 py-2 flex justify-between items-center text-[10px] opacity-80 z-40">
                 <button onclick="switchTab('home')" id="nav-btn-home" class="nav-item flex flex-col items-center flex-1 text-brand">
                     <i class="fa-solid fa-house text-base mb-0.5"></i>
                     <span>Home</span>
                 </button>
-                <button onclick="switchTab('tracking')" id="nav-btn-tracking" class="nav-item flex flex-col items-center flex-1 hover:text-neutral-700">
+                <button onclick="switchTab('tracking')" id="nav-btn-tracking" class="nav-item flex flex-col items-center flex-1 hover:opacity-100">
                     <i class="fa-solid fa-chart-line text-base mb-0.5"></i>
                     <span>Tracking</span>
                 </button>
-                <button onclick="switchTab('reports')" id="nav-btn-reports" class="nav-item flex flex-col items-center flex-1 hover:text-neutral-700">
+                <button onclick="switchTab('reports')" id="nav-btn-reports" class="nav-item flex flex-col items-center flex-1 hover:opacity-100">
                     <i class="fa-solid fa-chart-column text-base mb-0.5"></i>
                     <span>Reports</span>
                 </button>
-                <button onclick="switchTab('goals')" id="nav-btn-goals" class="nav-item flex flex-col items-center flex-1 hover:text-neutral-700">
+                <button onclick="switchTab('goals')" id="nav-btn-goals" class="nav-item flex flex-col items-center flex-1 hover:opacity-100">
                     <i class="fa-regular fa-heart text-base mb-0.5"></i>
                     <span>Goals</span>
                 </button>
-                <button onclick="switchTab('more')" id="nav-btn-more" class="nav-item flex flex-col items-center flex-1 hover:text-neutral-700">
+                <button onclick="switchTab('more')" id="nav-btn-more" class="nav-item flex flex-col items-center flex-1 hover:opacity-100">
                     <i class="fa-solid fa-bars text-base mb-0.5"></i>
                     <span>More</span>
                 </button>
-                <button onclick="switchTab('settings')" id="nav-btn-settings" class="nav-item flex flex-col items-center flex-1 hover:text-neutral-700">
+                <button onclick="switchTab('settings')" id="nav-btn-settings" class="nav-item flex flex-col items-center flex-1 hover:opacity-100">
                     <i class="fa-solid fa-gear text-base mb-0.5"></i>
                     <span>Setting</span>
                 </button>
@@ -503,31 +528,31 @@
         let userExpenses = ['Shipping Supplies', 'Platform Fees', 'Inventory Acquisition'];
         let currentThemeKey = 'blush';
 
-        // 20 Theme definitions (10 Girly/Pastel, 10 Manly/Dark)
+        // 20 Carefully balanced Theme definitions (10 Light, 10 Dark)
         const themes = {
-            // Girly / Light
-            blush: { primary: '#d97793', light: '#fdf2f4', dark: '#b35470', accent: '#f4aabf', appBg: '#f7f3f4', cardBg: '#ffffff', text: '#2d2d2d' },
-            lavender: { primary: '#8b5cf6', light: '#f5f3ff', dark: '#6d28d9', accent: '#c4b5fd', appBg: '#faf8fc', cardBg: '#ffffff', text: '#2d2d2d' },
-            peach: { primary: '#f97316', light: '#fff7ed', dark: '#c2410c', accent: '#fed7aa', appBg: '#fffaf5', cardBg: '#ffffff', text: '#2d2d2d' },
-            sakura: { primary: '#ec4899', light: '#fdf2f8', dark: '#be185d', accent: '#fbcfe8', appBg: '#fdf8fa', cardBg: '#ffffff', text: '#2d2d2d' },
-            vanilla: { primary: '#a16207', light: '#fefce8', dark: '#713f12', accent: '#fef08a', appBg: '#fbf9f5', cardBg: '#ffffff', text: '#2d2d2d' },
-            mint: { primary: '#10b981', light: '#ecfdf5', dark: '#047857', accent: '#a7f3d0', appBg: '#f4f8f6', cardBg: '#ffffff', text: '#2d2d2d' },
-            berry: { primary: '#db2777', light: '#fdf2f8', dark: '#9d174d', accent: '#f472b6', appBg: '#fcf6f8', cardBg: '#ffffff', text: '#2d2d2d' },
-            golden: { primary: '#eab308', light: '#fefce8', dark: '#a16207', accent: '#fde047', appBg: '#fcfbfa', cardBg: '#ffffff', text: '#2d2d2d' },
-            cottoncandy: { primary: '#38bdf8', light: '#f0f9ff', dark: '#0284c7', accent: '#bae6fd', appBg: '#f5f9fc', cardBg: '#ffffff', text: '#2d2d2d' },
-            emerald: { primary: '#059669', light: '#ecfdf5', dark: '#065e3e', accent: '#34d399', appBg: '#f4f7f5', cardBg: '#ffffff', text: '#2d2d2d' },
+            // Light Themes
+            blush: { primary: '#d97793', light: '#fdf2f4', dark: '#b35470', accent: '#f4aabf', appBg: '#f7f3f4', cardBg: '#ffffff', text: '#2d2d2d', border: '#e5e5e5' },
+            lavender: { primary: '#7c3aed', light: '#f5f3ff', dark: '#5b21b6', accent: '#c4b5fd', appBg: '#faf8fc', cardBg: '#ffffff', text: '#2d2d2d', border: '#e5e5e5' },
+            peach: { primary: '#ea580c', light: '#fff7ed', dark: '#9a3412', accent: '#fed7aa', appBg: '#fffaf5', cardBg: '#ffffff', text: '#2d2d2d', border: '#e5e5e5' },
+            sakura: { primary: '#db2777', light: '#fdf2f8', dark: '#9d174d', accent: '#fbcfe8', appBg: '#fdf8fa', cardBg: '#ffffff', text: '#2d2d2d', border: '#e5e5e5' },
+            vanilla: { primary: '#854d0e', light: '#fefce8', dark: '#713f12', accent: '#fef08a', appBg: '#fbf9f5', cardBg: '#ffffff', text: '#2d2d2d', border: '#e5e5e5' },
+            mint: { primary: '#059669', light: '#ecfdf5', dark: '#047857', accent: '#a7f3d0', appBg: '#f4f8f6', cardBg: '#ffffff', text: '#2d2d2d', border: '#e5e5e5' },
+            berry: { primary: '#be185d', light: '#fdf2f8', dark: '#831843', accent: '#f472b6', appBg: '#fcf6f8', cardBg: '#ffffff', text: '#2d2d2d', border: '#e5e5e5' },
+            golden: { primary: '#ca8a04', light: '#fefce8', dark: '#854d0e', accent: '#fde047', appBg: '#fcfbfa', cardBg: '#ffffff', text: '#2d2d2d', border: '#e5e5e5' },
+            cottoncandy: { primary: '#0284c7', light: '#f0f9ff', dark: '#0369a1', accent: '#bae6fd', appBg: '#f5f9fc', cardBg: '#ffffff', text: '#2d2d2d', border: '#e5e5e5' },
+            emerald: { primary: '#047857', light: '#ecfdf5', dark: '#064e3b', accent: '#34d399', appBg: '#f4f7f5', cardBg: '#ffffff', text: '#2d2d2d', border: '#e5e5e5' },
 
-            // Manly / Dark / Rugged
-            midnight: { primary: '#38bdf8', light: '#1e293b', dark: '#0284c7', accent: '#0f172a', appBg: '#090d16', cardBg: '#111827', text: '#f8fafc' },
-            cyberpunk: { primary: '#f43f5e', light: '#27272a', dark: '#e11d48', accent: '#18181b', appBg: '#09090b', cardBg: '#18181b', text: '#f4f4f5' },
-            stealth: { primary: '#71717a', light: '#27272a', dark: '#3f3f46', accent: '#18181b', appBg: '#09090b', cardBg: '#121215', text: '#fafafa' },
-            leather: { primary: '#d97706', light: '#291808', dark: '#b45309', accent: '#1c130d', appBg: '#110c08', cardBg: '#1c130d', text: '#fef3c7' },
-            navy: { primary: '#3b82f6', light: '#1e293b', dark: '#1d4ed8', accent: '#0f172a', appBg: '#0f172a', cardBg: '#1e293b', text: '#f8fafc' },
-            crimson: { primary: '#ef4444', light: '#291818', dark: '#dc2626', accent: '#1c1917', appBg: '#0c0a09', cardBg: '#1c1917', text: '#f5f5f4' },
-            forest: { primary: '#22c55e', light: '#14532d', dark: '#15803d', accent: '#0f291e', appBg: '#051b0f', cardBg: '#0f291e', text: '#f0fdf4' },
-            titanium: { primary: '#94a3b8', light: '#1e293b', dark: '#64748b', accent: '#0f172a', appBg: '#0f172a', cardBg: '#1e293b', text: '#f1f5f9' },
-            amethyst: { primary: '#a855f7', light: '#2e1065', dark: '#7e22ce', accent: '#231147', appBg: '#170a2e', cardBg: '#231147', text: '#faf5ff' },
-            coffee: { primary: '#b45309', light: '#291808', dark: '#78350f', accent: '#1f130a', appBg: '#140c06', cardBg: '#1f130a', text: '#fdf8f6' }
+            // Dark Themes
+            midnight: { primary: '#38bdf8', light: '#1e293b', dark: '#0284c7', accent: '#0f172a', appBg: '#090d16', cardBg: '#111827', text: '#f8fafc', border: '#1f2937' },
+            cyberpunk: { primary: '#f43f5e', light: '#27272a', dark: '#e11d48', accent: '#18181b', appBg: '#09090b', cardBg: '#18181b', text: '#f4f4f5', border: '#27272a' },
+            stealth: { primary: '#a1a1aa', light: '#27272a', dark: '#52525b', accent: '#18181b', appBg: '#09090b', cardBg: '#121215', text: '#fafafa', border: '#27272a' },
+            leather: { primary: '#d97706', light: '#291808', dark: '#b45309', accent: '#1c130d', appBg: '#110c08', cardBg: '#1c130d', text: '#fef3c7', border: '#291808' },
+            navy: { primary: '#60a5fa', light: '#1e293b', dark: '#3b82f6', accent: '#0f172a', appBg: '#0f172a', cardBg: '#1e293b', text: '#f8fafc', border: '#334155' },
+            crimson: { primary: '#f87171', light: '#291818', dark: '#ef4444', accent: '#1c1917', appBg: '#0c0a09', cardBg: '#1c1917', text: '#f5f5f4', border: '#292524' },
+            forest: { primary: '#4ade80', light: '#14532d', dark: '#22c55e', accent: '#0f291e', appBg: '#051b0f', cardBg: '#0f291e', text: '#f0fdf4', border: '#14532d' },
+            titanium: { primary: '#cbd5e1', light: '#1e293b', dark: '#94a3b8', accent: '#0f172a', appBg: '#0f172a', cardBg: '#1e293b', text: '#f1f5f9', border: '#334155' },
+            amethyst: { primary: '#c084fc', light: '#2e1065', dark: '#a855f7', accent: '#231147', appBg: '#170a2e', cardBg: '#231147', text: '#faf5ff', border: '#3b0764' },
+            coffee: { primary: '#d97706', light: '#291808', dark: '#b45309', accent: '#1f130a', appBg: '#140c06', cardBg: '#1f130a', text: '#fdf8f6', border: '#291808' }
         };
 
         function previewTheme(themeName) {
@@ -543,10 +568,50 @@
             root.style.setProperty('--app-bg', t.appBg);
             root.style.setProperty('--card-bg', t.cardBg);
             root.style.setProperty('--text-main', t.text);
+            root.style.setProperty('--border-color', t.border);
 
-            // Sync select dropdowns
             document.getElementById('setup-theme').value = themeName;
             document.getElementById('settings-theme').value = themeName;
+        }
+
+        function updateTimeframe(timeframe) {
+            const revEl = document.getElementById('display-revenue');
+            const titleEl = document.getElementById('rev-card-title');
+            const ordersEl = document.getElementById('metric-orders');
+            const profitEl = document.getElementById('report-net-profit');
+
+            switch(timeframe) {
+                case 'today':
+                    titleEl.innerText = "Today's Revenue";
+                    revEl.innerText = "$240";
+                    ordersEl.innerText = "3";
+                    profitEl.innerText = "$195";
+                    break;
+                case 'this_week':
+                    titleEl.innerText = "This Week's Revenue";
+                    revEl.innerText = "$1,250";
+                    ordersEl.innerText = "14";
+                    profitEl.innerText = "$980";
+                    break;
+                case 'this_month':
+                    titleEl.innerText = "This Month's Revenue";
+                    revEl.innerText = "$4,820";
+                    ordersEl.innerText = "52";
+                    profitEl.innerText = "$3,960";
+                    break;
+                case 'this_year':
+                    titleEl.innerText = "This Year's Revenue";
+                    revEl.innerText = "$58,400";
+                    ordersEl.innerText = "610";
+                    profitEl.innerText = "$46,200";
+                    break;
+                case 'all_time':
+                    titleEl.innerText = "All-Time Revenue";
+                    revEl.innerText = "$142,900";
+                    ordersEl.innerText = "1,480";
+                    profitEl.innerText = "$112,500";
+                    break;
+            }
         }
 
         function goToScreen(screenId) {
@@ -622,16 +687,16 @@
             const container = document.getElementById('tracking-platforms-list');
             container.innerHTML = '';
             if (userPlatforms.length === 0) {
-                container.innerHTML = '<p class="text-xs text-neutral-400">No active platforms added.</p>';
+                container.innerHTML = '<p class="text-xs opacity-60">No active platforms added.</p>';
                 return;
             }
             userPlatforms.forEach((plat) => {
                 const item = document.createElement('div');
-                item.className = "flex justify-between items-center p-3 bg-neutral-50 dark:bg-neutral-800 rounded-xl text-xs";
+                item.className = "flex justify-between items-center p-3 bg-neutral-100/50 dark:bg-neutral-800 rounded-xl text-xs";
                 item.innerHTML = `
                     <div>
                         <span class="font-bold block">${plat} Channel</span>
-                        <span class="text-neutral-400">Active Reselling Feed</span>
+                        <span class="opacity-60">Active Reselling Feed</span>
                     </div>
                     <span class="font-bold text-emerald-600">Synced</span>
                 `;
@@ -660,12 +725,12 @@
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => {
                 item.classList.remove('text-brand');
-                item.classList.add('text-neutral-400');
+                item.classList.add('opacity-60');
             });
 
             const activeNav = document.getElementById(`nav-btn-${tabName}`);
             if (activeNav) {
-                activeNav.classList.remove('text-neutral-400');
+                activeNav.classList.remove('opacity-60');
                 activeNav.classList.add('text-brand');
             }
             
