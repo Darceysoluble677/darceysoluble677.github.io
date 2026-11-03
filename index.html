@@ -25,8 +25,8 @@
     </script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts for Dynamic Font Switching -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts for Dynamic Font Switching (Expanded to 10 Options) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --brand-primary: #d97793;
@@ -166,7 +166,7 @@
                     </select>
                 </div>
 
-                <!-- Font Selector -->
+                <!-- Expanded Font Selector -->
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">App Font Family</label>
                     <select id="setup-font" onchange="previewFont(this.value)" class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
@@ -174,7 +174,12 @@
                         <option value="'Inter', sans-serif">Inter</option>
                         <option value="'Poppins', sans-serif">Poppins</option>
                         <option value="'Roboto', sans-serif">Roboto</option>
+                        <option value="'Montserrat', sans-serif">Montserrat</option>
+                        <option value="'Open Sans', sans-serif">Open Sans</option>
+                        <option value="'Lato', sans-serif">Lato</option>
+                        <option value="'DM Sans', sans-serif">DM Sans</option>
                         <option value="'Playfair Display', serif">Playfair Display (Elegant Serif)</option>
+                        <option value="'Cormorant Garamond', serif">Cormorant Garamond (Classic Serif)</option>
                     </select>
                 </div>
 
@@ -314,43 +319,43 @@
                         </div>
                     </div>
 
-                    <!-- Order Fulfillment Pipeline Card (Exact 8 Stages in Requested Order with Uniform Styling) -->
+                    <!-- Order Fulfillment Pipeline Card (Clean Refined Typography & Spacing for Long Text) -->
                     <div class="custom-card p-4 rounded-3xl shadow-sm border">
                         <h4 class="text-xs font-bold uppercase tracking-wider opacity-70 mb-3">Order Fulfillment Pipeline</h4>
                         <div class="grid grid-cols-4 gap-2 text-center mb-2">
-                            <div class="custom-card p-2 rounded-xl border opacity-90">
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
                                 <span class="block text-sm font-bold">2</span>
-                                <span class="text-[9px] font-medium opacity-70">Need Packaging</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Need Packaging</span>
                             </div>
-                            <div class="custom-card p-2 rounded-xl border opacity-90">
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
                                 <span class="block text-sm font-bold">3</span>
-                                <span class="text-[9px] font-medium opacity-70">Packaged</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Packaged</span>
                             </div>
-                            <div class="custom-card p-2 rounded-xl border opacity-90">
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
                                 <span class="block text-sm font-bold">4</span>
-                                <span class="text-[9px] font-medium opacity-70">needs shipping</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Needs Shipping</span>
                             </div>
-                            <div class="custom-card p-2 rounded-xl border opacity-90">
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
                                 <span class="block text-sm font-bold">12</span>
-                                <span class="text-[9px] font-medium opacity-70">shipped</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Shipped</span>
                             </div>
                         </div>
                         <div class="grid grid-cols-4 gap-2 text-center">
-                            <div class="custom-card p-2 rounded-xl border opacity-90">
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
                                 <span class="block text-sm font-bold">6</span>
-                                <span class="text-[9px] font-medium opacity-70">in transit</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">In Transit</span>
                             </div>
-                            <div class="custom-card p-2 rounded-xl border opacity-90">
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
                                 <span class="block text-sm font-bold">8</span>
-                                <span class="text-[9px] font-medium opacity-70">delivered</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Delivered</span>
                             </div>
-                            <div class="custom-card p-2 rounded-xl border opacity-90">
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
                                 <span class="block text-sm font-bold">1</span>
-                                <span class="text-[9px] font-medium opacity-70">awaiting payment</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Awaiting Payment</span>
                             </div>
-                            <div class="custom-card p-2 rounded-xl border opacity-90">
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
                                 <span class="block text-sm font-bold text-emerald-600">25</span>
-                                <span class="text-[9px] font-medium opacity-70">Fulfilled</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Fulfilled</span>
                             </div>
                         </div>
                     </div>
@@ -508,7 +513,12 @@
                                     <option value="'Inter', sans-serif">Inter</option>
                                     <option value="'Poppins', sans-serif">Poppins</option>
                                     <option value="'Roboto', sans-serif">Roboto</option>
+                                    <option value="'Montserrat', sans-serif">Montserrat</option>
+                                    <option value="'Open Sans', sans-serif">Open Sans</option>
+                                    <option value="'Lato', sans-serif">Lato</option>
+                                    <option value="'DM Sans', sans-serif">DM Sans</option>
                                     <option value="'Playfair Display', serif">Playfair Display (Elegant Serif)</option>
+                                    <option value="'Cormorant Garamond', serif">Cormorant Garamond (Classic Serif)</option>
                                 </select>
                             </div>
                             <button onclick="saveSettingsChanges()" class="w-full py-3 bg-brand text-white font-semibold rounded-xl mt-2 hover:opacity-90 transition">Save Changes</button>
