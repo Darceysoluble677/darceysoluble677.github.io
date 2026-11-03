@@ -480,7 +480,7 @@
                     </div>
                 </div>
 
-                <!-- TAB 4: COMPONENTS TRACKER -->
+                <!-- TAB 4: COMPONENTS TRACKER (Spacious, clean layout with large tap buttons) -->
                 <div id="tab-components-content" class="app-tab hidden space-y-4">
                     <div class="custom-card p-5 rounded-3xl shadow-sm border space-y-4">
                         <div class="flex justify-between items-center">
@@ -681,26 +681,26 @@
                 <input type="hidden" id="comp-edit-id">
                 <div>
                     <label class="block opacity-70 font-semibold mb-1">Component Name *</label>
-                    <input type="text" id="comp-name" placeholder="e.g. 4x8 Bubble Mailers" required class="w-full p-2.5 border rounded-xl font-medium custom-card text-sm">
+                    <input type="text" id="comp-name" placeholder="e.g. 4x8 Bubble Mailers" required class="w-full p-2.5 border rounded-xl font-medium custom-card">
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block opacity-70 font-semibold mb-1">Quantity on Hand *</label>
-                        <input type="number" id="comp-qty" placeholder="e.g. 150" required min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card text-sm">
+                        <input type="number" id="comp-qty" placeholder="e.g. 150" required min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card">
                     </div>
                     <div>
                         <label class="block opacity-70 font-semibold mb-1">Cost per Unit ($)</label>
-                        <input type="number" step="0.01" id="comp-cost" placeholder="e.g. 0.25" min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card text-sm">
+                        <input type="number" step="0.01" id="comp-cost" placeholder="e.g. 0.25" min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card">
                     </div>
                 </div>
 
                 <div>
                     <div class="flex justify-between items-center mb-1">
                         <label class="opacity-70 font-semibold">Category</label>
-                        <button type="button" onclick="openManagerModal('category')" class="text-brand hover:underline font-semibold">Manage Categories</button>
+                        <button type="button" onclick="manageCategories()" class="text-brand hover:underline font-semibold text-[11px]">Manage Categories</button>
                     </div>
-                    <select id="comp-category" class="w-full p-2.5 border rounded-xl font-medium custom-card text-sm">
+                    <select id="comp-category" class="w-full p-2.5 border rounded-xl font-medium custom-card">
                         <!-- Populated dynamically -->
                     </select>
                 </div>
@@ -708,42 +708,22 @@
                 <div>
                     <div class="flex justify-between items-center mb-1">
                         <label class="opacity-70 font-semibold">Supplier</label>
-                        <button type="button" onclick="openManagerModal('supplier')" class="text-brand hover:underline font-semibold">Manage Suppliers</button>
+                        <button type="button" onclick="manageSuppliers()" class="text-brand hover:underline font-semibold text-[11px]">Manage Suppliers</button>
                     </div>
-                    <select id="comp-supplier" class="w-full p-2.5 border rounded-xl font-medium custom-card text-sm">
+                    <select id="comp-supplier" class="w-full p-2.5 border rounded-xl font-medium custom-card">
                         <!-- Populated dynamically -->
                     </select>
                 </div>
 
                 <div>
                     <label class="block opacity-70 font-semibold mb-1">Notes</label>
-                    <textarea id="comp-notes" placeholder="SKU links, dimensions, or reorder reminders..." class="w-full p-2.5 border rounded-xl font-medium custom-card h-16 resize-none text-sm"></textarea>
+                    <textarea id="comp-notes" placeholder="SKU links, dimensions, or reorder reminders..." class="w-full p-2.5 border rounded-xl font-medium custom-card h-16 resize-none"></textarea>
                 </div>
 
                 <div class="pt-2">
-                    <button type="submit" class="w-full py-3 bg-brand text-white font-semibold rounded-xl hover:opacity-95 transition text-sm">Save Component</button>
+                    <button type="submit" class="w-full py-3 bg-brand text-white font-semibold rounded-xl hover:opacity-95 transition">Save Component</button>
                 </div>
             </form>
-        </div>
-    </div>
-
-    <!-- ================= MANAGER MODAL (Categories & Suppliers) ================= -->
-    <div id="manager-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="custom-card w-full max-w-sm rounded-3xl p-6 border shadow-2xl relative">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="manager-title" class="font-bold text-base">Manage Items</h3>
-                <button onclick="closeManagerModal()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            
-            <div class="space-y-3">
-                <div class="flex space-x-2">
-                    <input type="text" id="manager-new-input" placeholder="Add new item..." class="w-full p-2.5 border rounded-xl font-medium custom-card text-sm outline-none">
-                    <button onclick="addNewManagerItem()" class="px-4 py-2.5 bg-brand text-white font-semibold rounded-xl text-xs shrink-0 hover:opacity-90">Add</button>
-                </div>
-                <div id="manager-list" class="max-h-48 overflow-y-auto space-y-2 pt-2 border-t text-xs">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
         </div>
     </div>
 
@@ -754,7 +734,6 @@
         let userPlatforms = ['Vinted', 'eBay'];
         let userExpenses = ['Shipping Supplies', 'Platform Fees', 'Inventory Acquisition'];
         let currentThemeKey = 'blush';
-        let activeManagerType = 'category'; // 'category' or 'supplier'
 
         // Saved settings state to track unsaved edits in settings page
         let savedSettingsState = {
@@ -860,4 +839,576 @@
                     titleEl.innerText = "All-Time Revenue";
                     revEl.innerText = "$142,900";
                     ordersEl.innerText = "1,480";
-                    profitEl.innerText = "$1
+                    profitEl.innerText = "$112,500";
+                    break;
+            }
+        }
+
+        function goToScreen(screenId) {
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-setup').classList.add('hidden');
+            document.getElementById('screen-app').classList.add('hidden');
+
+            document.getElementById(screenId).classList.remove('hidden');
+            document.getElementById(screenId).classList.add('flex');
+        }
+
+        function addPlatformInput() {
+            const container = document.getElementById('platforms-container');
+            const div = document.createElement('div');
+            div.className = "flex items-center space-x-2";
+            div.innerHTML = `
+                <input type="text" placeholder="Platform name (e.g. Depop)" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card">
+                <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
+            `;
+            container.appendChild(div);
+        }
+
+        function addExpenseInput() {
+            const container = document.getElementById('expenses-container');
+            const div = document.createElement('div');
+            div.className = "flex items-center space-x-2";
+            div.innerHTML = `
+                <input type="text" placeholder="Expense category (e.g. Marketing)" class="expense-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card">
+                <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeRow(btn) {
+            btn.parentElement.remove();
+        }
+
+        function handleSetupSubmit(e) {
+            e.preventDefault();
+            const busNameInput = document.getElementById('setup-bus-name').value.trim();
+            const currency = document.getElementById('setup-currency').value;
+            const goal = document.getElementById('setup-goal').value;
+            const selectedTheme = document.getElementById('setup-theme').value;
+            const selectedFont = document.getElementById('setup-font').value;
+
+            previewTheme(selectedTheme);
+            previewFont(selectedFont);
+
+            const finalBusName = busNameInput !== "" ? busNameInput : "Grimms Reselling";
+
+            userPlatforms = [];
+            document.querySelectorAll('.platform-input').forEach(input => {
+                if(input.value.trim() !== "") userPlatforms.push(input.value.trim());
+            });
+
+            userExpenses = [];
+            document.querySelectorAll('.expense-input').forEach(input => {
+                if(input.value.trim() !== "") userExpenses.push(input.value.trim());
+            });
+
+            savedSettingsState = {
+                name: finalBusName,
+                currency: currency,
+                theme: selectedTheme,
+                font: selectedFont
+            };
+
+            document.getElementById('header-greeting').innerText = `Welcome back, ${finalBusName}!`;
+            document.getElementById('more-bus-name').innerText = finalBusName;
+            document.getElementById('settings-bus-name').value = finalBusName;
+            document.getElementById('settings-currency').value = currency;
+            
+            if (goal) {
+                document.getElementById('goal-target-text').innerText = `Reach $${Number(goal).toLocaleString()} this month`;
+            }
+
+            renderTrackingPlatforms();
+            completeSetup();
+        }
+
+        function renderTrackingPlatforms() {
+            const container = document.getElementById('tracking-platforms-list');
+            container.innerHTML = '';
+            if (userPlatforms.length === 0) {
+                container.innerHTML = '<p class="text-xs opacity-60">No active platforms added.</p>';
+                return;
+            }
+            userPlatforms.forEach((plat) => {
+                const item = document.createElement('div');
+                item.className = "flex justify-between items-center p-3 custom-card rounded-xl text-xs border";
+                item.innerHTML = `
+                    <div>
+                        <span class="font-bold block">${plat} Channel</span>
+                        <span class="opacity-60">Active Reselling Feed</span>
+                    </div>
+                    <span class="font-bold text-emerald-600">Synced</span>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function completeSetup() {
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-setup').classList.add('hidden');
+            const appScreen = document.getElementById('screen-app');
+            appScreen.classList.remove('hidden');
+            appScreen.classList.add('flex');
+            switchTab('home');
+        }
+
+        function switchTab(tabName) {
+            const currentSettingsTab = document.getElementById('tab-settings-content');
+            const isLeavingSettings = !currentSettingsTab.classList.contains('hidden') && tabName !== 'settings';
+            
+            if (isLeavingSettings) {
+                const currentName = document.getElementById('settings-bus-name').value;
+                const currentCurrency = document.getElementById('settings-currency').value;
+                const currentTheme = document.getElementById('settings-theme').value;
+                const currentFont = document.getElementById('settings-font').value;
+
+                if (currentName !== savedSettingsState.name || 
+                    currentCurrency !== savedSettingsState.currency || 
+                    currentTheme !== savedSettingsState.theme || 
+                    currentFont !== savedSettingsState.font) {
+                    
+                    const discard = confirm("Are you sure you want to discard your unsaved changes?");
+                    if (!discard) {
+                        return;
+                    } else {
+                        document.getElementById('settings-bus-name').value = savedSettingsState.name;
+                        document.getElementById('settings-currency').value = savedSettingsState.currency;
+                        previewTheme(savedSettingsState.theme);
+                        previewFont(savedSettingsState.font);
+                    }
+                }
+            }
+
+            const tabs = document.querySelectorAll('.app-tab');
+            tabs.forEach(t => t.classList.add('hidden'));
+
+            const targetTab = document.getElementById(`tab-${tabName}-content`);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+            }
+
+            const homeHeader = document.getElementById('home-top-header');
+            const compHeader = document.getElementById('components-top-header');
+
+            if (tabName === 'components') {
+                homeHeader.classList.add('hidden');
+                compHeader.classList.remove('hidden');
+                compHeader.classList.add('flex');
+            } else {
+                homeHeader.classList.remove('hidden');
+                homeHeader.classList.add('flex');
+                compHeader.classList.add('hidden');
+            }
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('text-brand');
+                item.classList.add('opacity-60');
+            });
+
+            let activeNavId = `nav-btn-${tabName}`;
+            if(tabName === 'components') activeNavId = 'nav-btn-inventory';
+
+            const activeNav = document.getElementById(activeNavId);
+            if (activeNav) {
+                activeNav.classList.remove('opacity-60');
+                activeNav.classList.add('text-brand');
+            }
+            
+            document.getElementById('main-scroll-container').scrollTop = 0;
+
+            if(tabName === 'components') {
+                renderComponents();
+            }
+        }
+
+        function toggleNotificationBadge() {
+            hasNotification = !hasNotification;
+            const dot = document.getElementById('notif-dot');
+            if (hasNotification) {
+                dot.classList.remove('hidden');
+                alert('You have 1 new order alert!');
+            } else {
+                dot.classList.add('hidden');
+                alert('All notifications cleared.');
+            }
+        }
+
+        function toggleComponentNotification() {
+            hasComponentNotification = !hasComponentNotification;
+            const dot = document.getElementById('comp-notif-dot');
+            if (hasComponentNotification) {
+                dot.classList.remove('hidden');
+                alert('Component Alert: Gothic Bat Charms are currently out of stock!');
+            } else {
+                dot.classList.add('hidden');
+                alert('All component alerts cleared.');
+            }
+        }
+
+        function saveSettingsChanges() {
+            const newName = document.getElementById('settings-bus-name').value;
+            const currency = document.getElementById('settings-currency').value;
+            const selectedTheme = document.getElementById('settings-theme').value;
+            const selectedFont = document.getElementById('settings-font').value;
+            
+            previewTheme(selectedTheme);
+            previewFont(selectedFont);
+
+            savedSettingsState = {
+                name: newName,
+                currency: currency,
+                theme: selectedTheme,
+                font: selectedFont
+            };
+
+            document.getElementById('header-greeting').innerText = `Welcome back, ${newName}!`;
+            document.getElementById('more-bus-name').innerText = newName;
+            
+            alert('Settings, theme, and font updated successfully!');
+            switchTab('home');
+        }
+
+        // ================= COMPONENTS & DROPDOWNS LOGIC =================
+
+        function updateCategoryDropdowns() {
+            const filterCat = document.getElementById('comp-filter-cat');
+            const formCat = document.getElementById('comp-category');
+
+            let currentFilterVal = filterCat.value;
+            let currentFormVal = formCat.value;
+
+            filterCat.innerHTML = '<option value="">All Categories</option>';
+            componentCategories.forEach(cat => {
+                filterCat.innerHTML += `<option value="${cat}">${cat}</option>`;
+            });
+            filterCat.value = currentFilterVal;
+
+            formCat.innerHTML = '';
+            componentCategories.forEach(cat => {
+                formCat.innerHTML += `<option value="${cat}">${cat}</option>`;
+            });
+            formCat.innerHTML += `<option value="__add_new__">+ Add New Category...</option>`;
+            if(componentCategories.includes(currentFormVal)) {
+                formCat.value = currentFormVal;
+            }
+        }
+
+        function updateSupplierDropdowns() {
+            const formSup = document.getElementById('comp-supplier');
+            let currentSupVal = formSup.value;
+
+            formSup.innerHTML = '';
+            componentSuppliers.forEach(sup => {
+                formSup.innerHTML += `<option value="${sup}">${sup}</option>`;
+            });
+            formSup.innerHTML += `<option value="__add_new__">+ Add New Supplier...</option>`;
+            if(componentSuppliers.includes(currentSupVal)) {
+                formSup.value = currentSupVal;
+            }
+        }
+
+        document.getElementById('comp-category').addEventListener('change', function() {
+            if(this.value === '__add_new__') {
+                const newCat = prompt("Enter new category name:");
+                if(newCat && newCat.trim() !== "") {
+                    const trimmed = newCat.trim();
+                    if(!componentCategories.includes(trimmed)) {
+                        componentCategories.push(trimmed);
+                    }
+                    updateCategoryDropdowns();
+                    this.value = trimmed;
+                } else {
+                    updateCategoryDropdowns();
+                }
+            }
+        });
+
+        document.getElementById('comp-supplier').addEventListener('change', function() {
+            if(this.value === '__add_new__') {
+                const newSup = prompt("Enter new supplier name:");
+                if(newSup && newSup.trim() !== "") {
+                    const trimmed = newSup.trim();
+                    if(!componentSuppliers.includes(trimmed)) {
+                        componentSuppliers.push(trimmed);
+                    }
+                    updateSupplierDropdowns();
+                    this.value = trimmed;
+                } else {
+                    updateSupplierDropdowns();
+                }
+            }
+        });
+
+        function manageCategories() {
+            let catListStr = componentCategories.join('\n');
+            let action = prompt("Current Categories:\n" + catListStr + "\n\nType 'add' to add a category, 'edit' to rename, or 'delete' to remove one:");
+            if(!action) return;
+            
+            action = action.toLowerCase().trim();
+            if(action === 'add') {
+                let added = prompt("Enter name of new category:");
+                if(added && added.trim() !== "") {
+                    if(!componentCategories.includes(added.trim())) {
+                        componentCategories.push(added.trim());
+                        alert("Category added successfully!");
+                        updateCategoryDropdowns();
+                    }
+                }
+            } else if(action === 'edit') {
+                let target = prompt("Enter exact name of category to rename:");
+                if(target && componentCategories.includes(target.trim())) {
+                    let replacement = prompt("Enter new name for '" + target.trim() + "':");
+                    if(replacement && replacement.trim() !== "") {
+                        let idx = componentCategories.indexOf(target.trim());
+                        componentCategories[idx] = replacement.trim();
+                        componentsList.forEach(c => {
+                            if(c.category === target.trim()) c.category = replacement.trim();
+                        });
+                        alert("Category renamed successfully!");
+                        updateCategoryDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Category not found.");
+                }
+            } else if(action === 'delete') {
+                let target = prompt("Enter exact name of category to delete:");
+                if(target && componentCategories.includes(target.trim())) {
+                    if(confirm("Are you sure you want to delete category '" + target.trim() + "'?")) {
+                        componentCategories = componentCategories.filter(c => c !== target.trim());
+                        alert("Category deleted.");
+                        updateCategoryDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Category not found.");
+                }
+            }
+        }
+
+        function manageSuppliers() {
+            let supListStr = componentSuppliers.join('\n');
+            let action = prompt("Current Suppliers:\n" + supListStr + "\n\nType 'add' to add a supplier, 'edit' to rename, or 'delete' to remove one:");
+            if(!action) return;
+
+            action = action.toLowerCase().trim();
+            if(action === 'add') {
+                let added = prompt("Enter name of new supplier:");
+                if(added && added.trim() !== "") {
+                    if(!componentSuppliers.includes(added.trim())) {
+                        componentSuppliers.push(added.trim());
+                        alert("Supplier added successfully!");
+                        updateSupplierDropdowns();
+                    }
+                }
+            } else if(action === 'edit') {
+                let target = prompt("Enter exact name of supplier to rename:");
+                if(target && componentSuppliers.includes(target.trim())) {
+                    let replacement = prompt("Enter new name for '" + target.trim() + "':");
+                    if(replacement && replacement.trim() !== "") {
+                        let idx = componentSuppliers.indexOf(target.trim());
+                        componentSuppliers[idx] = replacement.trim();
+                        componentsList.forEach(c => {
+                            if(c.supplier === target.trim()) c.supplier = replacement.trim();
+                        });
+                        alert("Supplier renamed successfully!");
+                        updateSupplierDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Supplier not found.");
+                }
+            } else if(action === 'delete') {
+                let target = prompt("Enter exact name of supplier to delete:");
+                if(target && componentSuppliers.includes(target.trim())) {
+                    if(confirm("Are you sure you want to delete supplier '" + target.trim() + "'?")) {
+                        componentSuppliers = componentSuppliers.filter(s => s !== target.trim());
+                        alert("Supplier deleted.");
+                        updateSupplierDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Supplier not found.");
+                }
+            }
+        }
+
+        function openComponentModal(id = null) {
+            updateCategoryDropdowns();
+            updateSupplierDropdowns();
+            const modal = document.getElementById('component-modal');
+            const title = document.getElementById('modal-title');
+
+            if(id) {
+                title.innerText = 'Edit Component';
+                const comp = componentsList.find(c => c.id === id);
+                if(comp) {
+                    document.getElementById('comp-edit-id').value = comp.id;
+                    document.getElementById('comp-name').value = comp.name;
+                    document.getElementById('comp-qty').value = comp.qty;
+                    document.getElementById('comp-cost').value = comp.cost;
+                    document.getElementById('comp-category').value = comp.category;
+                    document.getElementById('comp-supplier').value = comp.supplier || componentSuppliers[0];
+                    document.getElementById('comp-notes').value = comp.notes || '';
+                }
+            } else {
+                title.innerText = 'Add Component';
+                document.getElementById('component-form').reset();
+                document.getElementById('comp-edit-id').value = '';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeComponentModal() {
+            document.getElementById('component-modal').classList.add('hidden');
+        }
+
+        function handleComponentSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('comp-edit-id').value;
+            const name = document.getElementById('comp-name').value.trim();
+            const qty = parseInt(document.getElementById('comp-qty').value) || 0;
+            const cost = parseFloat(document.getElementById('comp-cost').value) || 0;
+            const category = document.getElementById('comp-category').value;
+            const supplier = document.getElementById('comp-supplier').value;
+            const notes = document.getElementById('comp-notes').value.trim();
+
+            if(id) {
+                const comp = componentsList.find(c => c.id == id);
+                if(comp) {
+                    comp.name = name;
+                    comp.qty = qty;
+                    comp.cost = cost;
+                    comp.category = category;
+                    comp.supplier = supplier;
+                    comp.notes = notes;
+                }
+            } else {
+                const newComp = {
+                    id: Date.now(),
+                    name,
+                    qty,
+                    cost,
+                    category,
+                    supplier,
+                    notes
+                };
+                componentsList.push(newComp);
+            }
+
+            closeComponentModal();
+            renderComponents();
+        }
+
+        function deleteComponent(id) {
+            if(confirm("Are you sure you want to delete this component?")) {
+                componentsList = componentsList.filter(c => c.id !== id);
+                renderComponents();
+            }
+        }
+
+        function batchDeleteComponents() {
+            const checkedBoxes = document.querySelectorAll('.comp-checkbox:checked');
+            if(checkedBoxes.length === 0) return;
+
+            if(confirm(`Are you sure you want to delete ${checkedBoxes.length} selected components?`)) {
+                const idsToDelete = Array.from(checkedBoxes).map(cb => parseInt(cb.dataset.id));
+                componentsList = componentsList.filter(c => !idsToDelete.includes(c.id));
+                renderComponents();
+            }
+        }
+
+        function renderComponents() {
+            updateCategoryDropdowns();
+            updateSupplierDropdowns();
+            const container = document.getElementById('components-list');
+            const searchVal = document.getElementById('comp-search').value.toLowerCase();
+            const catFilter = document.getElementById('comp-filter-cat').value;
+            const sortVal = document.getElementById('comp-sort').value;
+
+            // Filter
+            let filtered = componentsList.filter(c => {
+                const matchesSearch = c.name.toLowerCase().includes(searchVal) || (c.supplier && c.supplier.toLowerCase().includes(searchVal));
+                const matchesCat = catFilter === "" || c.category === catFilter;
+                return matchesSearch && matchesCat;
+            });
+
+            // Sort
+            filtered.sort((a, b) => {
+                if(sortVal === 'name_asc') return a.name.localeCompare(b.name);
+                if(sortVal === 'name_desc') return b.name.localeCompare(a.name);
+                if(sortVal === 'cost_high') return b.cost - a.cost;
+                if(sortVal === 'cost_low') return a.cost - b.cost;
+                if(sortVal === 'qty_high') return b.qty - a.qty;
+                if(sortVal === 'qty_low') return a.qty - b.qty;
+                if(sortVal === 'stock_out') {
+                    if(a.qty === 0 && b.qty > 0) return -1;
+                    if(a.qty > 0 && b.qty === 0) return 1;
+                    return a.name.localeCompare(b.name);
+                }
+                return 0;
+            });
+
+            container.innerHTML = '';
+            if(filtered.length === 0) {
+                container.innerHTML = '<div class="text-center py-6 opacity-60 text-xs">No components found.</div>';
+                document.getElementById('batch-delete-btn').classList.add('hidden');
+                return;
+            }
+
+            filtered.forEach(c => {
+                const isOutOfStock = c.qty === 0;
+                const card = document.createElement('div');
+                card.className = "custom-card p-4 rounded-2xl border shadow-sm flex items-center justify-between";
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 flex-1 min-w-0 pr-2">
+                        <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-5 h-5 rounded text-brand accent-brand cursor-pointer shrink-0">
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <h4 class="font-bold text-sm truncate">${c.name}</h4>
+                            <div class="flex items-center space-x-2 text-xs opacity-70">
+                                <span>Supplier: <strong>${c.supplier || 'N/A'}</strong></span>
+                                <span>•</span>
+                                <span>Cost: <strong>$${c.cost.toFixed(2)}</strong></span>
+                            </div>
+                            <div>
+                                <span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-brand-light text-brand">${c.category}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 shrink-0 pl-2 border-l">
+                        <div class="text-right">
+                            <span class="block text-sm font-extrabold whitespace-nowrap">${c.qty} units</span>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full inline-block mt-0.5 whitespace-nowrap ${isOutOfStock ? 'bg-red-50 text-red-600 dark:bg-red-950/50' : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50'}">
+                                ${isOutOfStock ? 'Out of Stock' : 'In Stock'}
+                            </span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <button onclick="openComponentModal(${c.id})" class="p-2 opacity-70 hover:opacity-100 transition text-sm"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteComponent(${c.id})" class="p-2 text-red-500 hover:opacity-85 transition text-sm"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            checkBatchSelection();
+        }
+
+        function checkBatchSelection() {
+            const checkedCount = document.querySelectorAll('.comp-checkbox:checked').length;
+            const batchBtn = document.getElementById('batch-delete-btn');
+            if(checkedCount > 0) {
+                batchBtn.classList.remove('hidden');
+            } else {
+                batchBtn.classList.add('hidden');
+            }
+        }
+
+        // Initialize default theme, tracking list, and components
+        previewTheme('blush');
+        renderTrackingPlatforms();
+        renderComponents();
+    </script>
+</body>
+</html>
