@@ -111,12 +111,12 @@
             <form id="setup-form" onsubmit="handleSetupSubmit(event)" class="space-y-4 pb-12">
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Business Name</label>
-                    <input type="text" id="setup-bus-name" placeholder="e.g. Grimms Reselling" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
+                    <input type="text" id="setup-bus-name" placeholder="e.g. Grimms Reselling" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Primary Industry</label>
-                    <input type="text" id="setup-industry" placeholder="e.g. E-Commerce & Vintage Collectibles" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
+                    <input type="text" id="setup-industry" placeholder="e.g. E-Commerce & Vintage Collectibles" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
                 </div>
 
                 <div>
@@ -181,11 +181,11 @@
                     <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Active Sales Platforms</label>
                     <div id="platforms-container" class="space-y-2 mb-2">
                         <div class="flex items-center space-x-2">
-                            <input type="text" value="Vinted" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card">
+                            <input type="text" placeholder="e.g. Vinted" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
                             <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <input type="text" value="eBay" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card">
+                            <input type="text" placeholder="e.g. eBay" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
                             <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
@@ -196,7 +196,7 @@
 
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Initial Monthly Revenue Goal</label>
-                    <input type="number" id="setup-goal" placeholder="e.g. 6000" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
+                    <input type="number" id="setup-goal" placeholder="e.g. 6000" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
                 </div>
 
                 <div class="pt-4">
@@ -454,7 +454,7 @@
                         <div class="flex justify-between items-center">
                             <div>
                                 <h3 class="font-bold text-base">Raw Supplies & Parts</h3>
-                                <p class="text-xs opacity-70">Packaging & jewelry inventories (8 per view)</p>
+                                <p class="text-xs opacity-70">Max 8 components per page</p>
                             </div>
                             <button onclick="openComponentModal()" class="px-4 py-2.5 bg-brand text-white font-semibold rounded-xl text-xs shadow-md hover:opacity-90 transition flex items-center space-x-1.5 shrink-0">
                                 <i class="fa-solid fa-plus text-xs"></i>
@@ -462,20 +462,20 @@
                             </button>
                         </div>
 
-                        <!-- Management Action Buttons Bar -->
+                        <!-- Management Buttons Bar -->
                         <div class="flex space-x-2">
-                            <button onclick="manageCategories()" class="flex-1 py-2 bg-brand-light text-brand text-xs font-semibold rounded-xl border border-brand/20 hover:opacity-80 transition">
-                                <i class="fa-solid fa-folder-plus mr-1"></i> Manage Categories
+                            <button onclick="manageCategories()" class="flex-1 py-2.5 bg-brand-light text-brand text-xs font-semibold rounded-xl border border-brand/20 hover:opacity-80 transition flex items-center justify-center space-x-1.5">
+                                <i class="fa-solid fa-folder-gear"></i> <span>Manage Categories</span>
                             </button>
-                            <button onclick="manageSuppliers()" class="flex-1 py-2 bg-brand-light text-brand text-xs font-semibold rounded-xl border border-brand/20 hover:opacity-80 transition">
-                                <i class="fa-solid fa-truck-field mr-1"></i> Manage Suppliers
+                            <button onclick="manageSuppliers()" class="flex-1 py-2.5 bg-brand-light text-brand text-xs font-semibold rounded-xl border border-brand/20 hover:opacity-80 transition flex items-center justify-center space-x-1.5">
+                                <i class="fa-solid fa-truck-field"></i> <span>Manage Suppliers</span>
                             </button>
                         </div>
 
                         <div class="flex space-x-2">
                             <div class="relative flex-1">
                                 <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-xs opacity-40"></i>
-                                <input type="text" id="comp-search" oninput="renderComponents()" placeholder="Search components or supplier..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border text-xs custom-card outline-none">
+                                <input type="text" id="comp-search" oninput="currentComponentPage=1; renderComponents()" placeholder="Search components or supplier..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border text-xs custom-card outline-none">
                             </div>
                             <button id="batch-delete-btn" onclick="batchDeleteComponents()" class="hidden px-4 py-2.5 bg-red-500 text-white font-semibold rounded-xl text-xs hover:bg-red-600 transition shrink-0 flex items-center space-x-1">
                                 <i class="fa-solid fa-trash-can"></i>
@@ -484,10 +484,10 @@
                         </div>
 
                         <div class="grid grid-cols-2 gap-2.5 text-xs">
-                            <select id="comp-filter-cat" onchange="renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
+                            <select id="comp-filter-cat" onchange="currentComponentPage=1; renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
                                 <option value="">All Categories</option>
                             </select>
-                            <select id="comp-sort" onchange="renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
+                            <select id="comp-sort" onchange="currentComponentPage=1; renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
                                 <option value="name_asc">Sort: A - Z</option>
                                 <option value="name_desc">Sort: Z - A</option>
                                 <option value="cost_high">Cost: High to Low</option>
@@ -498,7 +498,10 @@
                             </select>
                         </div>
 
-                        <div id="components-list" class="space-y-3.5 pt-1"></div>
+                        <div id="components-list" class="space-y-3 pt-1"></div>
+
+                        <!-- Pagination Controls -->
+                        <div id="components-pagination" class="flex justify-between items-center pt-2 text-xs"></div>
                     </div>
                 </div>
 
@@ -732,6 +735,9 @@
         let componentCategories = ['Packaging', 'Jewelry Supplies', 'Stickers & Labels'];
         let componentSuppliers = ['Uline', 'AliExpress', 'Amazon', 'Rio Grande'];
 
+        let currentComponentPage = 1;
+        const componentsPerPage = 8;
+
         const themes = {
             blush: { primary: '#d97793', light: '#fdf2f4', dark: '#b35470', accent: '#f4aabf', appBg: '#f7f3f4', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
             lavender: { primary: '#7c3aed', light: '#f5f3ff', dark: '#5b21b6', accent: '#c4b5fd', appBg: '#faf8fc', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
@@ -834,14 +840,16 @@
             const div = document.createElement('div');
             div.className = "flex items-center space-x-2";
             div.innerHTML = `
-                <input type="text" placeholder="Platform name (e.g. Depop)" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card">
+                <input type="text" placeholder="e.g. Depop" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
                 <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
             `;
             container.appendChild(div);
         }
 
         function removeRow(btn) {
-            btn.parentElement.remove();
+            if (confirm("Are you sure you want to remove this platform?")) {
+                btn.parentElement.remove();
+            }
         }
 
         function handleSetupSubmit(e) {
@@ -1050,19 +1058,23 @@
                         componentCategories.push(trimmed);
                         alert("Category added successfully!");
                         updateCategoryDropdowns();
+                        renderComponents();
+                    } else {
+                        alert("Category already exists.");
                     }
                 }
             } else if(action === 'edit') {
-                let target = prompt("Enter exact name of category to rename:");
+                let target = prompt("Enter exact name of category to edit/rename:");
                 if(target && componentCategories.includes(target.trim())) {
                     let replacement = prompt("Enter new name for '" + target.trim() + "':");
                     if(replacement && replacement.trim() !== "") {
+                        let trimmedNew = replacement.trim();
                         let idx = componentCategories.indexOf(target.trim());
-                        componentCategories[idx] = replacement.trim();
+                        componentCategories[idx] = trimmedNew;
                         componentsList.forEach(c => {
-                            if(c.category === target.trim()) c.category = replacement.trim();
+                            if(c.category === target.trim()) c.category = trimmedNew;
                         });
-                        alert("Category renamed successfully!");
+                        alert("Category updated successfully and components updated!");
                         updateCategoryDropdowns();
                         renderComponents();
                     }
@@ -1074,7 +1086,7 @@
                 if(target && componentCategories.includes(target.trim())) {
                     if(confirm("Are you sure you want to delete category '" + target.trim() + "'?")) {
                         componentCategories = componentCategories.filter(c => c !== target.trim());
-                        alert("Category deleted.");
+                        alert("Category deleted successfully.");
                         updateCategoryDropdowns();
                         renderComponents();
                     }
@@ -1098,19 +1110,23 @@
                         componentSuppliers.push(trimmed);
                         alert("Supplier added successfully!");
                         updateSupplierDropdowns();
+                        renderComponents();
+                    } else {
+                        alert("Supplier already exists.");
                     }
                 }
             } else if(action === 'edit') {
-                let target = prompt("Enter exact name of supplier to rename:");
+                let target = prompt("Enter exact name of supplier to edit/rename:");
                 if(target && componentSuppliers.includes(target.trim())) {
                     let replacement = prompt("Enter new name for '" + target.trim() + "':");
                     if(replacement && replacement.trim() !== "") {
+                        let trimmedNew = replacement.trim();
                         let idx = componentSuppliers.indexOf(target.trim());
-                        componentSuppliers[idx] = replacement.trim();
+                        componentSuppliers[idx] = trimmedNew;
                         componentsList.forEach(c => {
-                            if(c.supplier === target.trim()) c.supplier = replacement.trim();
+                            if(c.supplier === target.trim()) c.supplier = trimmedNew;
                         });
-                        alert("Supplier renamed successfully!");
+                        alert("Supplier updated successfully and components updated!");
                         updateSupplierDropdowns();
                         renderComponents();
                     }
@@ -1122,7 +1138,7 @@
                 if(target && componentSuppliers.includes(target.trim())) {
                     if(confirm("Are you sure you want to delete supplier '" + target.trim() + "'?")) {
                         componentSuppliers = componentSuppliers.filter(s => s !== target.trim());
-                        alert("Supplier deleted.");
+                        alert("Supplier deleted successfully.");
                         updateSupplierDropdowns();
                         renderComponents();
                     }
@@ -1212,6 +1228,7 @@
             updateCategoryDropdowns();
             updateSupplierDropdowns();
             const container = document.getElementById('components-list');
+            const paginationContainer = document.getElementById('components-pagination');
             const searchVal = document.getElementById('comp-search').value.toLowerCase();
             const catFilter = document.getElementById('comp-filter-cat').value;
             const sortVal = document.getElementById('comp-sort').value;
@@ -1237,49 +1254,73 @@
                 return 0;
             });
 
+            const totalPages = Math.ceil(filtered.length / componentsPerPage) || 1;
+            if (currentComponentPage > totalPages) currentComponentPage = totalPages;
+            if (currentComponentPage < 1) currentComponentPage = 1;
+
+            const startIndex = (currentComponentPage - 1) * componentsPerPage;
+            const paginatedItems = filtered.slice(startIndex, startIndex + componentsPerPage);
+
             container.innerHTML = '';
-            if(filtered.length === 0) {
+            if(paginatedItems.length === 0) {
                 container.innerHTML = '<div class="text-center py-8 opacity-60 text-xs">No components found.</div>';
+                paginationContainer.innerHTML = '';
                 document.getElementById('batch-delete-btn').classList.add('hidden');
                 return;
             }
 
-            filtered.forEach(c => {
+            paginatedItems.forEach(c => {
                 const isOutOfStock = c.qty === 0;
                 const card = document.createElement('div');
-                card.className = "custom-card p-4 rounded-2xl border shadow-sm flex items-center justify-between gap-3";
+                card.className = "custom-card p-3.5 rounded-2xl border shadow-sm flex items-center justify-between gap-3";
                 card.innerHTML = `
                     <div class="flex items-center space-x-3 flex-1 min-w-0">
-                        <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-5 h-5 rounded text-brand accent-brand cursor-pointer shrink-0">
-                        <div class="flex-1 min-w-0 space-y-1">
+                        <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-4 h-4 rounded text-brand accent-brand cursor-pointer shrink-0">
+                        <div class="flex-1 min-w-0 space-y-0.5">
                             <h4 class="font-bold text-sm truncate">${c.name}</h4>
-                            <div class="flex items-center space-x-2 text-xs opacity-70">
+                            <div class="flex items-center space-x-2 text-[11px] opacity-70">
                                 <span>Supplier: <strong>${c.supplier || 'N/A'}</strong></span>
                                 <span>•</span>
                                 <span>Cost: <strong>$${c.cost.toFixed(2)}</strong></span>
                             </div>
                             <div>
-                                <span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-brand-light text-brand">${c.category}</span>
+                                <span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-brand-light text-brand mt-0.5">${c.category}</span>
                             </div>
                         </div>
                     </div>
                     <div class="flex items-center space-x-3 shrink-0 pl-2 border-l">
                         <div class="text-right">
-                            <span class="block text-sm font-extrabold whitespace-nowrap">${c.qty} units</span>
+                            <span class="block text-xs font-extrabold whitespace-nowrap">${c.qty} units</span>
                             <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full inline-block mt-0.5 whitespace-nowrap ${isOutOfStock ? 'bg-red-50 text-red-600 dark:bg-red-950/50' : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50'}">
                                 ${isOutOfStock ? 'Out of Stock' : 'In Stock'}
                             </span>
                         </div>
-                        <div class="flex items-center space-x-2">
-                            <button onclick="openComponentModal(${c.id})" class="p-2.5 text-brand bg-brand/10 hover:bg-brand/20 rounded-xl transition text-sm" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                            <button onclick="deleteComponent(${c.id})" class="p-2.5 text-red-500 bg-red-50 dark:bg-red-950/40 hover:bg-red-100 rounded-xl transition text-sm" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="openComponentModal(${c.id})" class="w-8 h-8 rounded-xl bg-brand/10 text-brand hover:bg-brand/20 transition flex items-center justify-center text-xs" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteComponent(${c.id})" class="w-8 h-8 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-500 hover:bg-red-100 transition flex items-center justify-center text-xs" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
                 `;
                 container.appendChild(card);
             });
 
+            // Render pagination controls
+            paginationContainer.innerHTML = `
+                <button onclick="changeComponentPage(-1)" ${currentComponentPage === 1 ? 'disabled class="opacity-30 cursor-not-allowed px-3 py-1.5 rounded-lg border custom-card"' : 'class="px-3 py-1.5 rounded-lg border custom-card hover:border-brand transition"'}>
+                    <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+                </button>
+                <span class="opacity-70 font-medium">Page ${currentComponentPage} of ${totalPages}</span>
+                <button onclick="changeComponentPage(1)" ${currentComponentPage === totalPages ? 'disabled class="opacity-30 cursor-not-allowed px-3 py-1.5 rounded-lg border custom-card"' : 'class="px-3 py-1.5 rounded-lg border custom-card hover:border-brand transition"'}>
+                    Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                </button>
+            `;
+
             checkBatchSelection();
+        }
+
+        function changeComponentPage(direction) {
+            currentComponentPage += direction;
+            renderComponents();
         }
 
         function checkBatchSelection() {
