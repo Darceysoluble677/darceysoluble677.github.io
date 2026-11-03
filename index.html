@@ -25,7 +25,7 @@
     </script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts for Dynamic Font Switching (Expanded to 10 Options) -->
+    <!-- Google Fonts for Dynamic Font Switching (10 Options) -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -166,7 +166,7 @@
                     </select>
                 </div>
 
-                <!-- Expanded Font Selector -->
+                <!-- Font Selector -->
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">App Font Family</label>
                     <select id="setup-font" onchange="previewFont(this.value)" class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
@@ -242,8 +242,7 @@
             <!-- TOP APP HEADER -->
             <div class="custom-card px-6 pt-4 pb-3 flex justify-between items-center border-b">
                 <div>
-                    <h3 class="text-xs font-semibold opacity-70" id="greeting-time">Good morning,</h3>
-                    <h1 class="text-lg font-bold" id="header-user-name">Grimms Reselling ♡</h1>
+                    <h1 class="text-base font-bold" id="header-greeting">Welcome back, Grimms Reselling!</h1>
                 </div>
                 <div class="flex items-center space-x-3">
                     <!-- Timeframe Picker Filter -->
@@ -319,7 +318,7 @@
                         </div>
                     </div>
 
-                    <!-- Order Fulfillment Pipeline Card (Clean Refined Typography & Spacing for Long Text) -->
+                    <!-- Order Fulfillment Pipeline Card -->
                     <div class="custom-card p-4 rounded-3xl shadow-sm border">
                         <h4 class="text-xs font-bold uppercase tracking-wider opacity-70 mb-3">Order Fulfillment Pipeline</h4>
                         <div class="grid grid-cols-4 gap-2 text-center mb-2">
@@ -567,9 +566,15 @@
         let userExpenses = ['Shipping Supplies', 'Platform Fees', 'Inventory Acquisition'];
         let currentThemeKey = 'blush';
 
-        // 22 Carefully balanced Theme definitions (11 Light, 11 Dark with elevated card contrast)
+        // Saved settings state to track unsaved edits in settings page
+        let savedSettingsState = {
+            name: 'Grimms Reselling',
+            currency: 'USD ($)',
+            theme: 'blush',
+            font: "'Plus Jakarta Sans', sans-serif"
+        };
+
         const themes = {
-            // Light Themes
             blush: { primary: '#d97793', light: '#fdf2f4', dark: '#b35470', accent: '#f4aabf', appBg: '#f7f3f4', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
             lavender: { primary: '#7c3aed', light: '#f5f3ff', dark: '#5b21b6', accent: '#c4b5fd', appBg: '#faf8fc', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
             peach: { primary: '#ea580c', light: '#fff7ed', dark: '#9a3412', accent: '#fed7aa', appBg: '#fffaf5', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
@@ -581,8 +586,6 @@
             cottoncandy: { primary: '#0284c7', light: '#f0f9ff', dark: '#0369a1', accent: '#bae6fd', appBg: '#f5f9fc', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
             emerald: { primary: '#047857', light: '#ecfdf5', dark: '#064e3b', accent: '#34d399', appBg: '#f4f7f5', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
             ruby_light: { primary: '#e11d48', light: '#fff1f2', dark: '#9f1239', accent: '#fecdd3', appBg: '#fff5f6', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
-
-            // Dark Themes (Sophisticated, elevated card backgrounds, readable soft text)
             midnight: { primary: '#38bdf8', light: '#1e293b', dark: '#0284c7', accent: '#1e2230', appBg: '#12151e', cardBg: '#1c2130', text: '#f1f5f9', subText: '#94a3b8', border: '#2a324a' },
             rosewood: { primary: '#f43f5e', light: '#4c1d25', dark: '#e11d48', accent: '#2c151a', appBg: '#151012', cardBg: '#21181c', text: '#fce7f0', subText: '#d1a3b8', border: '#3d262e' },
             lavender_noir: { primary: '#a78bfa', light: '#2e1065', dark: '#8b5cf6', accent: '#231838', appBg: '#13111c', cardBg: '#1d1929', text: '#f5f3ff', subText: '#b8a9d4', border: '#312847' },
@@ -719,7 +722,14 @@
                 if(input.value.trim() !== "") userExpenses.push(input.value.trim());
             });
 
-            document.getElementById('header-user-name').innerText = finalBusName + " ♡";
+            savedSettingsState = {
+                name: finalBusName,
+                currency: currency,
+                theme: selectedTheme,
+                font: selectedFont
+            };
+
+            document.getElementById('header-greeting').innerText = `Welcome back, ${finalBusName}!`;
             document.getElementById('more-bus-name').innerText = finalBusName;
             document.getElementById('settings-bus-name').value = finalBusName;
             document.getElementById('settings-currency').value = currency;
@@ -763,6 +773,34 @@
         }
 
         function switchTab(tabName) {
+            // Check if leaving settings with unsaved changes
+            const currentSettingsTab = document.getElementById('tab-settings-content');
+            const isLeavingSettings = !currentSettingsTab.classList.contains('hidden') && tabName !== 'settings';
+            
+            if (isLeavingSettings) {
+                const currentName = document.getElementById('settings-bus-name').value;
+                const currentCurrency = document.getElementById('settings-currency').value;
+                const currentTheme = document.getElementById('settings-theme').value;
+                const currentFont = document.getElementById('settings-font').value;
+
+                if (currentName !== savedSettingsState.name || 
+                    currentCurrency !== savedSettingsState.currency || 
+                    currentTheme !== savedSettingsState.theme || 
+                    currentFont !== savedSettingsState.font) {
+                    
+                    const discard = confirm("Are you sure you want to discard your unsaved changes?");
+                    if (!discard) {
+                        return; // Stay on settings
+                    } else {
+                        // Revert inputs to saved state
+                        document.getElementById('settings-bus-name').value = savedSettingsState.name;
+                        document.getElementById('settings-currency').value = savedSettingsState.currency;
+                        previewTheme(savedSettingsState.theme);
+                        previewFont(savedSettingsState.font);
+                    }
+                }
+            }
+
             const tabs = document.querySelectorAll('.app-tab');
             tabs.forEach(t => t.classList.add('hidden'));
 
@@ -800,12 +838,21 @@
 
         function saveSettingsChanges() {
             const newName = document.getElementById('settings-bus-name').value;
+            const currency = document.getElementById('settings-currency').value;
             const selectedTheme = document.getElementById('settings-theme').value;
             const selectedFont = document.getElementById('settings-font').value;
             
             previewTheme(selectedTheme);
             previewFont(selectedFont);
-            document.getElementById('header-user-name').innerText = newName + " ♡";
+
+            savedSettingsState = {
+                name: newName,
+                currency: currency,
+                theme: selectedTheme,
+                font: selectedFont
+            };
+
+            document.getElementById('header-greeting').innerText = `Welcome back, ${newName}!`;
             document.getElementById('more-bus-name').innerText = newName;
             
             alert('Settings, theme, and font updated successfully!');
