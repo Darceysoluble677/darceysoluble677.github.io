@@ -239,8 +239,8 @@
         <!-- ================= VIEW 3: MAIN APP INTERFACE ================= -->
         <div id="screen-app" class="hidden flex-col flex-1 overflow-hidden relative">
             
-            <!-- TOP APP HEADER -->
-            <div class="custom-card px-6 pt-4 pb-3 flex justify-between items-center border-b">
+            <!-- TOP APP HEADER (HOMEPAGE ONLY HEADER) -->
+            <div id="home-top-header" class="custom-card px-6 pt-4 pb-3 flex justify-between items-center border-b">
                 <div>
                     <h1 class="text-base font-bold" id="header-greeting">Welcome back, Grimms Reselling!</h1>
                 </div>
@@ -260,6 +260,20 @@
                         </div>
                         <span id="notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
                     </div>
+                </div>
+            </div>
+
+            <!-- COMPONENTS PAGE CUSTOM HEADER (Hidden by default, shown only on components view) -->
+            <div id="components-top-header" class="hidden custom-card px-6 pt-4 pb-3 flex justify-between items-center border-b">
+                <button onclick="switchTab('inventory')" class="w-9 h-9 rounded-full opacity-80 bg-neutral-200/40 dark:bg-neutral-800 flex items-center justify-center hover:opacity-100 transition text-xs">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <h1 class="text-sm font-bold tracking-tight">Components & Supplies</h1>
+                <div class="relative cursor-pointer" onclick="toggleComponentNotification()">
+                    <div class="w-9 h-9 rounded-full opacity-80 bg-neutral-200/40 dark:bg-neutral-800 flex items-center justify-center hover:opacity-100 transition">
+                        <i class="fa-regular fa-bell text-sm"></i>
+                    </div>
+                    <span id="comp-notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
                 </div>
             </div>
 
@@ -466,37 +480,37 @@
                     </div>
                 </div>
 
-                <!-- TAB 4: COMPONENTS TRACKER -->
+                <!-- TAB 4: COMPONENTS TRACKER (Clean, uncluttered layout with zero unwanted text wrapping) -->
                 <div id="tab-components-content" class="app-tab hidden space-y-4">
-                    <div class="custom-card p-5 rounded-3xl shadow-sm border space-y-4">
+                    <div class="custom-card p-4 rounded-3xl shadow-sm border space-y-3">
                         <div class="flex justify-between items-center">
                             <div>
-                                <h3 class="font-bold text-base">Components & Supplies</h3>
-                                <p class="text-xs opacity-70">Track raw materials, packaging & jewelry parts</p>
+                                <h3 class="font-bold text-sm whitespace-nowrap">Raw Supplies & Parts</h3>
+                                <p class="text-[11px] opacity-70 whitespace-nowrap">Packaging & jewelry inventories</p>
                             </div>
-                            <button onclick="openComponentModal()" class="px-3.5 py-2 bg-brand text-white font-semibold rounded-xl text-xs shadow-md hover:opacity-90 transition flex items-center space-x-1.5">
+                            <button onclick="openComponentModal()" class="px-3 py-2 bg-brand text-white font-semibold rounded-xl text-xs shadow-md hover:opacity-90 transition flex items-center space-x-1 shrink-0">
                                 <i class="fa-solid fa-plus text-[10px]"></i>
-                                <span>Add Component</span>
+                                <span>Add New</span>
                             </button>
                         </div>
 
                         <!-- Search & Batch Bar -->
                         <div class="flex space-x-2">
                             <div class="relative flex-1">
-                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-xs opacity-40"></i>
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs opacity-40"></i>
                                 <input type="text" id="comp-search" oninput="renderComponents()" placeholder="Search components or supplier..." class="w-full pl-8 pr-3 py-2 rounded-xl border text-xs custom-card outline-none">
                             </div>
-                            <button id="batch-delete-btn" onclick="batchDeleteComponents()" class="hidden px-3 py-2 bg-red-500 text-white font-semibold rounded-xl text-xs hover:bg-red-600 transition">
-                                <i class="fa-solid fa-trash-can mr-1"></i> Delete Selected
+                            <button id="batch-delete-btn" onclick="batchDeleteComponents()" class="hidden px-3 py-2 bg-red-500 text-white font-semibold rounded-xl text-xs hover:bg-red-600 transition shrink-0">
+                                <i class="fa-solid fa-trash-can mr-1"></i> Delete
                             </button>
                         </div>
 
                         <!-- Filters & Sorting Row -->
                         <div class="grid grid-cols-2 gap-2 text-xs">
-                            <select id="comp-filter-cat" onchange="renderComponents()" class="p-2 rounded-xl border custom-card outline-none font-medium">
+                            <select id="comp-filter-cat" onchange="renderComponents()" class="p-2 rounded-xl border custom-card outline-none font-medium truncate">
                                 <option value="">All Categories</option>
                             </select>
-                            <select id="comp-sort" onchange="renderComponents()" class="p-2 rounded-xl border custom-card outline-none font-medium">
+                            <select id="comp-sort" onchange="renderComponents()" class="p-2 rounded-xl border custom-card outline-none font-medium truncate">
                                 <option value="name_asc">Sort: A - Z</option>
                                 <option value="name_desc">Sort: Z - A</option>
                                 <option value="cost_high">Cost: High to Low</option>
@@ -508,7 +522,7 @@
                         </div>
 
                         <!-- Components List Container -->
-                        <div id="components-list" class="space-y-2.5 pt-1"></div>
+                        <div id="components-list" class="space-y-2 pt-1"></div>
                     </div>
                 </div>
 
@@ -622,7 +636,7 @@
 
             </div>
 
-            <!-- BOTTOM HOTBAR NAVIGATION (Added Inventory Hub Button) -->
+            <!-- BOTTOM HOTBAR NAVIGATION -->
             <div class="absolute bottom-0 left-0 right-0 custom-card backdrop-blur-md border-t px-2 py-2 flex justify-between items-center text-[10px] opacity-90 z-40">
                 <button onclick="switchTab('home')" id="nav-btn-home" class="nav-item flex flex-col items-center flex-1 text-brand">
                     <i class="fa-solid fa-house text-base mb-0.5"></i>
@@ -715,6 +729,7 @@
     <!-- JavaScript Application Controller -->
     <script>
         let hasNotification = true;
+        let hasComponentNotification = true;
         let userPlatforms = ['Vinted', 'eBay'];
         let userExpenses = ['Shipping Supplies', 'Platform Fees', 'Inventory Acquisition'];
         let currentThemeKey = 'blush';
@@ -970,6 +985,20 @@
                 targetTab.classList.remove('hidden');
             }
 
+            // Handle Header Switching (Home header vs Components header)
+            const homeHeader = document.getElementById('home-top-header');
+            const compHeader = document.getElementById('components-top-header');
+
+            if (tabName === 'components') {
+                homeHeader.classList.add('hidden');
+                compHeader.classList.remove('hidden');
+                compHeader.classList.add('flex');
+            } else {
+                homeHeader.classList.remove('hidden');
+                homeHeader.classList.add('flex');
+                compHeader.classList.add('hidden');
+            }
+
             const navItems = document.querySelectorAll('.nav-item');
             navItems.forEach(item => {
                 item.classList.remove('text-brand');
@@ -1002,6 +1031,18 @@
             } else {
                 dot.classList.add('hidden');
                 alert('All notifications cleared.');
+            }
+        }
+
+        function toggleComponentNotification() {
+            hasComponentNotification = !hasComponentNotification;
+            const dot = document.getElementById('comp-notif-dot');
+            if (hasComponentNotification) {
+                dot.classList.remove('hidden');
+                alert('Component Alert: Gothic Bat Charms are currently out of stock!');
+            } else {
+                dot.classList.add('hidden');
+                alert('All component alerts cleared.');
             }
         }
 
@@ -1191,7 +1232,7 @@
 
             container.innerHTML = '';
             if(filtered.length === 0) {
-                container.innerHTML = '<div class="text-center py-8 opacity-60 text-xs">No components found.</div>';
+                container.innerHTML = '<div class="text-center py-6 opacity-60 text-xs">No components found.</div>';
                 document.getElementById('batch-delete-btn').classList.add('hidden');
                 return;
             }
@@ -1199,32 +1240,32 @@
             filtered.forEach(c => {
                 const isOutOfStock = c.qty === 0;
                 const card = document.createElement('div');
-                card.className = "custom-card p-3.5 rounded-2xl border shadow-sm flex items-center justify-between";
+                card.className = "custom-card p-3 rounded-2xl border shadow-sm flex items-center justify-between";
                 card.innerHTML = `
-                    <div class="flex items-center space-x-3 flex-1 min-w-0">
-                        <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-4 h-4 rounded text-brand accent-brand cursor-pointer">
+                    <div class="flex items-center space-x-2.5 flex-1 min-w-0 pr-1">
+                        <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-4 h-4 rounded text-brand accent-brand cursor-pointer shrink-0">
                         <div class="flex-1 min-w-0">
-                            <div class="flex items-center space-x-2 mb-0.5">
-                                <span class="font-bold text-sm truncate">${c.name}</span>
-                                <span class="text-[9px] px-2 py-0.5 rounded-full font-medium bg-brand-light text-brand">${c.category}</span>
+                            <div class="flex items-center space-x-1.5 mb-0.5">
+                                <span class="font-bold text-xs truncate">${c.name}</span>
+                                <span class="text-[8px] px-1.5 py-0.5 rounded-full font-medium bg-brand-light text-brand shrink-0">${c.category}</span>
                             </div>
-                            <div class="flex items-center space-x-3 text-[11px] opacity-70">
-                                <span>Supplier: <strong>${c.supplier || 'N/A'}</strong></span>
+                            <div class="flex items-center space-x-2 text-[10px] opacity-70 truncate">
+                                <span class="truncate">Supplier: <strong>${c.supplier || 'N/A'}</strong></span>
                                 <span>•</span>
-                                <span>Unit Cost: <strong>$${c.cost.toFixed(2)}</strong></span>
+                                <span class="shrink-0">Cost: <strong>$${c.cost.toFixed(2)}</strong></span>
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-3 shrink-0 pl-2">
+                    <div class="flex items-center space-x-2 shrink-0 pl-1 border-l">
                         <div class="text-right">
-                            <span class="block text-xs font-extrabold">${c.qty} units</span>
-                            <span class="text-[9px] font-semibold px-2 py-0.5 rounded-full ${isOutOfStock ? 'bg-red-50 text-red-600 dark:bg-red-950/50' : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50'}">
-                                ${isOutOfStock ? 'Out of Stock' : 'In Stock'}
+                            <span class="block text-xs font-extrabold whitespace-nowrap">${c.qty} un</span>
+                            <span class="text-[8px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap ${isOutOfStock ? 'bg-red-50 text-red-600 dark:bg-red-950/50' : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50'}">
+                                ${isOutOfStock ? 'Out' : 'In'}
                             </span>
                         </div>
-                        <div class="flex items-center space-x-1 border-l pl-2">
-                            <button onclick="openComponentModal(${c.id})" class="p-1.5 opacity-70 hover:opacity-100 transition"><i class="fa-solid fa-pen text-xs"></i></button>
-                            <button onclick="deleteComponent(${c.id})" class="p-1.5 text-red-500 hover:opacity-85 transition"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                        <div class="flex items-center space-x-0.5">
+                            <button onclick="openComponentModal(${c.id})" class="p-1 opacity-70 hover:opacity-100 transition"><i class="fa-solid fa-pen text-[10px]"></i></button>
+                            <button onclick="deleteComponent(${c.id})" class="p-1 text-red-500 hover:opacity-85 transition"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
                         </div>
                     </div>
                 `;
