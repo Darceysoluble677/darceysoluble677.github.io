@@ -263,17 +263,17 @@
                 </div>
             </div>
 
-            <!-- COMPONENTS PAGE CUSTOM HEADER (Hidden by default, shown only on components view) -->
-            <div id="components-top-header" class="hidden custom-card px-6 pt-4 pb-3 flex justify-between items-center border-b">
-                <button onclick="switchTab('inventory')" class="w-9 h-9 rounded-full opacity-80 bg-neutral-200/40 dark:bg-neutral-800 flex items-center justify-center hover:opacity-100 transition text-xs">
+            <!-- COMPONENTS PAGE CUSTOM HEADER -->
+            <div id="components-top-header" class="hidden custom-card px-6 py-4 flex justify-between items-center border-b">
+                <button onclick="switchTab('inventory')" class="w-10 h-10 rounded-full opacity-80 bg-neutral-200/40 dark:bg-neutral-800 flex items-center justify-center hover:opacity-100 transition text-sm">
                     <i class="fa-solid fa-arrow-left"></i>
                 </button>
-                <h1 class="text-sm font-bold tracking-tight">Components & Supplies</h1>
+                <h1 class="text-base font-bold tracking-tight">Components & Supplies</h1>
                 <div class="relative cursor-pointer" onclick="toggleComponentNotification()">
-                    <div class="w-9 h-9 rounded-full opacity-80 bg-neutral-200/40 dark:bg-neutral-800 flex items-center justify-center hover:opacity-100 transition">
-                        <i class="fa-regular fa-bell text-sm"></i>
+                    <div class="w-10 h-10 rounded-full opacity-80 bg-neutral-200/40 dark:bg-neutral-800 flex items-center justify-center hover:opacity-100 transition">
+                        <i class="fa-regular fa-bell text-base"></i>
                     </div>
-                    <span id="comp-notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+                    <span id="comp-notif-dot" class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
                 </div>
             </div>
 
@@ -480,16 +480,16 @@
                     </div>
                 </div>
 
-                <!-- TAB 4: COMPONENTS TRACKER (Clean, uncluttered layout with zero unwanted text wrapping) -->
+                <!-- TAB 4: COMPONENTS TRACKER (Spacious, clean layout with large tap buttons) -->
                 <div id="tab-components-content" class="app-tab hidden space-y-4">
-                    <div class="custom-card p-4 rounded-3xl shadow-sm border space-y-3">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border space-y-4">
                         <div class="flex justify-between items-center">
                             <div>
-                                <h3 class="font-bold text-sm whitespace-nowrap">Raw Supplies & Parts</h3>
-                                <p class="text-[11px] opacity-70 whitespace-nowrap">Packaging & jewelry inventories</p>
+                                <h3 class="font-bold text-base">Raw Supplies & Parts</h3>
+                                <p class="text-xs opacity-70">Packaging & jewelry inventories</p>
                             </div>
-                            <button onclick="openComponentModal()" class="px-3 py-2 bg-brand text-white font-semibold rounded-xl text-xs shadow-md hover:opacity-90 transition flex items-center space-x-1 shrink-0">
-                                <i class="fa-solid fa-plus text-[10px]"></i>
+                            <button onclick="openComponentModal()" class="px-4 py-2.5 bg-brand text-white font-semibold rounded-xl text-xs shadow-md hover:opacity-90 transition flex items-center space-x-1.5 shrink-0">
+                                <i class="fa-solid fa-plus text-xs"></i>
                                 <span>Add New</span>
                             </button>
                         </div>
@@ -497,20 +497,21 @@
                         <!-- Search & Batch Bar -->
                         <div class="flex space-x-2">
                             <div class="relative flex-1">
-                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs opacity-40"></i>
-                                <input type="text" id="comp-search" oninput="renderComponents()" placeholder="Search components or supplier..." class="w-full pl-8 pr-3 py-2 rounded-xl border text-xs custom-card outline-none">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-xs opacity-40"></i>
+                                <input type="text" id="comp-search" oninput="renderComponents()" placeholder="Search components or supplier..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border text-xs custom-card outline-none">
                             </div>
-                            <button id="batch-delete-btn" onclick="batchDeleteComponents()" class="hidden px-3 py-2 bg-red-500 text-white font-semibold rounded-xl text-xs hover:bg-red-600 transition shrink-0">
-                                <i class="fa-solid fa-trash-can mr-1"></i> Delete
+                            <button id="batch-delete-btn" onclick="batchDeleteComponents()" class="hidden px-4 py-2.5 bg-red-500 text-white font-semibold rounded-xl text-xs hover:bg-red-600 transition shrink-0 flex items-center space-x-1">
+                                <i class="fa-solid fa-trash-can"></i>
+                                <span>Delete</span>
                             </button>
                         </div>
 
                         <!-- Filters & Sorting Row -->
-                        <div class="grid grid-cols-2 gap-2 text-xs">
-                            <select id="comp-filter-cat" onchange="renderComponents()" class="p-2 rounded-xl border custom-card outline-none font-medium truncate">
+                        <div class="grid grid-cols-2 gap-2.5 text-xs">
+                            <select id="comp-filter-cat" onchange="renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
                                 <option value="">All Categories</option>
                             </select>
-                            <select id="comp-sort" onchange="renderComponents()" class="p-2 rounded-xl border custom-card outline-none font-medium truncate">
+                            <select id="comp-sort" onchange="renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
                                 <option value="name_asc">Sort: A - Z</option>
                                 <option value="name_desc">Sort: Z - A</option>
                                 <option value="cost_high">Cost: High to Low</option>
@@ -522,7 +523,7 @@
                         </div>
 
                         <!-- Components List Container -->
-                        <div id="components-list" class="space-y-2 pt-1"></div>
+                        <div id="components-list" class="space-y-3 pt-1"></div>
                     </div>
                 </div>
 
@@ -695,23 +696,23 @@
                 </div>
 
                 <div>
-                    <label class="block opacity-70 font-semibold mb-1">Category</label>
-                    <select id="comp-category" onchange="checkCategorySelection(this)" class="w-full p-2.5 border rounded-xl font-medium custom-card">
-                        <option value="Packaging">Packaging</option>
-                        <option value="Jewelry Supplies">Jewelry Supplies</option>
-                        <option value="Stickers & Labels">Stickers & Labels</option>
-                        <option value="__new__">+ Add New Category...</option>
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="opacity-70 font-semibold">Category</label>
+                        <button type="button" onclick="manageCategories()" class="text-brand hover:underline font-semibold">Manage Categories</button>
+                    </div>
+                    <select id="comp-category" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                        <!-- Populated dynamically -->
                     </select>
                 </div>
 
-                <div id="new-category-box" class="hidden">
-                    <label class="block opacity-70 font-semibold mb-1">New Category Name</label>
-                    <input type="text" id="comp-new-category" placeholder="e.g. Display Cards" class="w-full p-2.5 border rounded-xl font-medium custom-card">
-                </div>
-
                 <div>
-                    <label class="block opacity-70 font-semibold mb-1">Supplier</label>
-                    <input type="text" id="comp-supplier" placeholder="e.g. Uline / Amazon" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                    <div class="flex justify-between items-center mb-1">
+                        <label class="opacity-70 font-semibold">Supplier</label>
+                        <button type="button" onclick="manageSuppliers()" class="text-brand hover:underline font-semibold">Manage Suppliers</button>
+                    </div>
+                    <select id="comp-supplier" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                        <!-- Populated dynamically -->
+                    </select>
                 </div>
 
                 <div>
@@ -751,6 +752,7 @@
         ];
 
         let componentCategories = ['Packaging', 'Jewelry Supplies', 'Stickers & Labels'];
+        let componentSuppliers = ['Uline', 'AliExpress', 'Amazon', 'Rio Grande'];
 
         const themes = {
             blush: { primary: '#d97793', light: '#fdf2f4', dark: '#b35470', accent: '#f4aabf', appBg: '#f7f3f4', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
@@ -985,7 +987,6 @@
                 targetTab.classList.remove('hidden');
             }
 
-            // Handle Header Switching (Home header vs Components header)
             const homeHeader = document.getElementById('home-top-header');
             const compHeader = document.getElementById('components-top-header');
 
@@ -1005,7 +1006,6 @@
                 item.classList.add('opacity-60');
             });
 
-            // Match bottom nav icon highlights
             let activeNavId = `nav-btn-${tabName}`;
             if(tabName === 'components') activeNavId = 'nav-btn-inventory';
 
@@ -1088,29 +1088,158 @@
             componentCategories.forEach(cat => {
                 formCat.innerHTML += `<option value="${cat}">${cat}</option>`;
             });
-            formCat.innerHTML += `<option value="__new__">+ Add New Category...</option>`;
+            formCat.innerHTML += `<option value="__add_new__">+ Add New Category...</option>`;
             if(componentCategories.includes(currentFormVal)) {
                 formCat.value = currentFormVal;
             }
         }
 
-        function checkCategorySelection(selectEl) {
-            const newCatBox = document.getElementById('new-category-box');
-            if(selectEl.value === '__new__') {
-                newCatBox.classList.remove('hidden');
-                document.getElementById('comp-new-category').required = true;
-            } else {
-                newCatBox.classList.add('hidden');
-                document.getElementById('comp-new-category').required = false;
+        function updateSupplierDropdowns() {
+            const formSup = document.getElementById('comp-supplier');
+            let currentSupVal = formSup.value;
+
+            formSup.innerHTML = '';
+            componentSuppliers.forEach(sup => {
+                formSup.innerHTML += `<option value="${sup}">${sup}</option>`;
+            });
+            formSup.innerHTML += `<option value="__add_new__">+ Add New Supplier...</option>`;
+            if(componentSuppliers.includes(currentSupVal)) {
+                formSup.value = currentSupVal;
+            }
+        }
+
+        document.getElementById('comp-category').addEventListener('change', function() {
+            if(this.value === '__add_new__') {
+                const newCat = prompt("Enter new category name:");
+                if(newCat && newCat.trim() !== "") {
+                    const trimmed = newCat.trim();
+                    if(!componentCategories.includes(trimmed)) {
+                        componentCategories.push(trimmed);
+                    }
+                    updateCategoryDropdowns();
+                    this.value = trimmed;
+                } else {
+                    updateCategoryDropdowns();
+                }
+            }
+        });
+
+        document.getElementById('comp-supplier').addEventListener('change', function() {
+            if(this.value === '__add_new__') {
+                const newSup = prompt("Enter new supplier name:");
+                if(newSup && newSup.trim() !== "") {
+                    const trimmed = newSup.trim();
+                    if(!componentSuppliers.includes(trimmed)) {
+                        componentSuppliers.push(trimmed);
+                    }
+                    updateSupplierDropdowns();
+                    this.value = trimmed;
+                } else {
+                    updateSupplierDropdowns();
+                }
+            }
+        });
+
+        function manageCategories() {
+            let catListStr = componentCategories.join('\n');
+            let action = prompt("Current Categories:\n" + catListStr + "\n\nType 'add' to add a category, 'edit' to rename, or 'delete' to remove one:");
+            if(!action) return;
+            
+            action = action.toLowerCase().trim();
+            if(action === 'add') {
+                let added = prompt("Enter name of new category:");
+                if(added && added.trim() !== "") {
+                    if(!componentCategories.includes(added.trim())) {
+                        componentCategories.push(added.trim());
+                        alert("Category added successfully!");
+                        updateCategoryDropdowns();
+                    }
+                }
+            } else if(action === 'edit') {
+                let target = prompt("Enter exact name of category to rename:");
+                if(target && componentCategories.includes(target.trim())) {
+                    let replacement = prompt("Enter new name for '" + target.trim() + "':");
+                    if(replacement && replacement.trim() !== "") {
+                        let idx = componentCategories.indexOf(target.trim());
+                        componentCategories[idx] = replacement.trim();
+                        // Update existing components
+                        componentsList.forEach(c => {
+                            if(c.category === target.trim()) c.category = replacement.trim();
+                        });
+                        alert("Category renamed successfully!");
+                        updateCategoryDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Category not found.");
+                }
+            } else if(action === 'delete') {
+                let target = prompt("Enter exact name of category to delete:");
+                if(target && componentCategories.includes(target.trim())) {
+                    if(confirm("Are you sure you want to delete category '" + target.trim() + "'?")) {
+                        componentCategories = componentCategories.filter(c => c !== target.trim());
+                        alert("Category deleted.");
+                        updateCategoryDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Category not found.");
+                }
+            }
+        }
+
+        function manageSuppliers() {
+            let supListStr = componentSuppliers.join('\n');
+            let action = prompt("Current Suppliers:\n" + supListStr + "\n\nType 'add' to add a supplier, 'edit' to rename, or 'delete' to remove one:");
+            if(!action) return;
+
+            action = action.toLowerCase().trim();
+            if(action === 'add') {
+                let added = prompt("Enter name of new supplier:");
+                if(added && added.trim() !== "") {
+                    if(!componentSuppliers.includes(added.trim())) {
+                        componentSuppliers.push(added.trim());
+                        alert("Supplier added successfully!");
+                        updateSupplierDropdowns();
+                    }
+                }
+            } else if(action === 'edit') {
+                let target = prompt("Enter exact name of supplier to rename:");
+                if(target && componentSuppliers.includes(target.trim())) {
+                    let replacement = prompt("Enter new name for '" + target.trim() + "':");
+                    if(replacement && replacement.trim() !== "") {
+                        let idx = componentSuppliers.indexOf(target.trim());
+                        componentSuppliers[idx] = replacement.trim();
+                        componentsList.forEach(c => {
+                            if(c.supplier === target.trim()) c.supplier = replacement.trim();
+                        });
+                        alert("Supplier renamed successfully!");
+                        updateSupplierDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Supplier not found.");
+                }
+            } else if(action === 'delete') {
+                let target = prompt("Enter exact name of supplier to delete:");
+                if(target && componentSuppliers.includes(target.trim())) {
+                    if(confirm("Are you sure you want to delete supplier '" + target.trim() + "'?")) {
+                        componentSuppliers = componentSuppliers.filter(s => s !== target.trim());
+                        alert("Supplier deleted.");
+                        updateSupplierDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Supplier not found.");
+                }
             }
         }
 
         function openComponentModal(id = null) {
             updateCategoryDropdowns();
+            updateSupplierDropdowns();
             const modal = document.getElementById('component-modal');
             const title = document.getElementById('modal-title');
-            
-            document.getElementById('new-category-box').classList.add('hidden');
 
             if(id) {
                 title.innerText = 'Edit Component';
@@ -1121,7 +1250,7 @@
                     document.getElementById('comp-qty').value = comp.qty;
                     document.getElementById('comp-cost').value = comp.cost;
                     document.getElementById('comp-category').value = comp.category;
-                    document.getElementById('comp-supplier').value = comp.supplier || '';
+                    document.getElementById('comp-supplier').value = comp.supplier || componentSuppliers[0];
                     document.getElementById('comp-notes').value = comp.notes || '';
                 }
             } else {
@@ -1142,17 +1271,8 @@
             const name = document.getElementById('comp-name').value.trim();
             const qty = parseInt(document.getElementById('comp-qty').value) || 0;
             const cost = parseFloat(document.getElementById('comp-cost').value) || 0;
-            
-            let category = document.getElementById('comp-category').value;
-            if(category === '__new__') {
-                const newCat = document.getElementById('comp-new-category').value.trim();
-                if(newCat && !componentCategories.includes(newCat)) {
-                    componentCategories.push(newCat);
-                    category = newCat;
-                }
-            }
-
-            const supplier = document.getElementById('comp-supplier').value.trim();
+            const category = document.getElementById('comp-category').value;
+            const supplier = document.getElementById('comp-supplier').value;
             const notes = document.getElementById('comp-notes').value.trim();
 
             if(id) {
@@ -1202,19 +1322,18 @@
 
         function renderComponents() {
             updateCategoryDropdowns();
+            updateSupplierDropdowns();
             const container = document.getElementById('components-list');
             const searchVal = document.getElementById('comp-search').value.toLowerCase();
             const catFilter = document.getElementById('comp-filter-cat').value;
             const sortVal = document.getElementById('comp-sort').value;
 
-            // Filter
             let filtered = componentsList.filter(c => {
                 const matchesSearch = c.name.toLowerCase().includes(searchVal) || (c.supplier && c.supplier.toLowerCase().includes(searchVal));
                 const matchesCat = catFilter === "" || c.category === catFilter;
                 return matchesSearch && matchesCat;
             });
 
-            // Sort
             filtered.sort((a, b) => {
                 if(sortVal === 'name_asc') return a.name.localeCompare(b.name);
                 if(sortVal === 'name_desc') return b.name.localeCompare(a.name);
@@ -1232,7 +1351,7 @@
 
             container.innerHTML = '';
             if(filtered.length === 0) {
-                container.innerHTML = '<div class="text-center py-6 opacity-60 text-xs">No components found.</div>';
+                container.innerHTML = '<div class="text-center py-8 opacity-60 text-xs">No components found.</div>';
                 document.getElementById('batch-delete-btn').classList.add('hidden');
                 return;
             }
@@ -1240,32 +1359,32 @@
             filtered.forEach(c => {
                 const isOutOfStock = c.qty === 0;
                 const card = document.createElement('div');
-                card.className = "custom-card p-3 rounded-2xl border shadow-sm flex items-center justify-between";
+                card.className = "custom-card p-4 rounded-2xl border shadow-sm flex items-center justify-between";
                 card.innerHTML = `
-                    <div class="flex items-center space-x-2.5 flex-1 min-w-0 pr-1">
-                        <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-4 h-4 rounded text-brand accent-brand cursor-pointer shrink-0">
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center space-x-1.5 mb-0.5">
-                                <span class="font-bold text-xs truncate">${c.name}</span>
-                                <span class="text-[8px] px-1.5 py-0.5 rounded-full font-medium bg-brand-light text-brand shrink-0">${c.category}</span>
-                            </div>
-                            <div class="flex items-center space-x-2 text-[10px] opacity-70 truncate">
-                                <span class="truncate">Supplier: <strong>${c.supplier || 'N/A'}</strong></span>
+                    <div class="flex items-center space-x-3 flex-1 min-w-0 pr-2">
+                        <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-5 h-5 rounded text-brand accent-brand cursor-pointer shrink-0">
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <h4 class="font-bold text-sm truncate">${c.name}</h4>
+                            <div class="flex items-center space-x-2 text-xs opacity-70">
+                                <span>Supplier: <strong>${c.supplier || 'N/A'}</strong></span>
                                 <span>•</span>
-                                <span class="shrink-0">Cost: <strong>$${c.cost.toFixed(2)}</strong></span>
+                                <span>Cost: <strong>$${c.cost.toFixed(2)}</strong></span>
+                            </div>
+                            <div>
+                                <span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-brand-light text-brand">${c.category}</span>
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center space-x-2 shrink-0 pl-1 border-l">
+                    <div class="flex items-center space-x-3 shrink-0 pl-2 border-l">
                         <div class="text-right">
-                            <span class="block text-xs font-extrabold whitespace-nowrap">${c.qty} un</span>
-                            <span class="text-[8px] font-semibold px-1.5 py-0.5 rounded-full whitespace-nowrap ${isOutOfStock ? 'bg-red-50 text-red-600 dark:bg-red-950/50' : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50'}">
-                                ${isOutOfStock ? 'Out' : 'In'}
+                            <span class="block text-sm font-extrabold whitespace-nowrap">${c.qty} units</span>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full inline-block mt-0.5 whitespace-nowrap ${isOutOfStock ? 'bg-red-50 text-red-600 dark:bg-red-950/50' : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50'}">
+                                ${isOutOfStock ? 'Out of Stock' : 'In Stock'}
                             </span>
                         </div>
-                        <div class="flex items-center space-x-0.5">
-                            <button onclick="openComponentModal(${c.id})" class="p-1 opacity-70 hover:opacity-100 transition"><i class="fa-solid fa-pen text-[10px]"></i></button>
-                            <button onclick="deleteComponent(${c.id})" class="p-1 text-red-500 hover:opacity-85 transition"><i class="fa-solid fa-trash-can text-[10px]"></i></button>
+                        <div class="flex items-center space-x-1">
+                            <button onclick="openComponentModal(${c.id})" class="p-2 opacity-70 hover:opacity-100 transition text-sm"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteComponent(${c.id})" class="p-2 text-red-500 hover:opacity-85 transition text-sm"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
                 `;
