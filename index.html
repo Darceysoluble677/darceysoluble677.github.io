@@ -1,1699 +1,1301 @@
-// ============================================================
-// GRIMMS BUSINESS TRACKER — APPLICATION JAVASCRIPT
-// ============================================================
-
-// ================= GLOBAL STATE =================
-
-let hasNotification = true;
-let hasComponentNotification = true;
-
-let userPlatforms = ['Vinted', 'eBay'];
-let userExpenses = ['Shipping Supplies', 'Platform Fees', 'Inventory Acquisition'];
-
-let savedSettingsState = {
-    name: 'Grimms Reselling',
-    currency: 'USD ($)',
-    theme: 'blush',
-    font: "'Plus Jakarta Sans', sans-serif"
-};
-
-let componentsList = [
-    { id: 1, name: '4x8 Bubble Mailers', qty: 145, cost: 0.18, category: 'Packaging', supplier: 'Uline', notes: 'Kraft paper bubble mailers' },
-    { id: 2, name: 'Gothic Bat Charms', qty: 0, cost: 0.45, category: 'Jewelry Supplies', supplier: 'AliExpress', notes: 'Out of stock, reorder soon' },
-    { id: 3, name: 'Thank You Stickers (Roll)', qty: 320, cost: 0.03, category: 'Stickers & Labels', supplier: 'Amazon', notes: 'Pink foil logo stickers' },
-    { id: 4, name: 'Stainless Steel Chains (18")', qty: 45, cost: 0.85, category: 'Jewelry Supplies', supplier: 'Rio Grande', notes: 'For pendant necklaces' }
-];
-
-let componentCategories = [
-    'Packaging',
-    'Jewelry Supplies',
-    'Stickers & Labels'
-];
-
-let componentSuppliers = [
-    'Uline',
-    'AliExpress',
-    'Amazon',
-    'Rio Grande'
-];
-
-// Pagination
-const COMPONENTS_PER_PAGE = 8;
-let currentComponentPage = 1;
-
-
-// ================= THEMES =================
-
-const themes = {
-    blush: {
-        primary: '#d97793', light: '#fdf2f4', dark: '#b35470',
-        accent: '#f4aabf', appBg: '#f7f3f4', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    lavender: {
-        primary: '#7c3aed', light: '#f5f3ff', dark: '#5b21b6',
-        accent: '#c4b5fd', appBg: '#faf8fc', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    peach: {
-        primary: '#ea580c', light: '#fff7ed', dark: '#9a3412',
-        accent: '#fed7aa', appBg: '#fffaf5', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    sakura: {
-        primary: '#db2777', light: '#fdf2f8', dark: '#9d174d',
-        accent: '#fbcfe8', appBg: '#fdf8fa', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    vanilla: {
-        primary: '#854d0e', light: '#fefce8', dark: '#713f12',
-        accent: '#fef08a', appBg: '#fbf9f5', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    mint: {
-        primary: '#059669', light: '#ecfdf5', dark: '#047857',
-        accent: '#a7f3d0', appBg: '#f4f8f6', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    berry: {
-        primary: '#be185d', light: '#fdf2f8', dark: '#831843',
-        accent: '#f472b6', appBg: '#fcf6f8', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    golden: {
-        primary: '#ca8a04', light: '#fefce8', dark: '#854d0e',
-        accent: '#fde047', appBg: '#fcfbfa', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    cottoncandy: {
-        primary: '#0284c7', light: '#f0f9ff', dark: '#0369a1',
-        accent: '#bae6fd', appBg: '#f5f9fc', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    emerald: {
-        primary: '#047857', light: '#ecfdf5', dark: '#064e3b',
-        accent: '#34d399', appBg: '#f4f7f5', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    ruby_light: {
-        primary: '#e11d48', light: '#fff1f2', dark: '#9f1239',
-        accent: '#fecdd3', appBg: '#fff5f6', cardBg: '#ffffff',
-        text: '#2d2d2d', subText: '#737373', border: '#e5e5e5'
-    },
-    midnight: {
-        primary: '#38bdf8', light: '#1e293b', dark: '#0284c7',
-        accent: '#1e2230', appBg: '#12151e', cardBg: '#1c2130',
-        text: '#f1f5f9', subText: '#94a3b8', border: '#2a324a'
-    },
-    rosewood: {
-        primary: '#f43f5e', light: '#4c1d25', dark: '#e11d48',
-        accent: '#2c151a', appBg: '#151012', cardBg: '#21181c',
-        text: '#fce7f0', subText: '#d1a3b8', border: '#3d262e'
-    },
-    lavender_noir: {
-        primary: '#a78bfa', light: '#2e1065', dark: '#8b5cf6',
-        accent: '#231838', appBg: '#13111c', cardBg: '#1d1929',
-        text: '#f5f3ff', subText: '#b8a9d4', border: '#312847'
-    },
-    espresso: {
-        primary: '#fbbf24', light: '#422006', dark: '#d97706',
-        accent: '#2a1b12', appBg: '#16110e', cardBg: '#241b14',
-        text: '#fef3c7', subText: '#d4b896', border: '#3b2b20'
-    },
-    sage_noir: {
-        primary: '#34d399', light: '#064e3b', dark: '#059669',
-        accent: '#142820', appBg: '#0f1713', cardBg: '#17251e',
-        text: '#ecfdf5', subText: '#98d8be', border: '#223d30'
-    },
-    champagne: {
-        primary: '#fde047', light: '#422006', dark: '#ca8a04',
-        accent: '#282314', appBg: '#14130f', cardBg: '#211e17',
-        text: '#fef9c3', subText: '#d9cc9c', border: '#3d3726'
-    },
-    dusty_mauve: {
-        primary: '#f472b6', light: '#500724', dark: '#db2777',
-        accent: '#2c1522', appBg: '#151014', cardBg: '#211820',
-        text: '#fdf2f8', subText: '#d9a7c7', border: '#3d2634'
-    },
-    oceanic: {
-        primary: '#38bdf8', light: '#0c4a6e', dark: '#0284c7',
-        accent: '#132230', appBg: '#0b131a', cardBg: '#15222d',
-        text: '#f0f9ff', subText: '#93c5fd', border: '#22384a'
-    },
-    emerald_luxe: {
-        primary: '#34d399', light: '#022c22', dark: '#059669',
-        accent: '#11261e', appBg: '#0a1410', cardBg: '#14221b',
-        text: '#ecfdf5', subText: '#86efac', border: '#1f382d'
-    },
-    graphite: {
-        primary: '#cbd5e1', light: '#1e293b', dark: '#64748b',
-        accent: '#1e222a', appBg: '#0f1115', cardBg: '#1a1f26',
-        text: '#f1f5f9', subText: '#94a3b8', border: '#2d3748'
-    },
-    crimson_noir: {
-        primary: '#f87171', light: '#450a0a', dark: '#dc2626',
-        accent: '#2a1414', appBg: '#140c0c', cardBg: '#211515',
-        text: '#fef2f2', subText: '#fca5a5', border: '#3d2222'
-    }
-};
-
-
-// ================= GENERAL HELPERS =================
-
-function escapeHTML(value) {
-    return String(value ?? '').replace(/[&<>"']/g, char => ({
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        '"': '&quot;',
-        "'": '&#39;'
-    })[char]);
-}
-
-function getElement(id) {
-    return document.getElementById(id);
-}
-
-function showMessage(message) {
-    alert(message);
-}
-
-function normalizeName(value) {
-    return String(value || '').trim().replace(/\s+/g, ' ');
-}
-
-function isDuplicateName(list, name, oldName = '') {
-    return list.some(item =>
-        item.toLowerCase() === name.toLowerCase() &&
-        item.toLowerCase() !== oldName.toLowerCase()
-    );
-}
-
-
-// ================= SETUP PLACEHOLDERS =================
-
-function prepareSetupPlaceholders() {
-    const setupFields = [
-        {
-            id: 'setup-bus-name',
-            placeholder: 'e.g. Grimms Reselling'
-        },
-        {
-            id: 'setup-industry',
-            placeholder: 'e.g. E-Commerce & Vintage Collectibles'
-        },
-        {
-            id: 'setup-goal',
-            placeholder: 'e.g. 6000'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grimms Business Tracker</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: 'var(--brand-light)',
+                            DEFAULT: 'var(--brand-primary)',
+                            dark: 'var(--brand-dark)',
+                            accent: 'var(--brand-accent)',
+                            card: 'var(--card-bg)'
+                        }
+                    }
+                }
+            }
         }
-    ];
-
-    setupFields.forEach(field => {
-        const input = getElement(field.id);
-        if (!input) return;
-
-        input.value = '';
-        input.placeholder = field.placeholder;
-    });
-
-    document.querySelectorAll('.platform-input').forEach((input, index) => {
-        const oldValue = input.value.trim();
-
-        input.placeholder = oldValue
-            ? `e.g. ${oldValue}`
-            : 'e.g. Depop';
-
-        input.value = '';
-    });
-
-    const industry = getElement('setup-industry');
-    if (industry) {
-        industry.value = '';
-    }
-}
-
-
-// ================= THEME AND FONT =================
-
-function previewTheme(themeName) {
-    const theme = themes[themeName];
-    if (!theme) return;
-
-    const root = document.documentElement;
-
-    root.style.setProperty('--brand-primary', theme.primary);
-    root.style.setProperty('--brand-light', theme.light);
-    root.style.setProperty('--brand-dark', theme.dark);
-    root.style.setProperty('--brand-accent', theme.accent);
-    root.style.setProperty('--app-bg', theme.appBg);
-    root.style.setProperty('--card-bg', theme.cardBg);
-    root.style.setProperty('--text-main', theme.text);
-    root.style.setProperty('--text-sub', theme.subText);
-    root.style.setProperty('--border-color', theme.border);
-
-    const setupTheme = getElement('setup-theme');
-    const settingsTheme = getElement('settings-theme');
-
-    if (setupTheme) setupTheme.value = themeName;
-    if (settingsTheme) settingsTheme.value = themeName;
-}
-
-function previewFont(fontFamily) {
-    if (!fontFamily) return;
-
-    document.documentElement.style.setProperty('--app-font', fontFamily);
-
-    const setupFont = getElement('setup-font');
-    const settingsFont = getElement('settings-font');
-
-    if (setupFont) setupFont.value = fontFamily;
-    if (settingsFont) settingsFont.value = fontFamily;
-}
-
-
-// ================= SCREEN NAVIGATION =================
-
-function goToScreen(screenId) {
-    ['screen-welcome', 'screen-setup', 'screen-app'].forEach(id => {
-        const screen = getElement(id);
-        if (!screen) return;
-
-        screen.classList.add('hidden');
-        screen.classList.remove('flex');
-    });
-
-    const target = getElement(screenId);
-
-    if (target) {
-        target.classList.remove('hidden');
-        target.classList.add('flex');
-    }
-}
-
-function completeSetup() {
-    goToScreen('screen-app');
-    switchTab('home');
-}
-
-
-// ================= PLATFORM SETUP =================
-
-function addPlatformInput() {
-    const container = getElement('platforms-container');
-    if (!container) return;
-
-    const row = document.createElement('div');
-    row.className = 'flex items-center space-x-2';
-
-    row.innerHTML = `
-        <input
-            type="text"
-            placeholder="e.g. Depop"
-            class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card"
-        >
-        <button
-            type="button"
-            onclick="removeRow(this)"
-            class="opacity-60 hover:text-red-500 px-2"
-            aria-label="Remove platform"
-        >
-            <i class="fa-solid fa-trash-can"></i>
-        </button>
-    `;
-
-    container.appendChild(row);
-}
-
-function removeRow(button) {
-    if (!button || !button.parentElement) return;
-
-    if (!confirm('Are you sure you want to remove this platform?')) {
-        return;
-    }
-
-    button.parentElement.remove();
-}
-
-
-// ================= SETUP SUBMISSION =================
-
-function handleSetupSubmit(event) {
-    event.preventDefault();
-
-    const businessName = normalizeName(getElement('setup-bus-name').value);
-    const currency = getElement('setup-currency').value;
-    const goal = Number(getElement('setup-goal').value);
-    const selectedTheme = getElement('setup-theme').value;
-    const selectedFont = getElement('setup-font').value;
-
-    if (!businessName) {
-        alert('Please enter your business name.');
-        return;
-    }
-
-    if (!Number.isFinite(goal) || goal < 0) {
-        alert('Please enter a valid monthly revenue goal.');
-        return;
-    }
-
-    userPlatforms = [];
-
-    document.querySelectorAll('.platform-input').forEach(input => {
-        const platform = normalizeName(input.value);
-
-        if (
-            platform &&
-            !userPlatforms.some(p => p.toLowerCase() === platform.toLowerCase())
-        ) {
-            userPlatforms.push(platform);
+    </script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts for Dynamic Font Switching -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&family=Lato:wght@300;400;700&family=Montserrat:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600;700&family=Playfair+Display:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-primary: #d97793;
+            --brand-light: #fdf2f4;
+            --brand-dark: #b35470;
+            --brand-accent: #f4aabf;
+            --app-bg: #f7f3f4;
+            --card-bg: #ffffff;
+            --text-main: #2d2d2d;
+            --text-sub: #737373;
+            --border-color: #e5e5e5;
+            --app-font: 'Plus Jakarta Sans', sans-serif;
         }
-    });
 
-    previewTheme(selectedTheme);
-    previewFont(selectedFont);
+        body {
+            font-family: var(--app-font);
+            background-color: var(--app-bg);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease, font-family 0.3s ease;
+        }
 
-    savedSettingsState = {
-        name: businessName,
-        currency,
-        theme: selectedTheme,
-        font: selectedFont
-    };
+        .custom-card {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border-color: var(--border-color);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
 
-    updateBusinessName(businessName);
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center min-h-screen p-0 sm:p-4">
 
-    getElement('settings-currency').value = currency;
+    <!-- Mobile App Container Wrapper -->
+    <div class="w-full max-w-md sm:rounded-[40px] shadow-2xl overflow-hidden flex flex-col h-screen sm:h-[880px] relative border-0 sm:border-8 sm:border-neutral-800 custom-card border">
 
-    const goalText = getElement('goal-target-text');
-
-    if (goalText) {
-        goalText.innerText =
-            `Reach ${formatCurrency(goal, currency)} this month`;
-    }
-
-    renderTrackingPlatforms();
-    completeSetup();
-}
-
-function updateBusinessName(name) {
-    const safeName = normalizeName(name);
-
-    const greeting = getElement('header-greeting');
-    const moreName = getElement('more-bus-name');
-    const settingsName = getElement('settings-bus-name');
-
-    if (greeting) greeting.innerText = `Welcome back, ${safeName}!`;
-    if (moreName) moreName.innerText = safeName;
-    if (settingsName) settingsName.value = safeName;
-}
-
-
-// ================= CURRENCY =================
-
-function getCurrencySymbol(currency) {
-    const symbols = {
-        'USD ($)': '$',
-        'EUR (€)': '€',
-        'GBP (£)': '£',
-        'CAD ($)': '$'
-    };
-
-    return symbols[currency] || '$';
-}
-
-function formatCurrency(amount, currency = savedSettingsState.currency) {
-    const symbol = getCurrencySymbol(currency);
-
-    return symbol + Number(amount || 0).toLocaleString('en-US', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-}
-
-
-// ================= TRACKING =================
-
-function renderTrackingPlatforms() {
-    const container = getElement('tracking-platforms-list');
-    if (!container) return;
-
-    container.innerHTML = '';
-
-    if (userPlatforms.length === 0) {
-        container.innerHTML = `
-            <p class="text-xs opacity-60 text-center py-4">
-                No active sales platforms have been added.
-            </p>
-        `;
-        return;
-    }
-
-    userPlatforms.forEach(platform => {
-        const item = document.createElement('div');
-
-        item.className =
-            'flex justify-between items-center p-3 custom-card rounded-xl text-xs border';
-
-        item.innerHTML = `
-            <div>
-                <span class="font-bold block">
-                    ${escapeHTML(platform)} Channel
-                </span>
-                <span class="opacity-60">Active Reselling Feed</span>
+        <!-- ================= VIEW 1: WELCOME SCREEN ================= -->
+        <div id="screen-welcome" class="flex flex-col justify-between flex-1 px-6 py-12 bg-gradient-to-b from-transparent via-brand-light/30 to-brand-light overflow-y-auto">
+            <div class="flex flex-col items-center text-center mt-12">
+                <div class="w-20 h-20 bg-brand/10 rounded-2xl flex items-center justify-center mb-6 text-brand shadow-sm">
+                    <i class="fa-solid fa-chart-line text-4xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold tracking-tight mb-2">GRIMMS</h1>
+                <h2 class="text-xl font-semibold text-brand mb-3">Business Tracker</h2>
+                <p class="text-sm opacity-70 tracking-wider uppercase font-medium">Plan. Track. Grow.</p>
             </div>
-            <span class="font-bold text-emerald-600">Active</span>
-        `;
 
-        container.appendChild(item);
-    });
-}
-
-
-// ================= DASHBOARD TIMEFRAME =================
-
-function updateTimeframe(timeframe) {
-    const revenue = getElement('display-revenue');
-    const title = getElement('rev-card-title');
-    const orders = getElement('metric-orders');
-    const profit = getElement('report-net-profit');
-
-    const gross = getElement('report-gross');
-    const expenses = getElement('report-expenses');
-
-    const values = {
-        today: {
-            title: "Today's Revenue",
-            revenue: 240,
-            orders: 3,
-            profit: 195,
-            expenses: 45
-        },
-        this_week: {
-            title: "This Week's Revenue",
-            revenue: 1250,
-            orders: 14,
-            profit: 980,
-            expenses: 270
-        },
-        this_month: {
-            title: "This Month's Revenue",
-            revenue: 4820,
-            orders: 52,
-            profit: 3960,
-            expenses: 860
-        },
-        this_year: {
-            title: "This Year's Revenue",
-            revenue: 58400,
-            orders: 610,
-            profit: 46200,
-            expenses: 12200
-        },
-        all_time: {
-            title: 'All-Time Revenue',
-            revenue: 142900,
-            orders: 1480,
-            profit: 112500,
-            expenses: 30400
-        }
-    };
-
-    const data = values[timeframe];
-    if (!data) return;
-
-    if (title) title.innerText = data.title;
-    if (revenue) revenue.innerText = formatCurrency(data.revenue);
-    if (orders) orders.innerText = data.orders.toLocaleString();
-    if (profit) profit.innerText = formatCurrency(data.profit);
-    if (gross) gross.innerText = formatCurrency(data.revenue);
-    if (expenses) expenses.innerText = formatCurrency(data.expenses);
-}
-
-
-// ================= TAB NAVIGATION =================
-
-function switchTab(tabName) {
-    document.querySelectorAll('.app-tab').forEach(tab => {
-        tab.classList.add('hidden');
-    });
-
-    const target = getElement(`tab-${tabName}-content`);
-
-    if (target) {
-        target.classList.remove('hidden');
-    }
-
-    const homeHeader = getElement('home-top-header');
-    const componentHeader = getElement('components-top-header');
-
-    if (tabName === 'components') {
-        homeHeader.classList.add('hidden');
-        componentHeader.classList.remove('hidden');
-        componentHeader.classList.add('flex');
-    } else {
-        homeHeader.classList.remove('hidden');
-        homeHeader.classList.add('flex');
-        componentHeader.classList.add('hidden');
-        componentHeader.classList.remove('flex');
-    }
-
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('text-brand');
-        item.classList.add('opacity-60');
-    });
-
-    let activeNavId = `nav-btn-${tabName}`;
-
-    if (tabName === 'components') {
-        activeNavId = 'nav-btn-inventory';
-    }
-
-    const activeNav = getElement(activeNavId);
-
-    if (activeNav) {
-        activeNav.classList.remove('opacity-60');
-        activeNav.classList.add('text-brand');
-    }
-
-    const scrollContainer = getElement('main-scroll-container');
-
-    if (scrollContainer) {
-        scrollContainer.scrollTop = 0;
-    }
-
-    if (tabName === 'components') {
-        currentComponentPage = 1;
-        renderComponents();
-    }
-}
-
-
-// ================= NOTIFICATIONS =================
-
-function toggleNotificationBadge() {
-    hasNotification = !hasNotification;
-
-    const dot = getElement('notif-dot');
-
-    if (hasNotification) {
-        dot.classList.remove('hidden');
-        alert('You have 1 new order alert!');
-    } else {
-        dot.classList.add('hidden');
-        alert('All notifications cleared.');
-    }
-}
-
-function toggleComponentNotification() {
-    hasComponentNotification = !hasComponentNotification;
-
-    const dot = getElement('comp-notif-dot');
-
-    if (hasComponentNotification) {
-        dot.classList.remove('hidden');
-        alert('Component Alert: Gothic Bat Charms are currently out of stock!');
-    } else {
-        dot.classList.add('hidden');
-        alert('All component alerts cleared.');
-    }
-}
-
-
-// ================= SETTINGS =================
-
-function saveSettingsChanges() {
-    const newName = normalizeName(getElement('settings-bus-name').value);
-    const currency = getElement('settings-currency').value;
-    const selectedTheme = getElement('settings-theme').value;
-    const selectedFont = getElement('settings-font').value;
-
-    if (!newName) {
-        alert('Please enter a business name.');
-        return;
-    }
-
-    previewTheme(selectedTheme);
-    previewFont(selectedFont);
-
-    savedSettingsState = {
-        name: newName,
-        currency,
-        theme: selectedTheme,
-        font: selectedFont
-    };
-
-    updateBusinessName(newName);
-
-    alert('Settings updated successfully!');
-    switchTab('home');
-}
-
-
-// ============================================================
-// COMPONENTS & SUPPLIES
-// ============================================================
-
-
-// ================= CATEGORY DROPDOWNS =================
-
-function updateCategoryDropdowns() {
-    const filter = getElement('comp-filter-cat');
-    const form = getElement('comp-category');
-
-    if (!filter || !form) return;
-
-    const oldFilterValue = filter.value;
-    const oldFormValue = form.value;
-
-    filter.innerHTML = `
-        <option value="">All Categories</option>
-    `;
-
-    componentCategories.forEach(category => {
-        const option = document.createElement('option');
-
-        option.value = category;
-        option.textContent = category;
-
-        filter.appendChild(option);
-    });
-
-    filter.value = componentCategories.includes(oldFilterValue)
-        ? oldFilterValue
-        : '';
-
-    form.innerHTML = `
-        <option value="">Select category</option>
-    `;
-
-    componentCategories.forEach(category => {
-        const option = document.createElement('option');
-
-        option.value = category;
-        option.textContent = category;
-
-        form.appendChild(option);
-    });
-
-    form.value = componentCategories.includes(oldFormValue)
-        ? oldFormValue
-        : '';
-}
-
-
-// ================= SUPPLIER DROPDOWN =================
-
-function updateSupplierDropdowns() {
-    const form = getElement('comp-supplier');
-
-    if (!form) return;
-
-    const oldValue = form.value;
-
-    form.innerHTML = `
-        <option value="">Select supplier</option>
-    `;
-
-    componentSuppliers.forEach(supplier => {
-        const option = document.createElement('option');
-
-        option.value = supplier;
-        option.textContent = supplier;
-
-        form.appendChild(option);
-    });
-
-    form.value = componentSuppliers.includes(oldValue)
-        ? oldValue
-        : '';
-}
-
-
-// ================= CATEGORY MANAGEMENT =================
-
-function manageCategories() {
-    const action = prompt(
-        'CATEGORY MANAGEMENT\n\n' +
-        'Current categories:\n' +
-        (componentCategories.length
-            ? componentCategories.map((c, i) => `${i + 1}. ${c}`).join('\n')
-            : 'No categories added yet.') +
-        '\n\nType ADD, EDIT, or DELETE:'
-    );
-
-    if (!action) return;
-
-    const selectedAction = action.trim().toLowerCase();
-
-    if (selectedAction === 'add') {
-        addCategory();
-    } else if (selectedAction === 'edit') {
-        editCategory();
-    } else if (selectedAction === 'delete') {
-        deleteCategoryOption();
-    } else {
-        alert('Please enter ADD, EDIT, or DELETE.');
-    }
-}
-
-function addCategory() {
-    const enteredName = prompt('Enter the new category name:');
-
-    if (!enteredName) return;
-
-    const name = normalizeName(enteredName);
-
-    if (!name) return;
-
-    if (isDuplicateName(componentCategories, name)) {
-        alert('That category already exists.');
-        return;
-    }
-
-    componentCategories.push(name);
-
-    updateCategoryDropdowns();
-    renderComponents();
-
-    alert(`"${name}" was added successfully.`);
-}
-
-function editCategory() {
-    if (componentCategories.length === 0) {
-        alert('There are no categories to edit.');
-        return;
-    }
-
-    const oldName = prompt(
-        'Enter the exact category name you want to edit:\n\n' +
-        componentCategories.join('\n')
-    );
-
-    if (!oldName) return;
-
-    const existingName = componentCategories.find(
-        category => category.toLowerCase() === normalizeName(oldName).toLowerCase()
-    );
-
-    if (!existingName) {
-        alert('Category not found.');
-        return;
-    }
-
-    const newNameInput = prompt(
-        `Enter the new name for "${existingName}":`,
-        existingName
-    );
-
-    if (!newNameInput) return;
-
-    const newName = normalizeName(newNameInput);
-
-    if (!newName) return;
-
-    if (isDuplicateName(componentCategories, newName, existingName)) {
-        alert('A category with that name already exists.');
-        return;
-    }
-
-    if (newName === existingName) return;
-
-    if (!confirm(
-        `Rename "${existingName}" to "${newName}"?\n\n` +
-        'Existing components using this category will also be updated.'
-    )) {
-        return;
-    }
-
-    componentCategories = componentCategories.map(category =>
-        category === existingName ? newName : category
-    );
-
-    componentsList.forEach(component => {
-        if (component.category === existingName) {
-            component.category = newName;
-        }
-    });
-
-    updateCategoryDropdowns();
-    renderComponents();
-
-    alert('Category renamed successfully.');
-}
-
-function deleteCategoryOption() {
-    if (componentCategories.length === 0) {
-        alert('There are no categories to delete.');
-        return;
-    }
-
-    const targetInput = prompt(
-        'Enter the exact category name you want to delete:\n\n' +
-        componentCategories.join('\n')
-    );
-
-    if (!targetInput) return;
-
-    const target = componentCategories.find(
-        category => category.toLowerCase() === normalizeName(targetInput).toLowerCase()
-    );
-
-    if (!target) {
-        alert('Category not found.');
-        return;
-    }
-
-    const linkedCount = componentsList.filter(
-        component => component.category === target
-    ).length;
-
-    const warning = linkedCount
-        ? `\n\n${linkedCount} component(s) currently use this category. Their category will be cleared.`
-        : '';
-
-    if (!confirm(`Are you sure you want to delete "${target}"?${warning}`)) {
-        return;
-    }
-
-    componentCategories = componentCategories.filter(
-        category => category !== target
-    );
-
-    componentsList.forEach(component => {
-        if (component.category === target) {
-            component.category = '';
-        }
-    });
-
-    updateCategoryDropdowns();
-    renderComponents();
-
-    alert('Category deleted successfully.');
-}
-
-
-// ================= SUPPLIER MANAGEMENT =================
-
-function manageSuppliers() {
-    const action = prompt(
-        'SUPPLIER MANAGEMENT\n\n' +
-        'Current suppliers:\n' +
-        (componentSuppliers.length
-            ? componentSuppliers.map((s, i) => `${i + 1}. ${s}`).join('\n')
-            : 'No suppliers added yet.') +
-        '\n\nType ADD, EDIT, or DELETE:'
-    );
-
-    if (!action) return;
-
-    const selectedAction = action.trim().toLowerCase();
-
-    if (selectedAction === 'add') {
-        addSupplier();
-    } else if (selectedAction === 'edit') {
-        editSupplier();
-    } else if (selectedAction === 'delete') {
-        deleteSupplierOption();
-    } else {
-        alert('Please enter ADD, EDIT, or DELETE.');
-    }
-}
-
-function addSupplier() {
-    const enteredName = prompt('Enter the new supplier name:');
-
-    if (!enteredName) return;
-
-    const name = normalizeName(enteredName);
-
-    if (!name) return;
-
-    if (isDuplicateName(componentSuppliers, name)) {
-        alert('That supplier already exists.');
-        return;
-    }
-
-    componentSuppliers.push(name);
-
-    updateSupplierDropdowns();
-    renderComponents();
-
-    alert(`"${name}" was added successfully.`);
-}
-
-function editSupplier() {
-    if (componentSuppliers.length === 0) {
-        alert('There are no suppliers to edit.');
-        return;
-    }
-
-    const oldName = prompt(
-        'Enter the exact supplier name you want to edit:\n\n' +
-        componentSuppliers.join('\n')
-    );
-
-    if (!oldName) return;
-
-    const existingName = componentSuppliers.find(
-        supplier => supplier.toLowerCase() === normalizeName(oldName).toLowerCase()
-    );
-
-    if (!existingName) {
-        alert('Supplier not found.');
-        return;
-    }
-
-    const newNameInput = prompt(
-        `Enter the new name for "${existingName}":`,
-        existingName
-    );
-
-    if (!newNameInput) return;
-
-    const newName = normalizeName(newNameInput);
-
-    if (!newName) return;
-
-    if (isDuplicateName(componentSuppliers, newName, existingName)) {
-        alert('A supplier with that name already exists.');
-        return;
-    }
-
-    if (newName === existingName) return;
-
-    if (!confirm(
-        `Rename "${existingName}" to "${newName}"?\n\n` +
-        'Existing components using this supplier will also be updated.'
-    )) {
-        return;
-    }
-
-    componentSuppliers = componentSuppliers.map(supplier =>
-        supplier === existingName ? newName : supplier
-    );
-
-    componentsList.forEach(component => {
-        if (component.supplier === existingName) {
-            component.supplier = newName;
-        }
-    });
-
-    updateSupplierDropdowns();
-    renderComponents();
-
-    alert('Supplier renamed successfully.');
-}
-
-function deleteSupplierOption() {
-    if (componentSuppliers.length === 0) {
-        alert('There are no suppliers to delete.');
-        return;
-    }
-
-    const targetInput = prompt(
-        'Enter the exact supplier name you want to delete:\n\n' +
-        componentSuppliers.join('\n')
-    );
-
-    if (!targetInput) return;
-
-    const target = componentSuppliers.find(
-        supplier => supplier.toLowerCase() === normalizeName(targetInput).toLowerCase()
-    );
-
-    if (!target) {
-        alert('Supplier not found.');
-        return;
-    }
-
-    const linkedCount = componentsList.filter(
-        component => component.supplier === target
-    ).length;
-
-    const warning = linkedCount
-        ? `\n\n${linkedCount} component(s) currently use this supplier. Their supplier will be cleared.`
-        : '';
-
-    if (!confirm(`Are you sure you want to delete "${target}"?${warning}`)) {
-        return;
-    }
-
-    componentSuppliers = componentSuppliers.filter(
-        supplier => supplier !== target
-    );
-
-    componentsList.forEach(component => {
-        if (component.supplier === target) {
-            component.supplier = '';
-        }
-    });
-
-    updateSupplierDropdowns();
-    renderComponents();
-
-    alert('Supplier deleted successfully.');
-}
-
-
-// ================= COMPONENT MODAL =================
-
-function openComponentModal(id = null) {
-    updateCategoryDropdowns();
-    updateSupplierDropdowns();
-
-    const modal = getElement('component-modal');
-    const title = getElement('modal-title');
-    const form = getElement('component-form');
-
-    if (!modal || !form) return;
-
-    form.reset();
-
-    getElement('comp-edit-id').value = '';
-
-    if (id !== null) {
-        const component = componentsList.find(
-            item => Number(item.id) === Number(id)
-        );
-
-        if (!component) {
-            alert('Component not found.');
-            return;
-        }
-
-        title.innerText = 'Edit Component';
-
-        getElement('comp-edit-id').value = component.id;
-        getElement('comp-name').value = component.name;
-        getElement('comp-qty').value = component.qty;
-        getElement('comp-cost').value = component.cost;
-        getElement('comp-category').value = component.category || '';
-        getElement('comp-supplier').value = component.supplier || '';
-        getElement('comp-notes').value = component.notes || '';
-
-    } else {
-        title.innerText = 'Add Component';
-
-        getElement('comp-name').value = '';
-        getElement('comp-qty').value = '';
-        getElement('comp-cost').value = '';
-        getElement('comp-category').value = '';
-        getElement('comp-supplier').value = '';
-        getElement('comp-notes').value = '';
-    }
-
-    modal.classList.remove('hidden');
-}
-
-function closeComponentModal() {
-    const modal = getElement('component-modal');
-
-    if (modal) {
-        modal.classList.add('hidden');
-    }
-}
-
-
-// ================= SAVE COMPONENT =================
-
-function handleComponentSubmit(event) {
-    event.preventDefault();
-
-    const id = getElement('comp-edit-id').value;
-    const name = normalizeName(getElement('comp-name').value);
-
-    const qtyInput = getElement('comp-qty').value;
-    const costInput = getElement('comp-cost').value;
-
-    const qty = Number(qtyInput);
-    const cost = costInput === '' ? 0 : Number(costInput);
-
-    const category = getElement('comp-category').value;
-    const supplier = getElement('comp-supplier').value;
-    const notes = getElement('comp-notes').value.trim();
-
-    if (!name) {
-        alert('Please enter a component name.');
-        return;
-    }
-
-    if (qtyInput === '' || !Number.isInteger(qty) || qty < 0) {
-        alert('Please enter a valid whole-number quantity.');
-        return;
-    }
-
-    if (!Number.isFinite(cost) || cost < 0) {
-        alert('Please enter a valid component cost.');
-        return;
-    }
-
-    if (category && !componentCategories.includes(category)) {
-        alert('Please select a valid category.');
-        return;
-    }
-
-    if (supplier && !componentSuppliers.includes(supplier)) {
-        alert('Please select a valid supplier.');
-        return;
-    }
-
-    if (id) {
-        const component = componentsList.find(
-            item => Number(item.id) === Number(id)
-        );
-
-        if (!component) {
-            alert('Could not find the component to update.');
-            return;
-        }
-
-        component.name = name;
-        component.qty = qty;
-        component.cost = cost;
-        component.category = category;
-        component.supplier = supplier;
-        component.notes = notes;
-
-    } else {
-        componentsList.push({
-            id: Date.now(),
-            name,
-            qty,
-            cost,
-            category,
-            supplier,
-            notes
-        });
-    }
-
-    closeComponentModal();
-
-    currentComponentPage = 1;
-
-    renderComponents();
-}
-
-
-// ================= DELETE COMPONENT =================
-
-function deleteComponent(id) {
-    const component = componentsList.find(
-        item => Number(item.id) === Number(id)
-    );
-
-    if (!component) {
-        alert('Component not found.');
-        return;
-    }
-
-    if (!confirm(
-        `Are you sure you want to delete "${component.name}"?\n\nThis cannot be undone.`
-    )) {
-        return;
-    }
-
-    componentsList = componentsList.filter(
-        item => Number(item.id) !== Number(id)
-    );
-
-    renderComponents();
-}
-
-
-// ================= BATCH DELETE =================
-
-function batchDeleteComponents() {
-    const checkedBoxes = document.querySelectorAll(
-        '.comp-checkbox:checked'
-    );
-
-    if (checkedBoxes.length === 0) return;
-
-    const idsToDelete = Array.from(checkedBoxes).map(
-        checkbox => Number(checkbox.dataset.id)
-    );
-
-    if (!confirm(
-        `Are you sure you want to delete ${idsToDelete.length} selected component(s)?\n\nThis cannot be undone.`
-    )) {
-        return;
-    }
-
-    componentsList = componentsList.filter(
-        component => !idsToDelete.includes(Number(component.id))
-    );
-
-    renderComponents();
-}
-
-
-// ================= COMPONENT FILTERING =================
-
-function getFilteredComponents() {
-    const searchInput = getElement('comp-search');
-    const categoryInput = getElement('comp-filter-cat');
-    const sortInput = getElement('comp-sort');
-
-    const searchValue = searchInput
-        ? searchInput.value.trim().toLowerCase()
-        : '';
-
-    const categoryValue = categoryInput
-        ? categoryInput.value
-        : '';
-
-    const sortValue = sortInput
-        ? sortInput.value
-        : 'name_asc';
-
-    let filtered = componentsList.filter(component => {
-        const matchesName = component.name
-            .toLowerCase()
-            .includes(searchValue);
-
-        const matchesSupplier = (component.supplier || '')
-            .toLowerCase()
-            .includes(searchValue);
-
-        const matchesCategory = (component.category || '')
-            .toLowerCase()
-            .includes(searchValue);
-
-        const matchesSearch =
-            matchesName || matchesSupplier || matchesCategory;
-
-        const matchesCategoryFilter =
-            !categoryValue || component.category === categoryValue;
-
-        return matchesSearch && matchesCategoryFilter;
-    });
-
-    filtered.sort((a, b) => {
-        switch (sortValue) {
-            case 'name_asc':
-                return a.name.localeCompare(b.name);
-
-            case 'name_desc':
-                return b.name.localeCompare(a.name);
-
-            case 'cost_high':
-                return b.cost - a.cost;
-
-            case 'cost_low':
-                return a.cost - b.cost;
-
-            case 'qty_high':
-                return b.qty - a.qty;
-
-            case 'qty_low':
-                return a.qty - b.qty;
-
-            case 'stock_out':
-                if (a.qty === 0 && b.qty > 0) return -1;
-                if (a.qty > 0 && b.qty === 0) return 1;
-                return a.name.localeCompare(b.name);
-
-            default:
-                return a.name.localeCompare(b.name);
-        }
-    });
-
-    return filtered;
-}
-
-
-// ================= COMPONENT PAGINATION =================
-
-function changeComponentPage(direction) {
-    const filtered = getFilteredComponents();
-
-    const totalPages = Math.max(
-        1,
-        Math.ceil(filtered.length / COMPONENTS_PER_PAGE)
-    );
-
-    currentComponentPage += direction;
-
-    currentComponentPage = Math.max(
-        1,
-        Math.min(currentComponentPage, totalPages)
-    );
-
-    renderComponents();
-}
-
-function goToComponentPage(page) {
-    const filtered = getFilteredComponents();
-
-    const totalPages = Math.max(
-        1,
-        Math.ceil(filtered.length / COMPONENTS_PER_PAGE)
-    );
-
-    currentComponentPage = Math.max(
-        1,
-        Math.min(Number(page), totalPages)
-    );
-
-    renderComponents();
-}
-
-function renderComponentPagination(totalItems) {
-    let pagination = getElement('components-pagination');
-
-    if (!pagination) {
-        pagination = document.createElement('div');
-        pagination.id = 'components-pagination';
-        pagination.className = 'pt-4 border-t';
-        getElement('components-list').after(pagination);
-    }
-
-    const totalPages = Math.max(
-        1,
-        Math.ceil(totalItems / COMPONENTS_PER_PAGE)
-    );
-
-    if (currentComponentPage > totalPages) {
-        currentComponentPage = totalPages;
-    }
-
-    const start = totalItems === 0
-        ? 0
-        : ((currentComponentPage - 1) * COMPONENTS_PER_PAGE) + 1;
-
-    const end = Math.min(
-        currentComponentPage * COMPONENTS_PER_PAGE,
-        totalItems
-    );
-
-    pagination.innerHTML = `
-        <div class="flex justify-between items-center gap-3">
-            <span class="text-[11px] opacity-60">
-                Showing ${start}-${end} of ${totalItems}
-            </span>
-
-            <div class="flex items-center gap-2">
-                <button
-                    type="button"
-                    onclick="changeComponentPage(-1)"
-                    ${currentComponentPage === 1 ? 'disabled' : ''}
-                    class="px-3 py-2 rounded-lg border text-xs font-semibold
-                    ${currentComponentPage === 1
-                        ? 'opacity-30 cursor-not-allowed'
-                        : 'hover:border-brand'}"
-                >
-                    <i class="fa-solid fa-chevron-left mr-1"></i>
-                    Previous
+            <div class="my-6 custom-card backdrop-blur-sm p-4 rounded-3xl border shadow-sm text-center">
+                <p class="text-xs opacity-80 font-medium italic">"Designed specifically for small business owners and multi-platform resellers."</p>
+            </div>
+
+            <div class="space-y-3 mb-4">
+                <button onclick="goToScreen('screen-setup')" class="w-full py-4 bg-brand text-white font-semibold rounded-2xl shadow-lg shadow-brand/30 hover:opacity-90 transition-all flex items-center justify-center space-x-2">
+                    <span>Get Started</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
                 </button>
-
-                <span class="text-xs font-semibold whitespace-nowrap">
-                    ${currentComponentPage} / ${totalPages}
-                </span>
-
-                <button
-                    type="button"
-                    onclick="changeComponentPage(1)"
-                    ${currentComponentPage === totalPages ? 'disabled' : ''}
-                    class="px-3 py-2 rounded-lg border text-xs font-semibold
-                    ${currentComponentPage === totalPages
-                        ? 'opacity-30 cursor-not-allowed'
-                        : 'hover:border-brand'}"
-                >
-                    Next
-                    <i class="fa-solid fa-chevron-right ml-1"></i>
+                <button onclick="completeSetup()" class="w-full py-3 bg-transparent opacity-80 font-medium rounded-2xl hover:opacity-100 transition-all text-sm">
+                    Sign In
                 </button>
             </div>
         </div>
-    `;
-}
 
-
-// ================= COMPONENT CARD RENDERING =================
-
-function renderComponents() {
-    updateCategoryDropdowns();
-    updateSupplierDropdowns();
-
-    const container = getElement('components-list');
-
-    if (!container) return;
-
-    const filtered = getFilteredComponents();
-
-    const totalPages = Math.max(
-        1,
-        Math.ceil(filtered.length / COMPONENTS_PER_PAGE)
-    );
-
-    if (currentComponentPage > totalPages) {
-        currentComponentPage = totalPages;
-    }
-
-    const startIndex =
-        (currentComponentPage - 1) * COMPONENTS_PER_PAGE;
-
-    const visibleComponents = filtered.slice(
-        startIndex,
-        startIndex + COMPONENTS_PER_PAGE
-    );
-
-    container.innerHTML = '';
-
-    if (filtered.length === 0) {
-        container.innerHTML = `
-            <div class="text-center py-10">
-                <div class="w-12 h-12 rounded-2xl bg-brand-light mx-auto mb-3 flex items-center justify-center text-brand">
-                    <i class="fa-solid fa-box-open text-lg"></i>
-                </div>
-                <p class="text-sm font-semibold">No components found</p>
-                <p class="text-xs opacity-60 mt-1">
-                    Try changing your search or filters.
-                </p>
-            </div>
-        `;
-
-        renderComponentPagination(0);
-
-        const batchButton = getElement('batch-delete-btn');
-        if (batchButton) batchButton.classList.add('hidden');
-
-        return;
-    }
-
-    visibleComponents.forEach(component => {
-        const outOfStock = component.qty === 0;
-
-        const card = document.createElement('div');
-
-        card.className =
-            'custom-card p-4 rounded-2xl border shadow-sm space-y-3';
-
-        card.innerHTML = `
-            <div class="flex items-start justify-between gap-3">
-
-                <div class="flex items-start gap-3 min-w-0 flex-1">
-
-                    <input
-                        type="checkbox"
-                        data-id="${component.id}"
-                        onchange="checkBatchSelection()"
-                        class="comp-checkbox mt-1 w-4 h-4 accent-brand cursor-pointer shrink-0"
-                        aria-label="Select ${escapeHTML(component.name)}"
-                    >
-
-                    <div class="min-w-0 flex-1">
-
-                        <h4 class="font-bold text-sm leading-snug break-words">
-                            ${escapeHTML(component.name)}
-                        </h4>
-
-                        <div class="flex flex-wrap gap-1.5 mt-2">
-                            <span class="text-[10px] px-2 py-1 rounded-full bg-brand-light text-brand font-semibold">
-                                ${escapeHTML(component.category || 'Uncategorized')}
-                            </span>
-
-                            <span class="text-[10px] px-2 py-1 rounded-full font-semibold
-                                ${outOfStock
-                                    ? 'bg-red-50 text-red-600 dark:bg-red-950/50'
-                                    : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50'}">
-                                ${outOfStock ? 'Out of Stock' : 'In Stock'}
-                            </span>
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="text-right shrink-0">
-                    <span class="block text-lg font-bold leading-tight">
-                        ${component.qty.toLocaleString()}
-                    </span>
-                    <span class="text-[10px] opacity-60">
-                        units
-                    </span>
-                </div>
-
+        <!-- ================= VIEW 2: SETUP WIZARD ================= -->
+        <div id="screen-setup" class="hidden flex-col flex-1 custom-card overflow-y-auto px-6 py-6">
+            <div class="flex items-center justify-between mb-4">
+                <button onclick="goToScreen('screen-welcome')" class="opacity-70 hover:opacity-100"><i class="fa-solid fa-arrow-left text-lg"></i></button>
+                <h2 class="font-bold">Initial Setup</h2>
+                <div class="w-5"></div>
             </div>
 
-            <div class="grid grid-cols-2 gap-3 border-t pt-3 text-xs">
+            <div class="bg-brand-light border border-brand/30 rounded-2xl p-4 mb-5 text-xs text-brand-dark flex items-start space-x-3">
+                <i class="fa-solid fa-circle-info text-brand mt-0.5 text-sm"></i>
+                <span>You can change all of these settings anytime later in the app <strong>Settings</strong> menu.</span>
+            </div>
 
-                <div class="min-w-0">
-                    <span class="block opacity-50 text-[10px] uppercase tracking-wide mb-1">
-                        Supplier
-                    </span>
-                    <span class="font-semibold break-words">
-                        ${escapeHTML(component.supplier || 'Not assigned')}
-                    </span>
+            <form id="setup-form" onsubmit="handleSetupSubmit(event)" class="space-y-4 pb-12">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Business Name</label>
+                    <input type="text" id="setup-bus-name" placeholder="e.g. Grimms Reselling" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
                 </div>
 
                 <div>
-                    <span class="block opacity-50 text-[10px] uppercase tracking-wide mb-1">
-                        Cost per unit
-                    </span>
-                    <span class="font-semibold">
-                        ${formatCurrency(component.cost)}
-                    </span>
+                    <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Primary Industry</label>
+                    <input type="text" id="setup-industry" placeholder="e.g. E-Commerce & Vintage Collectibles" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Preferred Currency</label>
+                    <select id="setup-currency" class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
+                        <option value="USD ($)">USD ($)</option>
+                        <option value="EUR (€)">EUR (€)</option>
+                        <option value="GBP (£)">GBP (£)</option>
+                        <option value="CAD ($)">CAD ($)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">App Color Theme</label>
+                    <select id="setup-theme" onchange="previewTheme(this.value)" class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
+                        <optgroup label="☀️ Light Themes">
+                            <option value="blush" selected>Blush Rose (Default Pink)</option>
+                            <option value="lavender">Lavender Dream (Soft Purple)</option>
+                            <option value="peach">Peach Sunset (Warm Peach)</option>
+                            <option value="sakura">Sakura Blossom (Soft Pink)</option>
+                            <option value="vanilla">Vanilla Latte (Cream & Warm)</option>
+                            <option value="mint">Minty Fresh (Sage & Mint)</option>
+                            <option value="berry">Berry Chic (Deep Berry)</option>
+                            <option value="golden">Golden Hour (Warm Gold)</option>
+                            <option value="cottoncandy">Cotton Candy (Pastel Blue & Pink)</option>
+                            <option value="emerald">Emerald Elegance (Soft Green)</option>
+                            <option value="ruby_light">Ruby Red (Sophisticated Light Red)</option>
+                        </optgroup>
+                        <optgroup label="🌙 Dark Themes">
+                            <option value="midnight">Midnight Luxe (Charcoal & Slate Blue)</option>
+                            <option value="rosewood">Rosewood (Deep Burgundy & Blush)</option>
+                            <option value="lavender_noir">Lavender Noir (Deep Plum & Lavender)</option>
+                            <option value="espresso">Espresso Luxe (Dark Chocolate & Mocha)</option>
+                            <option value="sage_noir">Sage Noir (Deep Sage & Forest)</option>
+                            <option value="champagne">Champagne Noir (Warm Charcoal & Gold)</option>
+                            <option value="dusty_mauve">Dusty Mauve (Deep Mauve & Pink)</option>
+                            <option value="oceanic">Oceanic (Deep Navy & Teal)</option>
+                            <option value="emerald_luxe">Emerald Luxe (Deep Emerald & Sage)</option>
+                            <option value="graphite">Graphite (Soft Charcoal & Titanium)</option>
+                            <option value="crimson_noir">Crimson Noir (Deep Dark Red)</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">App Font Family</label>
+                    <select id="setup-font" onchange="previewFont(this.value)" class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
+                        <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans (Default)</option>
+                        <option value="'Inter', sans-serif">Inter</option>
+                        <option value="'Poppins', sans-serif">Poppins</option>
+                        <option value="'Roboto', sans-serif">Roboto</option>
+                        <option value="'Montserrat', sans-serif">Montserrat</option>
+                        <option value="'Open Sans', sans-serif">Open Sans</option>
+                        <option value="'Lato', sans-serif">Lato</option>
+                        <option value="'DM Sans', sans-serif">DM Sans</option>
+                        <option value="'Playfair Display', serif">Playfair Display (Elegant Serif)</option>
+                        <option value="'Cormorant Garamond', serif">Cormorant Garamond (Classic Serif)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Active Sales Platforms</label>
+                    <div id="platforms-container" class="space-y-2 mb-2">
+                        <div class="flex items-center space-x-2">
+                            <input type="text" value="Vinted" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card">
+                            <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" value="eBay" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card">
+                            <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addPlatformInput()" class="text-xs text-brand font-semibold hover:underline flex items-center space-x-1 mt-1">
+                        <i class="fa-solid fa-plus"></i> <span>Add another platform</span>
+                    </button>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Initial Monthly Revenue Goal</label>
+                    <input type="number" id="setup-goal" placeholder="e.g. 6000" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card">
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full py-4 bg-brand text-white font-semibold rounded-2xl shadow-lg shadow-brand/30 hover:opacity-90 transition-all">
+                        Complete Setup & Launch
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- ================= VIEW 3: MAIN APP INTERFACE ================= -->
+        <div id="screen-app" class="hidden flex-col flex-1 overflow-hidden relative">
+            
+            <!-- TOP APP HEADER -->
+            <div id="home-top-header" class="custom-card px-6 pt-4 pb-3 flex justify-between items-center border-b">
+                <div>
+                    <h1 class="text-base font-bold" id="header-greeting">Welcome back, Grimms Reselling!</h1>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <select id="dashboard-timeframe" onchange="updateTimeframe(this.value)" class="text-xs font-semibold bg-brand-light text-brand px-2.5 py-1.5 rounded-lg border-0 outline-none cursor-pointer">
+                        <option value="this_month">This Month</option>
+                        <option value="today">Today</option>
+                        <option value="this_week">This Week</option>
+                        <option value="this_year">This Year</option>
+                        <option value="all_time">All Time</option>
+                    </select>
+
+                    <div class="relative cursor-pointer" onclick="toggleNotificationBadge()">
+                        <div class="w-9 h-9 rounded-full opacity-80 bg-neutral-200/40 dark:bg-neutral-800 flex items-center justify-center hover:opacity-100 transition">
+                            <i class="fa-regular fa-bell text-sm"></i>
+                        </div>
+                        <span id="notif-dot" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COMPONENTS PAGE CUSTOM HEADER -->
+            <div id="components-top-header" class="hidden custom-card px-6 py-4 flex justify-between items-center border-b">
+                <button onclick="switchTab('inventory')" class="w-10 h-10 rounded-full opacity-80 bg-neutral-200/40 dark:bg-neutral-800 flex items-center justify-center hover:opacity-100 transition text-sm">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <h1 class="text-base font-bold tracking-tight">Components & Supplies</h1>
+                <div class="relative cursor-pointer" onclick="toggleComponentNotification()">
+                    <div class="w-10 h-10 rounded-full opacity-80 bg-neutral-200/40 dark:bg-neutral-800 flex items-center justify-center hover:opacity-100 transition">
+                        <i class="fa-regular fa-bell text-base"></i>
+                    </div>
+                    <span id="comp-notif-dot" class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white"></span>
+                </div>
+            </div>
+
+            <!-- MAIN SCROLLABLE CONTENT AREA -->
+            <div class="flex-1 overflow-y-auto px-5 py-4 pb-24 hide-scrollbar" id="main-scroll-container">
+
+                <!-- TAB 1: HOME -->
+                <div id="tab-home-content" class="app-tab space-y-4">
+                    <!-- Revenue Card with Automated Math & Line Chart -->
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-xs font-semibold opacity-70 uppercase tracking-wider" id="rev-card-title">This Month's Revenue</span>
+                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-full flex items-center space-x-1">
+                                <i class="fa-solid fa-arrow-up text-[10px]"></i> <span>12%</span>
+                            </span>
+                        </div>
+                        <div class="flex items-baseline space-x-2 mb-2">
+                            <h2 class="text-3xl font-extrabold" id="display-revenue">$4,820</h2>
+                        </div>
+                        <div class="h-20 w-full relative pt-2">
+                            <svg class="w-full h-full overflow-visible" viewBox="0 0 300 60" preserveAspectRatio="none">
+                                <defs>
+                                    <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+                                        <stop offset="0%" stop-color="var(--brand-primary)" stop-opacity="0.35"/>
+                                        <stop offset="100%" stop-color="var(--brand-primary)" stop-opacity="0.0"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M 0 45 Q 60 30, 120 35 T 240 15 T 300 5 L 300 60 L 0 60 Z" fill="url(#revGrad)" />
+                                <path d="M 0 45 Q 60 30, 120 35 T 240 15 T 300 5" fill="none" stroke="var(--brand-primary)" stroke-width="3" stroke-linecap="round" />
+                                <circle cx="300" cy="5" r="4.5" fill="var(--brand-primary)" />
+                            </svg>
+                        </div>
+                        <div class="flex justify-between text-[10px] opacity-60 mt-2">
+                            <span>Oct 1</span>
+                            <span>Oct 15</span>
+                            <span>Oct 31</span>
+                        </div>
+                    </div>
+
+                    <!-- Order Metrics & Goal Progress -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <div class="custom-card p-4 rounded-2xl shadow-sm border flex flex-col justify-between">
+                            <div class="flex items-center space-x-2 text-brand mb-2">
+                                <i class="fa-solid fa-bag-shopping"></i>
+                                <span class="text-xs font-semibold opacity-70">Total Orders</span>
+                            </div>
+                            <span class="text-2xl font-bold" id="metric-orders">52</span>
+                        </div>
+                        <div class="custom-card p-4 rounded-2xl shadow-sm border flex flex-col justify-between">
+                            <div class="flex items-center space-x-2 text-emerald-600 mb-2">
+                                <i class="fa-solid fa-bullseye"></i>
+                                <span class="text-xs font-semibold opacity-70">Goal Progress</span>
+                            </div>
+                            <span class="text-2xl font-bold" id="metric-goal-pct">76%</span>
+                        </div>
+                    </div>
+
+                    <!-- Order Fulfillment Pipeline Card -->
+                    <div class="custom-card p-4 rounded-3xl shadow-sm border">
+                        <h4 class="text-xs font-bold uppercase tracking-wider opacity-70 mb-3">Order Fulfillment Pipeline</h4>
+                        <div class="grid grid-cols-4 gap-2 text-center mb-2">
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
+                                <span class="block text-sm font-bold">2</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Need Packaging</span>
+                            </div>
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
+                                <span class="block text-sm font-bold">3</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Packaged</span>
+                            </div>
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
+                                <span class="block text-sm font-bold">4</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Needs Shipping</span>
+                            </div>
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
+                                <span class="block text-sm font-bold">12</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Shipped</span>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-4 gap-2 text-center">
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
+                                <span class="block text-sm font-bold">6</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">In Transit</span>
+                            </div>
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
+                                <span class="block text-sm font-bold">8</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Delivered</span>
+                            </div>
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
+                                <span class="block text-sm font-bold">1</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Awaiting Payment</span>
+                            </div>
+                            <div class="custom-card p-2.5 rounded-xl border opacity-90 flex flex-col justify-center items-center">
+                                <span class="block text-sm font-bold text-emerald-600">25</span>
+                                <span class="text-[10px] font-medium opacity-70 leading-tight mt-0.5">Fulfilled</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Goals Circular Progress Ring -->
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-sm font-bold">Your Goals</h3>
+                            <span class="text-xs text-brand font-semibold cursor-pointer" onclick="switchTab('reports')">View Analytics &gt;</span>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="relative w-16 h-16 flex items-center justify-center shrink-0">
+                                <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                    <path class="opacity-20" stroke-width="3.8" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                    <path class="text-brand" stroke-dasharray="76, 100" stroke-width="3.8" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                </svg>
+                                <div class="absolute text-xs font-bold">76%</div>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-sm font-bold">Grow Sales</h4>
+                                <p class="text-xs opacity-70 mb-2" id="goal-target-text">Reach $6,000 this month</p>
+                                <div class="w-full opacity-20 bg-current h-2 rounded-full overflow-hidden">
+                                    <div class="bg-brand h-full rounded-full" style="width: 76%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border">
+                        <h3 class="text-sm font-bold mb-3">Quick Actions</h3>
+                        <div class="grid grid-cols-4 gap-2 text-center">
+                            <div onclick="openComponentModal()" class="bg-brand-light/50 p-3 rounded-2xl cursor-pointer hover:opacity-80 transition">
+                                <i class="fa-solid fa-plus text-brand mb-1"></i>
+                                <span class="block text-[10px] font-semibold">Add Supply</span>
+                            </div>
+                            <div onclick="switchTab('reports')" class="bg-brand-light/50 p-3 rounded-2xl cursor-pointer hover:opacity-80 transition">
+                                <i class="fa-solid fa-chart-pie text-brand mb-1"></i>
+                                <span class="block text-[10px] font-semibold">Reports</span>
+                            </div>
+                            <div onclick="switchTab('components')" class="bg-brand-light/50 p-3 rounded-2xl cursor-pointer hover:opacity-80 transition">
+                                <i class="fa-solid fa-boxes-stacked text-brand mb-1"></i>
+                                <span class="block text-[10px] font-semibold">Components</span>
+                            </div>
+                            <div onclick="switchTab('settings')" class="bg-brand-light/50 p-3 rounded-2xl cursor-pointer hover:opacity-80 transition">
+                                <i class="fa-solid fa-gear text-brand mb-1"></i>
+                                <span class="block text-[10px] font-semibold">Settings</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: TRACKING -->
+                <div id="tab-tracking-content" class="app-tab hidden space-y-4">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border">
+                        <h3 class="font-bold mb-2">Sales Tracking</h3>
+                        <p class="text-xs opacity-70 mb-4">Detailed records across your active sales channels.</p>
+                        <div class="space-y-3" id="tracking-platforms-list"></div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: INVENTORY HUB -->
+                <div id="tab-inventory-content" class="app-tab hidden space-y-4">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border">
+                        <h3 class="font-bold mb-1 text-base">Inventory Hub</h3>
+                        <p class="text-xs opacity-70 mb-4">Manage raw supplies, finished products, and cross-platform listings.</p>
+                        
+                        <div class="space-y-3">
+                            <div onclick="switchTab('components')" class="custom-card p-4 rounded-2xl border flex items-center justify-between cursor-pointer hover:border-brand transition">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-xl bg-brand/10 text-brand flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-boxes-stacked"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm">Components & Supplies</h4>
+                                        <p class="text-[11px] opacity-70">Mailers, bubble wrap, charms, pendants, etc.</p>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right opacity-40 text-xs"></i>
+                            </div>
+
+                            <div onclick="alert('Products catalog manager connected.')" class="custom-card p-4 rounded-2xl border flex items-center justify-between cursor-pointer hover:border-brand transition opacity-80">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-xl bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-shirt"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm">Products</h4>
+                                        <p class="text-[11px] opacity-70">Curated inventory and handmade items.</p>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right opacity-40 text-xs"></i>
+                            </div>
+
+                            <div onclick="alert('Listings cross-sync active.')" class="custom-card p-4 rounded-2xl border flex items-center justify-between cursor-pointer hover:border-brand transition opacity-80">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 rounded-xl bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-store"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-sm">Listings</h4>
+                                        <p class="text-[11px] opacity-70">Vinted, eBay, Depop, & Mercari feeds.</p>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-chevron-right opacity-40 text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: COMPONENTS TRACKER -->
+                <div id="tab-components-content" class="app-tab hidden space-y-4">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border space-y-4">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h3 class="font-bold text-base">Raw Supplies & Parts</h3>
+                                <p class="text-xs opacity-70">Packaging & jewelry inventories (8 per view)</p>
+                            </div>
+                            <button onclick="openComponentModal()" class="px-4 py-2.5 bg-brand text-white font-semibold rounded-xl text-xs shadow-md hover:opacity-90 transition flex items-center space-x-1.5 shrink-0">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                                <span>Add New</span>
+                            </button>
+                        </div>
+
+                        <!-- Management Action Buttons Bar -->
+                        <div class="flex space-x-2">
+                            <button onclick="manageCategories()" class="flex-1 py-2 bg-brand-light text-brand text-xs font-semibold rounded-xl border border-brand/20 hover:opacity-80 transition">
+                                <i class="fa-solid fa-folder-plus mr-1"></i> Manage Categories
+                            </button>
+                            <button onclick="manageSuppliers()" class="flex-1 py-2 bg-brand-light text-brand text-xs font-semibold rounded-xl border border-brand/20 hover:opacity-80 transition">
+                                <i class="fa-solid fa-truck-field mr-1"></i> Manage Suppliers
+                            </button>
+                        </div>
+
+                        <div class="flex space-x-2">
+                            <div class="relative flex-1">
+                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-xs opacity-40"></i>
+                                <input type="text" id="comp-search" oninput="renderComponents()" placeholder="Search components or supplier..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border text-xs custom-card outline-none">
+                            </div>
+                            <button id="batch-delete-btn" onclick="batchDeleteComponents()" class="hidden px-4 py-2.5 bg-red-500 text-white font-semibold rounded-xl text-xs hover:bg-red-600 transition shrink-0 flex items-center space-x-1">
+                                <i class="fa-solid fa-trash-can"></i>
+                                <span>Delete</span>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2.5 text-xs">
+                            <select id="comp-filter-cat" onchange="renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
+                                <option value="">All Categories</option>
+                            </select>
+                            <select id="comp-sort" onchange="renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
+                                <option value="name_asc">Sort: A - Z</option>
+                                <option value="name_desc">Sort: Z - A</option>
+                                <option value="cost_high">Cost: High to Low</option>
+                                <option value="cost_low">Cost: Low to High</option>
+                                <option value="qty_high">Quantity: High to Low</option>
+                                <option value="qty_low">Quantity: Low to High</option>
+                                <option value="stock_out">Status: Out of Stock First</option>
+                            </select>
+                        </div>
+
+                        <div id="components-list" class="space-y-3.5 pt-1"></div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: REPORTS -->
+                <div id="tab-reports-content" class="app-tab hidden space-y-4">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border space-y-4">
+                        <div>
+                            <h3 class="font-bold text-base">Performance Reports</h3>
+                            <p class="text-xs opacity-70">Net profit margins and top product analytics.</p>
+                        </div>
+                        <div class="custom-card border p-4 rounded-2xl text-center">
+                            <span class="text-xs opacity-70 block mb-1">Net Profit This Period</span>
+                            <span class="text-2xl font-bold text-brand" id="report-net-profit">$3,960</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                            <div class="custom-card p-3.5 rounded-2xl border text-center">
+                                <span class="opacity-75 block mb-0.5">Gross Revenue</span>
+                                <span class="font-extrabold text-sm" id="report-gross">$4,820</span>
+                            </div>
+                            <div class="custom-card p-3.5 rounded-2xl border text-center">
+                                <span class="opacity-75 block mb-0.5">Total Expenses</span>
+                                <span class="font-extrabold text-sm" id="report-expenses">$860</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 6: GOALS -->
+                <div id="tab-goals-content" class="app-tab hidden space-y-4">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border text-center py-8">
+                        <div class="relative w-24 h-24 mx-auto flex items-center justify-center mb-4">
+                            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+                                <path class="opacity-20" stroke-width="3.8" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                <path class="text-brand" stroke-dasharray="76, 100" stroke-width="3.8" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                            </svg>
+                            <div class="absolute text-xl font-bold text-brand">76%</div>
+                        </div>
+                        <h3 class="font-bold text-base mb-1">You're on track!</h3>
+                        <p class="text-xs opacity-70">Keep going, you're doing great ♡</p>
+                    </div>
+                </div>
+
+                <!-- TAB 7: MORE -->
+                <div id="tab-more-content" class="app-tab hidden space-y-4">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border space-y-3">
+                        <div class="flex items-center space-x-3 pb-3 border-b">
+                            <div class="w-12 h-12 rounded-full bg-brand-light flex items-center justify-center font-bold text-brand text-lg">G</div>
+                            <div>
+                                <h4 class="font-bold" id="more-bus-name">Grimms Reselling</h4>
+                                <span class="text-xs text-brand bg-brand-light px-2 py-0.5 rounded-full">Active Plan</span>
+                            </div>
+                        </div>
+                        <button onclick="switchTab('settings')" class="w-full text-left py-2 text-xs font-semibold flex justify-between items-center">
+                            <span>Business Settings</span>
+                            <i class="fa-solid fa-chevron-right opacity-40"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TAB 8: SETTINGS -->
+                <div id="tab-settings-content" class="app-tab hidden space-y-4">
+                    <div class="custom-card p-5 rounded-3xl shadow-sm border space-y-4">
+                        <h3 class="font-bold">Business Settings</h3>
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <label class="block opacity-70 font-semibold mb-1">Business Name</label>
+                                <input type="text" id="settings-bus-name" class="w-full p-2.5 border rounded-xl font-medium custom-card" value="Grimms Reselling">
+                            </div>
+                            <div>
+                                <label class="block opacity-70 font-semibold mb-1">Currency</label>
+                                <input type="text" id="settings-currency" class="w-full p-2.5 border rounded-xl font-medium custom-card" value="USD ($)">
+                            </div>
+                            <div>
+                                <label class="block opacity-70 font-semibold mb-1">App Color Theme</label>
+                                <select id="settings-theme" onchange="previewTheme(this.value)" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                                    <optgroup label="☀️ Light Themes">
+                                        <option value="blush">Blush Rose (Default Pink)</option>
+                                        <option value="lavender">Lavender Dream (Soft Purple)</option>
+                                        <option value="peach">Peach Sunset (Warm Peach)</option>
+                                        <option value="sakura">Sakura Blossom (Soft Pink)</option>
+                                        <option value="vanilla">Vanilla Latte (Cream & Warm)</option>
+                                        <option value="mint">Minty Fresh (Sage & Mint)</option>
+                                        <option value="berry">Berry Chic (Deep Berry)</option>
+                                        <option value="golden">Golden Hour (Warm Gold)</option>
+                                        <option value="cottoncandy">Cotton Candy (Pastel Blue & Pink)</option>
+                                        <option value="emerald">Emerald Elegance (Soft Green)</option>
+                                        <option value="ruby_light">Ruby Red (Sophisticated Light Red)</option>
+                                    </optgroup>
+                                    <optgroup label="🌙 Dark Themes">
+                                        <option value="midnight">Midnight Luxe (Charcoal & Slate Blue)</option>
+                                        <option value="rosewood">Rosewood (Deep Burgundy & Blush)</option>
+                                        <option value="lavender_noir">Lavender Noir (Deep Plum & Lavender)</option>
+                                        <option value="espresso">Espresso Luxe (Dark Chocolate & Mocha)</option>
+                                        <option value="sage_noir">Sage Noir (Deep Sage & Forest)</option>
+                                        <option value="champagne">Champagne Noir (Warm Charcoal & Gold)</option>
+                                        <option value="dusty_mauve">Dusty Mauve (Deep Mauve & Pink)</option>
+                                        <option value="oceanic">Oceanic (Deep Navy & Teal)</option>
+                                        <option value="emerald_luxe">Emerald Luxe (Deep Emerald & Sage)</option>
+                                        <option value="graphite">Graphite (Soft Charcoal & Titanium)</option>
+                                        <option value="crimson_noir">Crimson Noir (Deep Dark Red)</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block opacity-70 font-semibold mb-1">App Font Family</label>
+                                <select id="settings-font" onchange="previewFont(this.value)" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                                    <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans (Default)</option>
+                                    <option value="'Inter', sans-serif">Inter</option>
+                                    <option value="'Poppins', sans-serif">Poppins</option>
+                                    <option value="'Roboto', sans-serif">Roboto</option>
+                                    <option value="'Montserrat', sans-serif">Montserrat</option>
+                                    <option value="'Open Sans', sans-serif">Open Sans</option>
+                                    <option value="'Lato', sans-serif">Lato</option>
+                                    <option value="'DM Sans', sans-serif">DM Sans</option>
+                                    <option value="'Playfair Display', serif">Playfair Display (Elegant Serif)</option>
+                                    <option value="'Cormorant Garamond', serif">Cormorant Garamond (Classic Serif)</option>
+                                </select>
+                            </div>
+                            <button onclick="saveSettingsChanges()" class="w-full py-3 bg-brand text-white font-semibold rounded-xl mt-2 hover:opacity-90 transition">Save Changes</button>
+                        </div>
+                    </div>
                 </div>
 
             </div>
 
-            ${component.notes ? `
-                <div class="text-[11px] opacity-65 border-t pt-2 break-words">
-                    ${escapeHTML(component.notes)}
-                </div>
-            ` : ''}
-
-            <div class="flex gap-3 border-t pt-3">
-
-                <button
-                    type="button"
-                    onclick="openComponentModal(${component.id})"
-                    class="flex-1 py-2.5 rounded-xl border text-xs font-semibold hover:border-brand transition flex items-center justify-center gap-2"
-                >
-                    <i class="fa-solid fa-pen"></i>
-                    Edit
+            <!-- BOTTOM HOTBAR NAVIGATION -->
+            <div class="absolute bottom-0 left-0 right-0 custom-card backdrop-blur-md border-t px-2 py-2 flex justify-between items-center text-[10px] opacity-90 z-40">
+                <button onclick="switchTab('home')" id="nav-btn-home" class="nav-item flex flex-col items-center flex-1 text-brand">
+                    <i class="fa-solid fa-house text-base mb-0.5"></i>
+                    <span>Home</span>
                 </button>
-
-                <button
-                    type="button"
-                    onclick="deleteComponent(${component.id})"
-                    class="flex-1 py-2.5 rounded-xl border border-red-200 text-red-500 text-xs font-semibold hover:bg-red-50 dark:hover:bg-red-950/30 transition flex items-center justify-center gap-2"
-                >
-                    <i class="fa-solid fa-trash-can"></i>
-                    Delete
+                <button onclick="switchTab('inventory')" id="nav-btn-inventory" class="nav-item flex flex-col items-center flex-1 hover:opacity-100">
+                    <i class="fa-solid fa-boxes-stacked text-base mb-0.5"></i>
+                    <span>Inventory</span>
                 </button>
-
+                <button onclick="switchTab('tracking')" id="nav-btn-tracking" class="nav-item flex flex-col items-center flex-1 hover:opacity-100">
+                    <i class="fa-solid fa-chart-line text-base mb-0.5"></i>
+                    <span>Tracking</span>
+                </button>
+                <button onclick="switchTab('reports')" id="nav-btn-reports" class="nav-item flex flex-col items-center flex-1 hover:opacity-100">
+                    <i class="fa-solid fa-chart-column text-base mb-0.5"></i>
+                    <span>Reports</span>
+                </button>
+                <button onclick="switchTab('more')" id="nav-btn-more" class="nav-item flex flex-col items-center flex-1 hover:opacity-100">
+                    <i class="fa-solid fa-bars text-base mb-0.5"></i>
+                    <span>More</span>
+                </button>
+                <button onclick="switchTab('settings')" id="nav-btn-settings" class="nav-item flex flex-col items-center flex-1 hover:opacity-100">
+                    <i class="fa-solid fa-gear text-base mb-0.5"></i>
+                    <span>Setting</span>
+                </button>
             </div>
-        `;
 
-        container.appendChild(card);
-    });
+        </div>
 
-    renderComponentPagination(filtered.length);
+    </div>
 
-    checkBatchSelection();
-}
+    <!-- ================= ADD / EDIT COMPONENT MODAL ================= -->
+    <div id="component-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="custom-card w-full max-w-sm rounded-3xl p-6 border shadow-2xl relative">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="modal-title" class="font-bold text-base">Add Component</h3>
+                <button onclick="closeComponentModal()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            
+            <form id="component-form" onsubmit="handleComponentSubmit(event)" class="space-y-3 text-xs">
+                <input type="hidden" id="comp-edit-id">
+                <div>
+                    <label class="block opacity-70 font-semibold mb-1">Component Name *</label>
+                    <input type="text" id="comp-name" placeholder="e.g. 4x8 Bubble Mailers" required class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                </div>
 
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block opacity-70 font-semibold mb-1">Quantity on Hand *</label>
+                        <input type="number" id="comp-qty" placeholder="e.g. 150" required min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                    </div>
+                    <div>
+                        <label class="block opacity-70 font-semibold mb-1">Cost per Unit ($)</label>
+                        <input type="number" step="0.01" id="comp-cost" placeholder="e.g. 0.25" min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                    </div>
+                </div>
 
-// ================= BATCH SELECTION =================
+                <div>
+                    <label class="block opacity-70 font-semibold mb-1">Category</label>
+                    <select id="comp-category" class="w-full p-2.5 border rounded-xl font-medium custom-card"></select>
+                </div>
 
-function checkBatchSelection() {
-    const checkedCount = document.querySelectorAll(
-        '.comp-checkbox:checked'
-    ).length;
+                <div>
+                    <label class="block opacity-70 font-semibold mb-1">Supplier</label>
+                    <select id="comp-supplier" class="w-full p-2.5 border rounded-xl font-medium custom-card"></select>
+                </div>
 
-    const batchButton = getElement('batch-delete-btn');
+                <div>
+                    <label class="block opacity-70 font-semibold mb-1">Notes</label>
+                    <textarea id="comp-notes" placeholder="SKU links, dimensions, or reorder reminders..." class="w-full p-2.5 border rounded-xl font-medium custom-card h-16 resize-none"></textarea>
+                </div>
 
-    if (!batchButton) return;
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-3 bg-brand text-white font-semibold rounded-xl hover:opacity-95 transition">Save Component</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    if (checkedCount > 0) {
-        batchButton.classList.remove('hidden');
+    <!-- JavaScript Application Controller -->
+    <script>
+        let hasNotification = true;
+        let hasComponentNotification = true;
+        let userPlatforms = ['Vinted', 'eBay'];
 
-        const label = batchButton.querySelector('span');
+        let savedSettingsState = {
+            name: 'Grimms Reselling',
+            currency: 'USD ($)',
+            theme: 'blush',
+            font: "'Plus Jakarta Sans', sans-serif"
+        };
 
-        if (label) {
-            label.innerText = `Delete (${checkedCount})`;
+        let componentsList = [
+            { id: 1, name: '4x8 Bubble Mailers', qty: 145, cost: 0.18, category: 'Packaging', supplier: 'Uline', notes: 'Kraft paper bubble mailers' },
+            { id: 2, name: 'Gothic Bat Charms', qty: 0, cost: 0.45, category: 'Jewelry Supplies', supplier: 'AliExpress', notes: 'Out of stock, reorder soon' },
+            { id: 3, name: 'Thank You Stickers (Roll)', qty: 320, cost: 0.03, category: 'Stickers & Labels', supplier: 'Amazon', notes: 'Pink foil logo stickers' },
+            { id: 4, name: 'Stainless Steel Chains (18")', qty: 45, cost: 0.85, category: 'Jewelry Supplies', supplier: 'Rio Grande', notes: 'For pendant necklaces' },
+            { id: 5, name: 'Organza Gift Pouches', qty: 85, cost: 0.12, category: 'Packaging', supplier: 'Uline', notes: 'Black 3x4 pouches' },
+            { id: 6, name: 'Lobster Clasps 12mm', qty: 210, cost: 0.09, category: 'Jewelry Supplies', supplier: 'Rio Grande', notes: 'Silver plated' },
+            { id: 7, name: 'Warning Fragile Labels', qty: 500, cost: 0.01, category: 'Stickers & Labels', supplier: 'Amazon', notes: 'Red bold text' },
+            { id: 8, name: 'Cardboard Backing Sheets', qty: 60, cost: 0.20, category: 'Packaging', supplier: 'Uline', notes: '5x7 rigid sheets' },
+            { id: 9, name: 'Crystal Glass Beads', qty: 15, cost: 0.05, category: 'Jewelry Supplies', supplier: 'AliExpress', notes: 'Mixed dark shades' }
+        ];
+
+        let componentCategories = ['Packaging', 'Jewelry Supplies', 'Stickers & Labels'];
+        let componentSuppliers = ['Uline', 'AliExpress', 'Amazon', 'Rio Grande'];
+
+        const themes = {
+            blush: { primary: '#d97793', light: '#fdf2f4', dark: '#b35470', accent: '#f4aabf', appBg: '#f7f3f4', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            lavender: { primary: '#7c3aed', light: '#f5f3ff', dark: '#5b21b6', accent: '#c4b5fd', appBg: '#faf8fc', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            peach: { primary: '#ea580c', light: '#fff7ed', dark: '#9a3412', accent: '#fed7aa', appBg: '#fffaf5', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            sakura: { primary: '#db2777', light: '#fdf2f8', dark: '#9d174d', accent: '#fbcfe8', appBg: '#fdf8fa', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            vanilla: { primary: '#854d0e', light: '#fefce8', dark: '#713f12', accent: '#fef08a', appBg: '#fbf9f5', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            mint: { primary: '#059669', light: '#ecfdf5', dark: '#047857', accent: '#a7f3d0', appBg: '#f4f8f6', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            berry: { primary: '#be185d', light: '#fdf2f8', dark: '#831843', accent: '#f472b6', appBg: '#fcf6f8', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            golden: { primary: '#ca8a04', light: '#fefce8', dark: '#854d0e', accent: '#fde047', appBg: '#fcfbfa', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            cottoncandy: { primary: '#0284c7', light: '#f0f9ff', dark: '#0369a1', accent: '#bae6fd', appBg: '#f5f9fc', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            emerald: { primary: '#047857', light: '#ecfdf5', dark: '#064e3b', accent: '#34d399', appBg: '#f4f7f5', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            ruby_light: { primary: '#e11d48', light: '#fff1f2', dark: '#9f1239', accent: '#fecdd3', appBg: '#fff5f6', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
+            midnight: { primary: '#38bdf8', light: '#1e293b', dark: '#0284c7', accent: '#1e2230', appBg: '#12151e', cardBg: '#1c2130', text: '#f1f5f9', subText: '#94a3b8', border: '#2a324a' },
+            rosewood: { primary: '#f43f5e', light: '#4c1d25', dark: '#e11d48', accent: '#2c151a', appBg: '#151012', cardBg: '#21181c', text: '#fce7f0', subText: '#d1a3b8', border: '#3d262e' },
+            lavender_noir: { primary: '#a78bfa', light: '#2e1065', dark: '#8b5cf6', accent: '#231838', appBg: '#13111c', cardBg: '#1d1929', text: '#f5f3ff', subText: '#b8a9d4', border: '#312847' },
+            espresso: { primary: '#fbbf24', light: '#422006', dark: '#d97706', accent: '#2a1b12', appBg: '#16110e', cardBg: '#241b14', text: '#fef3c7', subText: '#d4b896', border: '#3b2b20' },
+            sage_noir: { primary: '#34d399', light: '#064e3b', dark: '#059669', accent: '#142820', appBg: '#0f1713', cardBg: '#17251e', text: '#ecfdf5', subText: '#98d8be', border: '#223d30' },
+            champagne: { primary: '#fde047', light: '#422006', dark: '#ca8a04', accent: '#282314', appBg: '#14130f', cardBg: '#211e17', text: '#fef9c3', subText: '#d9cc9c', border: '#3d3726' },
+            dusty_mauve: { primary: '#f472b6', light: '#500724', dark: '#db2777', accent: '#2c1522', appBg: '#151014', cardBg: '#211820', text: '#fdf2f8', subText: '#d9a7c7', border: '#3d2634' },
+            oceanic: { primary: '#38bdf8', light: '#0c4a6e', dark: '#0284c7', accent: '#132230', appBg: '#0b131a', cardBg: '#15222d', text: '#f0f9ff', subText: '#93c5fd', border: '#22384a' },
+            emerald_luxe: { primary: '#34d399', light: '#022c22', dark: '#059669', accent: '#11261e', appBg: '#0a1410', cardBg: '#14221b', text: '#ecfdf5', subText: '#86efac', border: '#1f382d' },
+            graphite: { primary: '#cbd5e1', light: '#1e293b', dark: '#64748b', accent: '#1e222a', appBg: '#0f1115', cardBg: '#1a1f26', text: '#f1f5f9', subText: '#94a3b8', border: '#2d3748' },
+            crimson_noir: { primary: '#f87171', light: '#450a0a', dark: '#dc2626', accent: '#2a1414', appBg: '#140c0c', cardBg: '#211515', text: '#fef2f2', subText: '#fca5a5', border: '#3d2222' }
+        };
+
+        function previewTheme(themeName) {
+            const t = themes[themeName];
+            if (!t) return;
+            const root = document.documentElement;
+            root.style.setProperty('--brand-primary', t.primary);
+            root.style.setProperty('--brand-light', t.light);
+            root.style.setProperty('--brand-dark', t.dark);
+            root.style.setProperty('--brand-accent', t.accent);
+            root.style.setProperty('--app-bg', t.appBg);
+            root.style.setProperty('--card-bg', t.cardBg);
+            root.style.setProperty('--text-main', t.text);
+            root.style.setProperty('--border-color', t.border);
+
+            document.getElementById('setup-theme').value = themeName;
+            document.getElementById('settings-theme').value = themeName;
         }
-    } else {
-        batchButton.classList.add('hidden');
-    }
-}
 
+        function previewFont(fontFamily) {
+            document.documentElement.style.setProperty('--app-font', fontFamily);
+            document.getElementById('setup-font').value = fontFamily;
+            document.getElementById('settings-font').value = fontFamily;
+        }
 
-// ================= SEARCH AND FILTER PAGE RESET =================
+        function updateTimeframe(timeframe) {
+            const revEl = document.getElementById('display-revenue');
+            const titleEl = document.getElementById('rev-card-title');
+            const ordersEl = document.getElementById('metric-orders');
+            const profitEl = document.getElementById('report-net-profit');
 
-function initializeComponentFilters() {
-    const search = getElement('comp-search');
-    const category = getElement('comp-filter-cat');
-    const sort = getElement('comp-sort');
-
-    if (search) {
-        search.addEventListener('input', () => {
-            currentComponentPage = 1;
-            renderComponents();
-        });
-
-        // Remove the old inline handler to prevent duplicate renders.
-        search.removeAttribute('oninput');
-    }
-
-    if (category) {
-        category.addEventListener('change', () => {
-            currentComponentPage = 1;
-            renderComponents();
-        });
-
-        category.removeAttribute('onchange');
-    }
-
-    if (sort) {
-        sort.addEventListener('change', () => {
-            currentComponentPage = 1;
-            renderComponents();
-        });
-
-        sort.removeAttribute('onchange');
-    }
-}
-
-
-// ================= INITIALIZE APPLICATION =================
-
-function initializeApplication() {
-    prepareSetupPlaceholders();
-
-    previewTheme(savedSettingsState.theme);
-    previewFont(savedSettingsState.font);
-
-    updateCategoryDropdowns();
-    updateSupplierDropdowns();
-
-    initializeComponentFilters();
-
-    renderTrackingPlatforms();
-    renderComponents();
-
-    // Close the component modal when clicking its background.
-    const modal = getElement('component-modal');
-
-    if (modal) {
-        modal.addEventListener('click', event => {
-            if (event.target === modal) {
-                closeComponentModal();
+            switch(timeframe) {
+                case 'today':
+                    titleEl.innerText = "Today's Revenue";
+                    revEl.innerText = "$240";
+                    ordersEl.innerText = "3";
+                    profitEl.innerText = "$195";
+                    break;
+                case 'this_week':
+                    titleEl.innerText = "This Week's Revenue";
+                    revEl.innerText = "$1,250";
+                    ordersEl.innerText = "14";
+                    profitEl.innerText = "$980";
+                    break;
+                case 'this_month':
+                    titleEl.innerText = "This Month's Revenue";
+                    revEl.innerText = "$4,820";
+                    ordersEl.innerText = "52";
+                    profitEl.innerText = "$3,960";
+                    break;
+                case 'this_year':
+                    titleEl.innerText = "This Year's Revenue";
+                    revEl.innerText = "$58,400";
+                    ordersEl.innerText = "610";
+                    profitEl.innerText = "$46,200";
+                    break;
+                case 'all_time':
+                    titleEl.innerText = "All-Time Revenue";
+                    revEl.innerText = "$142,900";
+                    ordersEl.innerText = "1,480";
+                    profitEl.innerText = "$112,500";
+                    break;
             }
-        });
-    }
-
-    // Escape key closes the component modal.
-    document.addEventListener('keydown', event => {
-        if (event.key === 'Escape') {
-            closeComponentModal();
         }
-    });
-}
 
+        function goToScreen(screenId) {
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-setup').classList.add('hidden');
+            document.getElementById('screen-app').classList.add('hidden');
 
-// Run after the page has loaded.
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeApplication);
-} else {
-    initializeApplication();
-}
+            document.getElementById(screenId).classList.remove('hidden');
+            document.getElementById(screenId).classList.add('flex');
+        }
+
+        function addPlatformInput() {
+            const container = document.getElementById('platforms-container');
+            const div = document.createElement('div');
+            div.className = "flex items-center space-x-2";
+            div.innerHTML = `
+                <input type="text" placeholder="Platform name (e.g. Depop)" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card">
+                <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeRow(btn) {
+            btn.parentElement.remove();
+        }
+
+        function handleSetupSubmit(e) {
+            e.preventDefault();
+            const busNameInput = document.getElementById('setup-bus-name').value.trim();
+            const currency = document.getElementById('setup-currency').value;
+            const goal = document.getElementById('setup-goal').value;
+            const selectedTheme = document.getElementById('setup-theme').value;
+            const selectedFont = document.getElementById('setup-font').value;
+
+            previewTheme(selectedTheme);
+            previewFont(selectedFont);
+
+            const finalBusName = busNameInput !== "" ? busNameInput : "Grimms Reselling";
+
+            userPlatforms = [];
+            document.querySelectorAll('.platform-input').forEach(input => {
+                if(input.value.trim() !== "") userPlatforms.push(input.value.trim());
+            });
+
+            savedSettingsState = {
+                name: finalBusName,
+                currency: currency,
+                theme: selectedTheme,
+                font: selectedFont
+            };
+
+            document.getElementById('header-greeting').innerText = `Welcome back, ${finalBusName}!`;
+            document.getElementById('more-bus-name').innerText = finalBusName;
+            document.getElementById('settings-bus-name').value = finalBusName;
+            document.getElementById('settings-currency').value = currency;
+            
+            if (goal) {
+                document.getElementById('goal-target-text').innerText = `Reach $${Number(goal).toLocaleString()} this month`;
+            }
+
+            renderTrackingPlatforms();
+            completeSetup();
+        }
+
+        function renderTrackingPlatforms() {
+            const container = document.getElementById('tracking-platforms-list');
+            container.innerHTML = '';
+            userPlatforms.forEach((plat) => {
+                const item = document.createElement('div');
+                item.className = "flex justify-between items-center p-3 custom-card rounded-xl text-xs border";
+                item.innerHTML = `
+                    <div>
+                        <span class="font-bold block">${plat} Channel</span>
+                        <span class="opacity-60">Active Reselling Feed</span>
+                    </div>
+                    <span class="font-bold text-emerald-600">Synced</span>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function completeSetup() {
+            document.getElementById('screen-welcome').classList.add('hidden');
+            document.getElementById('screen-setup').classList.add('hidden');
+            const appScreen = document.getElementById('screen-app');
+            appScreen.classList.remove('hidden');
+            appScreen.classList.add('flex');
+            switchTab('home');
+        }
+
+        function switchTab(tabName) {
+            const tabs = document.querySelectorAll('.app-tab');
+            tabs.forEach(t => t.classList.add('hidden'));
+
+            const targetTab = document.getElementById(`tab-${tabName}-content`);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+            }
+
+            const homeHeader = document.getElementById('home-top-header');
+            const compHeader = document.getElementById('components-top-header');
+
+            if (tabName === 'components') {
+                homeHeader.classList.add('hidden');
+                compHeader.classList.remove('hidden');
+                compHeader.classList.add('flex');
+            } else {
+                homeHeader.classList.remove('hidden');
+                homeHeader.classList.add('flex');
+                compHeader.classList.add('hidden');
+            }
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.classList.remove('text-brand');
+                item.classList.add('opacity-60');
+            });
+
+            let activeNavId = `nav-btn-${tabName}`;
+            if(tabName === 'components') activeNavId = 'nav-btn-inventory';
+
+            const activeNav = document.getElementById(activeNavId);
+            if (activeNav) {
+                activeNav.classList.remove('opacity-60');
+                activeNav.classList.add('text-brand');
+            }
+            
+            document.getElementById('main-scroll-container').scrollTop = 0;
+
+            if(tabName === 'components') {
+                renderComponents();
+            }
+        }
+
+        function toggleNotificationBadge() {
+            hasNotification = !hasNotification;
+            const dot = document.getElementById('notif-dot');
+            if (hasNotification) {
+                dot.classList.remove('hidden');
+                alert('You have 1 new order alert!');
+            } else {
+                dot.classList.add('hidden');
+                alert('All notifications cleared.');
+            }
+        }
+
+        function toggleComponentNotification() {
+            hasComponentNotification = !hasComponentNotification;
+            const dot = document.getElementById('comp-notif-dot');
+            if (hasComponentNotification) {
+                dot.classList.remove('hidden');
+                alert('Component Alert: Gothic Bat Charms are currently out of stock!');
+            } else {
+                dot.classList.add('hidden');
+                alert('All component alerts cleared.');
+            }
+        }
+
+        function saveSettingsChanges() {
+            const newName = document.getElementById('settings-bus-name').value;
+            const currency = document.getElementById('settings-currency').value;
+            const selectedTheme = document.getElementById('settings-theme').value;
+            const selectedFont = document.getElementById('settings-font').value;
+            
+            previewTheme(selectedTheme);
+            previewFont(selectedFont);
+
+            savedSettingsState = {
+                name: newName,
+                currency: currency,
+                theme: selectedTheme,
+                font: selectedFont
+            };
+
+            document.getElementById('header-greeting').innerText = `Welcome back, ${newName}!`;
+            document.getElementById('more-bus-name').innerText = newName;
+            
+            alert('Settings, theme, and font updated successfully!');
+            switchTab('home');
+        }
+
+        // ================= COMPONENTS & INVENTORY LOGIC =================
+
+        function updateCategoryDropdowns() {
+            const filterCat = document.getElementById('comp-filter-cat');
+            const formCat = document.getElementById('comp-category');
+
+            let currentFilterVal = filterCat.value;
+            let currentFormVal = formCat.value;
+
+            filterCat.innerHTML = '<option value="">All Categories</option>';
+            componentCategories.forEach(cat => {
+                filterCat.innerHTML += `<option value="${cat}">${cat}</option>`;
+            });
+            filterCat.value = currentFilterVal;
+
+            formCat.innerHTML = '';
+            componentCategories.forEach(cat => {
+                formCat.innerHTML += `<option value="${cat}">${cat}</option>`;
+            });
+            if(componentCategories.includes(currentFormVal)) {
+                formCat.value = currentFormVal;
+            }
+        }
+
+        function updateSupplierDropdowns() {
+            const formSup = document.getElementById('comp-supplier');
+            let currentSupVal = formSup.value;
+
+            formSup.innerHTML = '';
+            componentSuppliers.forEach(sup => {
+                formSup.innerHTML += `<option value="${sup}">${sup}</option>`;
+            });
+            if(componentSuppliers.includes(currentSupVal)) {
+                formSup.value = currentSupVal;
+            }
+        }
+
+        function manageCategories() {
+            let catListStr = componentCategories.join('\n');
+            let action = prompt("Current Categories:\n" + catListStr + "\n\nType 'add', 'edit', or 'delete':");
+            if(!action) return;
+            
+            action = action.toLowerCase().trim();
+            if(action === 'add') {
+                let added = prompt("Enter name of new category:");
+                if(added && added.trim() !== "") {
+                    let trimmed = added.trim();
+                    if(!componentCategories.includes(trimmed)) {
+                        componentCategories.push(trimmed);
+                        alert("Category added successfully!");
+                        updateCategoryDropdowns();
+                    }
+                }
+            } else if(action === 'edit') {
+                let target = prompt("Enter exact name of category to rename:");
+                if(target && componentCategories.includes(target.trim())) {
+                    let replacement = prompt("Enter new name for '" + target.trim() + "':");
+                    if(replacement && replacement.trim() !== "") {
+                        let idx = componentCategories.indexOf(target.trim());
+                        componentCategories[idx] = replacement.trim();
+                        componentsList.forEach(c => {
+                            if(c.category === target.trim()) c.category = replacement.trim();
+                        });
+                        alert("Category renamed successfully!");
+                        updateCategoryDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Category not found.");
+                }
+            } else if(action === 'delete') {
+                let target = prompt("Enter exact name of category to delete:");
+                if(target && componentCategories.includes(target.trim())) {
+                    if(confirm("Are you sure you want to delete category '" + target.trim() + "'?")) {
+                        componentCategories = componentCategories.filter(c => c !== target.trim());
+                        alert("Category deleted.");
+                        updateCategoryDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Category not found.");
+                }
+            }
+        }
+
+        function manageSuppliers() {
+            let supListStr = componentSuppliers.join('\n');
+            let action = prompt("Current Suppliers:\n" + supListStr + "\n\nType 'add', 'edit', or 'delete':");
+            if(!action) return;
+
+            action = action.toLowerCase().trim();
+            if(action === 'add') {
+                let added = prompt("Enter name of new supplier:");
+                if(added && added.trim() !== "") {
+                    let trimmed = added.trim();
+                    if(!componentSuppliers.includes(trimmed)) {
+                        componentSuppliers.push(trimmed);
+                        alert("Supplier added successfully!");
+                        updateSupplierDropdowns();
+                    }
+                }
+            } else if(action === 'edit') {
+                let target = prompt("Enter exact name of supplier to rename:");
+                if(target && componentSuppliers.includes(target.trim())) {
+                    let replacement = prompt("Enter new name for '" + target.trim() + "':");
+                    if(replacement && replacement.trim() !== "") {
+                        let idx = componentSuppliers.indexOf(target.trim());
+                        componentSuppliers[idx] = replacement.trim();
+                        componentsList.forEach(c => {
+                            if(c.supplier === target.trim()) c.supplier = replacement.trim();
+                        });
+                        alert("Supplier renamed successfully!");
+                        updateSupplierDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Supplier not found.");
+                }
+            } else if(action === 'delete') {
+                let target = prompt("Enter exact name of supplier to delete:");
+                if(target && componentSuppliers.includes(target.trim())) {
+                    if(confirm("Are you sure you want to delete supplier '" + target.trim() + "'?")) {
+                        componentSuppliers = componentSuppliers.filter(s => s !== target.trim());
+                        alert("Supplier deleted.");
+                        updateSupplierDropdowns();
+                        renderComponents();
+                    }
+                } else {
+                    alert("Supplier not found.");
+                }
+            }
+        }
+
+        function openComponentModal(id = null) {
+            updateCategoryDropdowns();
+            updateSupplierDropdowns();
+            const modal = document.getElementById('component-modal');
+            const title = document.getElementById('modal-title');
+
+            if(id) {
+                title.innerText = 'Edit Component';
+                const comp = componentsList.find(c => c.id === id);
+                if(comp) {
+                    document.getElementById('comp-edit-id').value = comp.id;
+                    document.getElementById('comp-name').value = comp.name;
+                    document.getElementById('comp-qty').value = comp.qty;
+                    document.getElementById('comp-cost').value = comp.cost;
+                    document.getElementById('comp-category').value = comp.category;
+                    document.getElementById('comp-supplier').value = comp.supplier || componentSuppliers[0];
+                    document.getElementById('comp-notes').value = comp.notes || '';
+                }
+            } else {
+                title.innerText = 'Add Component';
+                document.getElementById('component-form').reset();
+                document.getElementById('comp-edit-id').value = '';
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeComponentModal() {
+            document.getElementById('component-modal').classList.add('hidden');
+        }
+
+        function handleComponentSubmit(e) {
+            e.preventDefault();
+            const id = document.getElementById('comp-edit-id').value;
+            const name = document.getElementById('comp-name').value.trim();
+            const qty = parseInt(document.getElementById('comp-qty').value) || 0;
+            const cost = parseFloat(document.getElementById('comp-cost').value) || 0;
+            const category = document.getElementById('comp-category').value;
+            const supplier = document.getElementById('comp-supplier').value;
+            const notes = document.getElementById('comp-notes').value.trim();
+
+            if(id) {
+                const comp = componentsList.find(c => c.id == id);
+                if(comp) {
+                    comp.name = name;
+                    comp.qty = qty;
+                    comp.cost = cost;
+                    comp.category = category;
+                    comp.supplier = supplier;
+                    comp.notes = notes;
+                }
+            } else {
+                componentsList.push({ id: Date.now(), name, qty, cost, category, supplier, notes });
+            }
+
+            closeComponentModal();
+            renderComponents();
+        }
+
+        function deleteComponent(id) {
+            if(confirm("Are you sure you want to delete this component?")) {
+                componentsList = componentsList.filter(c => c.id !== id);
+                renderComponents();
+            }
+        }
+
+        function batchDeleteComponents() {
+            const checkedBoxes = document.querySelectorAll('.comp-checkbox:checked');
+            if(checkedBoxes.length === 0) return;
+
+            if(confirm(`Are you sure you want to delete ${checkedBoxes.length} selected components?`)) {
+                const idsToDelete = Array.from(checkedBoxes).map(cb => parseInt(cb.dataset.id));
+                componentsList = componentsList.filter(c => !idsToDelete.includes(c.id));
+                renderComponents();
+            }
+        }
+
+        function renderComponents() {
+            updateCategoryDropdowns();
+            updateSupplierDropdowns();
+            const container = document.getElementById('components-list');
+            const searchVal = document.getElementById('comp-search').value.toLowerCase();
+            const catFilter = document.getElementById('comp-filter-cat').value;
+            const sortVal = document.getElementById('comp-sort').value;
+
+            let filtered = componentsList.filter(c => {
+                const matchesSearch = c.name.toLowerCase().includes(searchVal) || (c.supplier && c.supplier.toLowerCase().includes(searchVal));
+                const matchesCat = catFilter === "" || c.category === catFilter;
+                return matchesSearch && matchesCat;
+            });
+
+            filtered.sort((a, b) => {
+                if(sortVal === 'name_asc') return a.name.localeCompare(b.name);
+                if(sortVal === 'name_desc') return b.name.localeCompare(a.name);
+                if(sortVal === 'cost_high') return b.cost - a.cost;
+                if(sortVal === 'cost_low') return a.cost - b.cost;
+                if(sortVal === 'qty_high') return b.qty - a.qty;
+                if(sortVal === 'qty_low') return a.qty - b.qty;
+                if(sortVal === 'stock_out') {
+                    if(a.qty === 0 && b.qty > 0) return -1;
+                    if(a.qty > 0 && b.qty === 0) return 1;
+                    return a.name.localeCompare(b.name);
+                }
+                return 0;
+            });
+
+            container.innerHTML = '';
+            if(filtered.length === 0) {
+                container.innerHTML = '<div class="text-center py-8 opacity-60 text-xs">No components found.</div>';
+                document.getElementById('batch-delete-btn').classList.add('hidden');
+                return;
+            }
+
+            filtered.forEach(c => {
+                const isOutOfStock = c.qty === 0;
+                const card = document.createElement('div');
+                card.className = "custom-card p-4 rounded-2xl border shadow-sm flex items-center justify-between gap-3";
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 flex-1 min-w-0">
+                        <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-5 h-5 rounded text-brand accent-brand cursor-pointer shrink-0">
+                        <div class="flex-1 min-w-0 space-y-1">
+                            <h4 class="font-bold text-sm truncate">${c.name}</h4>
+                            <div class="flex items-center space-x-2 text-xs opacity-70">
+                                <span>Supplier: <strong>${c.supplier || 'N/A'}</strong></span>
+                                <span>•</span>
+                                <span>Cost: <strong>$${c.cost.toFixed(2)}</strong></span>
+                            </div>
+                            <div>
+                                <span class="inline-block text-[10px] px-2 py-0.5 rounded-full font-medium bg-brand-light text-brand">${c.category}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-3 shrink-0 pl-2 border-l">
+                        <div class="text-right">
+                            <span class="block text-sm font-extrabold whitespace-nowrap">${c.qty} units</span>
+                            <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full inline-block mt-0.5 whitespace-nowrap ${isOutOfStock ? 'bg-red-50 text-red-600 dark:bg-red-950/50' : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50'}">
+                                ${isOutOfStock ? 'Out of Stock' : 'In Stock'}
+                            </span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="openComponentModal(${c.id})" class="p-2.5 text-brand bg-brand/10 hover:bg-brand/20 rounded-xl transition text-sm" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                            <button onclick="deleteComponent(${c.id})" class="p-2.5 text-red-500 bg-red-50 dark:bg-red-950/40 hover:bg-red-100 rounded-xl transition text-sm" title="Delete"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            checkBatchSelection();
+        }
+
+        function checkBatchSelection() {
+            const checkedCount = document.querySelectorAll('.comp-checkbox:checked').length;
+            const batchBtn = document.getElementById('batch-delete-btn');
+            if(checkedCount > 0) {
+                batchBtn.classList.remove('hidden');
+            } else {
+                batchBtn.classList.add('hidden');
+            }
+        }
+
+        // Initialize default theme and components
+        previewTheme('blush');
+        renderTrackingPlatforms();
+        renderComponents();
+    </script>
+</body>
+</html>
