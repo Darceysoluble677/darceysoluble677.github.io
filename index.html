@@ -448,31 +448,41 @@
                     </div>
                 </div>
 
-                <!-- TAB 4: COMPONENTS TRACKER (REDESIGNED) -->
+                <!-- TAB 4: COMPONENTS TRACKER (ENTERPRISE SYSTEM) -->
                 <div id="tab-components-content" class="app-tab hidden space-y-4">
                     
-                    <!-- 1. Inventory Summary Bar -->
-                    <div class="grid grid-cols-3 gap-2.5">
-                        <div class="custom-card p-3 rounded-2xl border text-center">
-                            <span class="text-[10px] uppercase font-semibold opacity-60 block">Components</span>
-                            <span class="text-lg font-bold" id="stat-total-comps">9</span>
+                    <!-- 1. Inventory Summary Bar (Added Inventory Value) -->
+                    <div class="grid grid-cols-4 gap-2">
+                        <div class="custom-card p-2.5 rounded-2xl border text-center">
+                            <span class="text-[9px] uppercase font-semibold opacity-60 block">Components</span>
+                            <span class="text-base font-bold" id="stat-total-comps">0</span>
                         </div>
-                        <div class="custom-card p-3 rounded-2xl border text-center">
-                            <span class="text-[10px] uppercase font-semibold opacity-60 block">Total Units</span>
-                            <span class="text-lg font-bold" id="stat-total-units">1,380</span>
+                        <div class="custom-card p-2.5 rounded-2xl border text-center">
+                            <span class="text-[9px] uppercase font-semibold opacity-60 block">Total Units</span>
+                            <span class="text-base font-bold" id="stat-total-units">0</span>
                         </div>
-                        <div class="custom-card p-3 rounded-2xl border text-center">
-                            <span class="text-[10px] uppercase font-semibold opacity-60 block">Low Stock</span>
-                            <span class="text-lg font-bold text-amber-600" id="stat-low-stock">1</span>
+                        <div class="custom-card p-2.5 rounded-2xl border text-center">
+                            <span class="text-[9px] uppercase font-semibold opacity-60 block">Inv. Value</span>
+                            <span class="text-base font-bold text-emerald-600" id="stat-inv-value">$0.00</span>
+                        </div>
+                        <div class="custom-card p-2.5 rounded-2xl border text-center">
+                            <span class="text-[9px] uppercase font-semibold opacity-60 block">Low Stock</span>
+                            <span class="text-base font-bold text-amber-600" id="stat-low-stock">0</span>
                         </div>
                     </div>
 
                     <!-- 2. Main Action Button & Management Links -->
                     <div class="space-y-2">
-                        <button onclick="openComponentModal()" class="w-full py-3.5 bg-brand text-white font-semibold rounded-2xl text-xs shadow-md shadow-brand/20 hover:opacity-95 transition flex items-center justify-center space-x-2">
-                            <i class="fa-solid fa-plus text-xs"></i>
-                            <span>Add Component</span>
-                        </button>
+                        <div class="flex space-x-2">
+                            <button onclick="openComponentModal()" class="flex-1 py-3.5 bg-brand text-white font-semibold rounded-2xl text-xs shadow-md shadow-brand/20 hover:opacity-95 transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-plus text-xs"></i>
+                                <span>Add Component</span>
+                            </button>
+                            <button onclick="openArchivedModal()" class="px-4 py-3.5 bg-brand-light text-brand font-semibold rounded-2xl text-xs border border-brand/20 hover:opacity-80 transition flex items-center space-x-1.5 shrink-0">
+                                <i class="fa-solid fa-box-archive"></i>
+                                <span id="archived-count-badge">Archived (0)</span>
+                            </button>
+                        </div>
                         <div class="flex justify-center items-center space-x-2 text-[11px] font-medium opacity-70 pt-1">
                             <span onclick="openCategoryModal()" class="hover:text-brand cursor-pointer underline">Manage Categories</span>
                             <span>·</span>
@@ -480,25 +490,48 @@
                         </div>
                     </div>
 
-                    <!-- 3. Search and Filters Toolbar -->
+                    <!-- 3. Expanded Search & Filters Toolbar -->
                     <div class="space-y-2 pt-1">
                         <div class="relative">
                             <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-xs opacity-40"></i>
-                            <input type="text" id="comp-search" oninput="currentComponentPage=1; renderComponents()" placeholder="Search components or supplier..." class="w-full pl-9 pr-3 py-3 rounded-2xl border text-xs custom-card outline-none">
+                            <input type="text" id="comp-search" oninput="currentComponentPage=1; renderComponents()" placeholder="Search components, SKU, or supplier..." class="w-full pl-9 pr-3 py-3 rounded-2xl border text-xs custom-card outline-none">
                         </div>
-                        <div class="grid grid-cols-2 gap-2 text-xs">
-                            <select id="comp-filter-cat" onchange="currentComponentPage=1; renderComponents()" class="p-3 rounded-2xl border custom-card outline-none font-medium">
+                        <div class="grid grid-cols-3 gap-2 text-[11px]">
+                            <select id="comp-filter-cat" onchange="currentComponentPage=1; renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium truncate">
                                 <option value="">All Categories</option>
                             </select>
-                            <select id="comp-sort" onchange="currentComponentPage=1; renderComponents()" class="p-3 rounded-2xl border custom-card outline-none font-medium">
+                            <select id="comp-filter-sup" onchange="currentComponentPage=1; renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium truncate">
+                                <option value="">All Suppliers</option>
+                            </select>
+                            <select id="comp-filter-status" onchange="currentComponentPage=1; renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
+                                <option value="">All Status</option>
+                                <option value="in_stock">In Stock</option>
+                                <option value="low_stock">Low Stock</option>
+                                <option value="out_of_stock">Out of Stock</option>
+                            </select>
+                        </div>
+                        <div class="flex justify-between items-center text-xs pt-1">
+                            <select id="comp-sort" onchange="currentComponentPage=1; renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
                                 <option value="name_asc">Sort: A - Z</option>
                                 <option value="name_desc">Sort: Z - A</option>
                                 <option value="cost_high">Cost: High to Low</option>
                                 <option value="cost_low">Cost: Low to High</option>
                                 <option value="qty_high">Quantity: High to Low</option>
                                 <option value="qty_low">Quantity: Low to High</option>
-                                <option value="stock_out">Status: Out of Stock First</option>
+                                <option value="stock_out">Status: Low/Out First</option>
                             </select>
+                            
+                            <div class="flex items-center space-x-1.5">
+                                <span class="opacity-60 text-[11px]">Show:</span>
+                                <select id="comp-per-page" onchange="currentComponentPage=1; renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
+                                    <option value="5">5</option>
+                                    <option value="10" selected>10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="50">50</option>
+                                    <option value="all">All</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -508,7 +541,7 @@
                         <button onclick="batchDeleteComponents()" class="text-red-500 font-bold hover:underline">Delete Selected</button>
                     </div>
 
-                    <!-- 4. Component Cards Container (Slimmed & Cleaned) -->
+                    <!-- 4. Component Cards Container -->
                     <div id="components-list" class="space-y-2.5 pt-1"></div>
 
                     <!-- 5. Simple Pagination -->
@@ -671,79 +704,171 @@
 
     <!-- ================= ADD / EDIT COMPONENT MODAL ================= -->
     <div id="component-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="custom-card w-full max-w-sm rounded-3xl p-6 border shadow-2xl relative">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="modal-title" class="font-bold text-base">Add Component</h3>
+        <div class="custom-card w-full max-w-sm rounded-3xl p-5 border shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-3">
+                <h3 id="modal-title" class="font-bold text-sm">Add Component</h3>
                 <button onclick="closeComponentModal()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             
-            <form id="component-form" onsubmit="handleComponentSubmit(event)" class="space-y-3 text-xs">
+            <form id="component-form" onsubmit="handleComponentSubmit(event)" class="space-y-2.5 text-xs">
                 <input type="hidden" id="comp-edit-id">
+                
                 <div>
-                    <label class="block opacity-70 font-semibold mb-1">Component Name *</label>
+                    <label class="block opacity-70 font-semibold mb-0.5">Component Name *</label>
                     <input type="text" id="comp-name" placeholder="e.g. 4x8 Bubble Mailers" required class="w-full p-2.5 border rounded-xl font-medium custom-card">
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="block opacity-70 font-semibold mb-1">Quantity on Hand *</label>
-                        <input type="number" id="comp-qty" placeholder="e.g. 150" required min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                        <label class="block opacity-70 font-semibold mb-0.5">SKU (Auto-assigned)</label>
+                        <input type="text" id="comp-sku" placeholder="COMP-001" required class="w-full p-2.5 border rounded-xl font-medium custom-card font-mono">
                     </div>
                     <div>
-                        <label class="block opacity-70 font-semibold mb-1">Cost per Unit ($)</label>
-                        <input type="number" step="0.01" id="comp-cost" placeholder="e.g. 0.25" min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                        <label class="block opacity-70 font-semibold mb-0.5">Storage Location</label>
+                        <input type="text" id="comp-location" placeholder="e.g. Shelf B-3" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <div>
+                        <label class="block opacity-70 font-semibold mb-0.5">Quantity *</label>
+                        <input type="number" id="comp-qty" placeholder="150" required min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                    </div>
+                    <div>
+                        <label class="block opacity-70 font-semibold mb-0.5">Cost ($)</label>
+                        <input type="number" step="0.01" id="comp-cost" placeholder="0.25" min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                    </div>
+                    <div>
+                        <label class="block opacity-70 font-semibold mb-0.5">Low Alert</label>
+                        <input type="number" id="comp-low-threshold" placeholder="20" min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block opacity-70 font-semibold mb-0.5">Category</label>
+                        <select id="comp-category" class="w-full p-2.5 border rounded-xl font-medium custom-card"></select>
+                    </div>
+                    <div>
+                        <label class="block opacity-70 font-semibold mb-0.5">Supplier</label>
+                        <select id="comp-supplier" class="w-full p-2.5 border rounded-xl font-medium custom-card"></select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block opacity-70 font-semibold mb-0.5">Reorder Qty</label>
+                        <input type="number" id="comp-reorder-qty" placeholder="100" min="0" class="w-full p-2.5 border rounded-xl font-medium custom-card">
+                    </div>
+                    <div>
+                        <label class="block opacity-70 font-semibold mb-0.5">Image URL</label>
+                        <input type="url" id="comp-image" placeholder="https://..." class="w-full p-2.5 border rounded-xl font-medium custom-card">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block opacity-70 font-semibold mb-1">Category</label>
-                    <select id="comp-category" class="w-full p-2.5 border rounded-xl font-medium custom-card"></select>
+                    <label class="block opacity-70 font-semibold mb-0.5">Supplier Reorder URL</label>
+                    <input type="url" id="comp-supplier-url" placeholder="https://supplier.com/item..." class="w-full p-2.5 border rounded-xl font-medium custom-card">
                 </div>
 
                 <div>
-                    <label class="block opacity-70 font-semibold mb-1">Supplier</label>
-                    <select id="comp-supplier" class="w-full p-2.5 border rounded-xl font-medium custom-card"></select>
+                    <label class="block opacity-70 font-semibold mb-0.5">Notes</label>
+                    <textarea id="comp-notes" placeholder="Dimensions, color shades, or reminders..." class="w-full p-2 border rounded-xl font-medium custom-card h-12 resize-none"></textarea>
                 </div>
 
-                <div>
-                    <label class="block opacity-70 font-semibold mb-1">Notes</label>
-                    <textarea id="comp-notes" placeholder="SKU links, dimensions, or reorder reminders..." class="w-full p-2.5 border rounded-xl font-medium custom-card h-16 resize-none"></textarea>
-                </div>
-
-                <div class="pt-2">
+                <div class="pt-1">
                     <button type="submit" class="w-full py-3 bg-brand text-white font-semibold rounded-xl hover:opacity-95 transition">Save Component</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- ================= STOCK ADJUSTMENT MODAL ================= -->
+    <div id="adjustment-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="custom-card w-full max-w-sm rounded-3xl p-5 border shadow-2xl relative space-y-3 text-xs">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-sm">Adjust Stock</h3>
+                <button onclick="closeAdjustmentModal()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <input type="hidden" id="adj-comp-id">
+            <div>
+                <p class="font-bold text-brand mb-1" id="adj-comp-title">Component Name</p>
+                <p class="opacity-70">Current Quantity: <strong id="adj-current-qty">0</strong></p>
+            </div>
+            <div>
+                <label class="block opacity-70 font-semibold mb-1">Adjustment Type</label>
+                <select id="adj-type" class="w-full p-2.5 border rounded-xl custom-card font-medium">
+                    <option value="add">Add Stock (+)</option>
+                    <option value="subtract">Remove Stock (-)</option>
+                    <option value="set">Set Exact Quantity (=)</option>
+                </select>
+            </div>
+            <div>
+                <label class="block opacity-70 font-semibold mb-1">Quantity Amount *</label>
+                <input type="number" id="adj-amount" min="1" value="1" required class="w-full p-2.5 border rounded-xl custom-card font-medium">
+            </div>
+            <div>
+                <label class="block opacity-70 font-semibold mb-1">Reason / Note</label>
+                <input type="text" id="adj-reason" placeholder="e.g. Restocked shipment, used for batch #4" class="w-full p-2.5 border rounded-xl custom-card font-medium">
+            </div>
+            <button onclick="submitStockAdjustment()" class="w-full py-3 bg-brand text-white font-semibold rounded-xl hover:opacity-95 transition">Confirm Adjustment</button>
+        </div>
+    </div>
+
+    <!-- ================= STOCK HISTORY AUDIT MODAL ================= -->
+    <div id="history-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="custom-card w-full max-w-md rounded-3xl p-5 border shadow-2xl relative space-y-3 text-xs max-h-[80vh] flex flex-col">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-sm">Stock Audit History</h3>
+                <button onclick="closeHistoryModal()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p class="font-bold text-brand" id="history-comp-title">Component SKU</p>
+            <div id="history-logs-container" class="space-y-2 overflow-y-auto flex-1 pr-1"></div>
+        </div>
+    </div>
+
+    <!-- ================= ARCHIVED COMPONENTS MODAL ================= -->
+    <div id="archived-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="custom-card w-full max-w-md rounded-3xl p-5 border shadow-2xl relative space-y-3 text-xs max-h-[85vh] flex flex-col">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-sm">Archived Components</h3>
+                <button onclick="closeArchivedModal()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-[11px] opacity-40"></i>
+                <input type="text" id="archived-search" oninput="renderArchivedModalList()" placeholder="Search archived components..." class="w-full pl-8 pr-3 py-2.5 rounded-xl border text-xs custom-card outline-none">
+            </div>
+            <div id="archived-list-container" class="space-y-2.5 overflow-y-auto flex-1 pr-1"></div>
+        </div>
+    </div>
+
     <!-- ================= MANAGE CATEGORIES MODAL ================= -->
     <div id="category-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="custom-card w-full max-w-sm rounded-3xl p-6 border shadow-2xl relative space-y-4">
+        <div class="custom-card w-full max-w-sm rounded-3xl p-5 border shadow-2xl relative space-y-3 text-xs">
             <div class="flex justify-between items-center">
-                <h3 class="font-bold text-base">Manage Categories</h3>
+                <h3 class="font-bold text-sm">Manage Categories</h3>
                 <button onclick="closeCategoryModal()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="flex space-x-2">
                 <input type="text" id="new-category-input" placeholder="New category name..." class="flex-1 p-2.5 border rounded-xl text-xs custom-card outline-none">
                 <button onclick="addNewCategory()" class="px-4 py-2.5 bg-brand text-white text-xs font-semibold rounded-xl">Add</button>
             </div>
-            <div id="category-modal-list" class="space-y-2 max-h-48 overflow-y-auto text-xs"></div>
+            <div id="category-modal-list" class="space-y-2 max-h-48 overflow-y-auto"></div>
         </div>
     </div>
 
     <!-- ================= MANAGE SUPPLIERS MODAL ================= -->
     <div id="supplier-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-        <div class="custom-card w-full max-w-sm rounded-3xl p-6 border shadow-2xl relative space-y-4">
+        <div class="custom-card w-full max-w-sm rounded-3xl p-5 border shadow-2xl relative space-y-3 text-xs">
             <div class="flex justify-between items-center">
-                <h3 class="font-bold text-base">Manage Suppliers</h3>
+                <h3 class="font-bold text-sm">Manage Suppliers</h3>
                 <button onclick="closeSupplierModal()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
             <div class="flex space-x-2">
                 <input type="text" id="new-supplier-input" placeholder="New supplier name..." class="flex-1 p-2.5 border rounded-xl text-xs custom-card outline-none">
                 <button onclick="addNewSupplier()" class="px-4 py-2.5 bg-brand text-white text-xs font-semibold rounded-xl">Add</button>
             </div>
-            <div id="supplier-modal-list" class="space-y-2 max-h-48 overflow-y-auto text-xs"></div>
+            <div id="supplier-modal-list" class="space-y-2 max-h-48 overflow-y-auto"></div>
         </div>
     </div>
 
@@ -764,20 +889,11 @@
         let componentCategories = JSON.parse(localStorage.getItem('grimms_categories')) || ['Packaging', 'Jewelry Supplies', 'Stickers & Labels'];
         let componentSuppliers = JSON.parse(localStorage.getItem('grimms_suppliers')) || ['Uline', 'AliExpress', 'Amazon', 'Rio Grande'];
 
-        let componentsList = JSON.parse(localStorage.getItem('grimms_components')) || [
-            { id: 1, name: '4x8 Bubble Mailers', qty: 145, cost: 0.18, category: 'Packaging', supplier: 'Uline', notes: 'Kraft paper bubble mailers' },
-            { id: 2, name: 'Gothic Bat Charms', qty: 0, cost: 0.45, category: 'Jewelry Supplies', supplier: 'AliExpress', notes: 'Out of stock, reorder soon' },
-            { id: 3, name: 'Thank You Stickers (Roll)', qty: 320, cost: 0.03, category: 'Stickers & Labels', supplier: 'Amazon', notes: 'Pink foil logo stickers' },
-            { id: 4, name: 'Stainless Steel Chains (18")', qty: 45, cost: 0.85, category: 'Jewelry Supplies', supplier: 'Rio Grande', notes: 'For pendant necklaces' },
-            { id: 5, name: 'Organza Gift Pouches', qty: 85, cost: 0.12, category: 'Packaging', supplier: 'Uline', notes: 'Black 3x4 pouches' },
-            { id: 6, name: 'Lobster Clasps 12mm', qty: 210, cost: 0.09, category: 'Jewelry Supplies', supplier: 'Rio Grande', notes: 'Silver plated' },
-            { id: 7, name: 'Warning Fragile Labels', qty: 500, cost: 0.01, category: 'Stickers & Labels', supplier: 'Amazon', notes: 'Red bold text' },
-            { id: 8, name: 'Cardboard Backing Sheets', qty: 60, cost: 0.20, category: 'Packaging', supplier: 'Uline', notes: '5x7 rigid sheets' },
-            { id: 9, name: 'Crystal Glass Beads', qty: 15, cost: 0.05, category: 'Jewelry Supplies', supplier: 'AliExpress', notes: 'Mixed dark shades' }
-        ];
+        // Clean slate initialization: empty by default
+        let componentsList = JSON.parse(localStorage.getItem('grimms_components')) || [];
+        let archivedComponentsList = JSON.parse(localStorage.getItem('grimms_archived_components')) || [];
 
         let currentComponentPage = 1;
-        const componentsPerPage = 8;
 
         const themes = {
             blush: { primary: '#d97793', light: '#fdf2f4', dark: '#b35470', accent: '#f4aabf', appBg: '#f7f3f4', cardBg: '#ffffff', text: '#2d2d2d', subText: '#737373', border: '#e5e5e5' },
@@ -806,9 +922,26 @@
 
         function saveAllData() {
             localStorage.setItem('grimms_components', JSON.stringify(componentsList));
+            localStorage.setItem('grimms_archived_components', JSON.stringify(archivedComponentsList));
             localStorage.setItem('grimms_categories', JSON.stringify(componentCategories));
             localStorage.setItem('grimms_suppliers', JSON.stringify(componentSuppliers));
             localStorage.setItem('grimms_settings', JSON.stringify(savedSettingsState));
+        }
+
+        // ================= AUTOMATED & REUSABLE SKU ENGINE =================
+        function generateNextSKU() {
+            let allSKUs = new Set();
+            componentsList.forEach(c => allSKUs.add(c.sku.toUpperCase()));
+            archivedComponentsList.forEach(c => allSKUs.add(c.sku.toUpperCase()));
+
+            let i = 1;
+            while (true) {
+                let candidate = `COMP-${String(i).padStart(3, '0')}`;
+                if (!allSKUs.has(candidate)) {
+                    return candidate;
+                }
+                i++;
+            }
         }
 
         function previewTheme(themeName) {
@@ -1026,7 +1159,7 @@
             const dot = document.getElementById('comp-notif-dot');
             if (hasComponentNotification) {
                 dot.classList.remove('hidden');
-                alert('Component Alert: Gothic Bat Charms are currently out of stock!');
+                alert('All component stock levels are optimal.');
             } else {
                 dot.classList.add('hidden');
                 alert('All component alerts cleared.');
@@ -1057,8 +1190,7 @@
             switchTab('home');
         }
 
-        // ================= CATEGORY & SUPPLIER MODAL MANAGEMENT =================
-
+        // ================= CATEGORY MANAGEMENT WITH SAFEGUARDS =================
         function openCategoryModal() {
             renderCategoryModalList();
             document.getElementById('category-modal').classList.remove('hidden');
@@ -1072,12 +1204,15 @@
         function renderCategoryModalList() {
             const listContainer = document.getElementById('category-modal-list');
             listContainer.innerHTML = '';
-            componentCategories.forEach((cat, index) => {
+            componentCategories.forEach((cat) => {
                 const row = document.createElement('div');
                 row.className = "flex justify-between items-center p-2 border rounded-xl custom-card";
                 row.innerHTML = `
                     <span class="font-medium">${cat}</span>
-                    <button onclick="deleteCategory(${index})" class="text-red-500 hover:text-red-700 px-2 py-1"><i class="fa-solid fa-trash-can"></i></button>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="editCategoryPrompt('${cat}')" class="text-brand hover:underline font-semibold">Edit</button>
+                        <button onclick="deleteCategorySafely('${cat}')" class="text-red-500 hover:text-red-700 px-1"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
                 `;
                 listContainer.appendChild(row);
             });
@@ -1092,19 +1227,44 @@
                 saveAllData();
                 renderCategoryModalList();
             } else {
-                alert('Category is empty or already exists.');
+                alert('Category name is empty or already exists.');
             }
         }
 
-        function deleteCategory(index) {
-            const catToDelete = componentCategories[index];
-            if(confirm(`Delete category "${catToDelete}"?`)) {
-                componentCategories.splice(index, 1);
+        function editCategoryPrompt(oldName) {
+            let newName = prompt(`Enter new name for category "${oldName}":`, oldName);
+            if(newName && newName.trim() !== "" && newName.trim() !== oldName) {
+                let trimmed = newName.trim();
+                if(componentCategories.includes(trimmed)) {
+                    alert('Category already exists.');
+                    return;
+                }
+                let idx = componentCategories.indexOf(oldName);
+                componentCategories[idx] = trimmed;
+
+                // Automatically update category on existing active and archived components
+                componentsList.forEach(c => { if(c.category === oldName) c.category = trimmed; });
+                archivedComponentsList.forEach(c => { if(c.category === oldName) c.category = trimmed; });
+
                 saveAllData();
                 renderCategoryModalList();
             }
         }
 
+        function deleteCategorySafely(catName) {
+            let affectedCount = componentsList.filter(c => c.category === catName).length + archivedComponentsList.filter(c => c.category === catName).length;
+            if(affectedCount > 0) {
+                alert(`You cannot delete "${catName}" because it is currently assigned to ${affectedCount} component(s). Reassign those components before deleting this category.`);
+                return;
+            }
+            if(confirm(`Delete category "${catName}"?`)) {
+                componentCategories = componentCategories.filter(c => c !== catName);
+                saveAllData();
+                renderCategoryModalList();
+            }
+        }
+
+        // ================= SUPPLIER MANAGEMENT WITH SAFEGUARDS =================
         function openSupplierModal() {
             renderSupplierModalList();
             document.getElementById('supplier-modal').classList.remove('hidden');
@@ -1118,12 +1278,15 @@
         function renderSupplierModalList() {
             const listContainer = document.getElementById('supplier-modal-list');
             listContainer.innerHTML = '';
-            componentSuppliers.forEach((sup, index) => {
+            componentSuppliers.forEach((sup) => {
                 const row = document.createElement('div');
                 row.className = "flex justify-between items-center p-2 border rounded-xl custom-card";
                 row.innerHTML = `
                     <span class="font-medium">${sup}</span>
-                    <button onclick="deleteSupplier(${index})" class="text-red-500 hover:text-red-700 px-2 py-1"><i class="fa-solid fa-trash-can"></i></button>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="editSupplierPrompt('${sup}')" class="text-brand hover:underline font-semibold">Edit</button>
+                        <button onclick="deleteSupplierSafely('${sup}')" class="text-red-500 hover:text-red-700 px-1"><i class="fa-solid fa-trash-can"></i></button>
+                    </div>
                 `;
                 listContainer.appendChild(row);
             });
@@ -1138,21 +1301,43 @@
                 saveAllData();
                 renderSupplierModalList();
             } else {
-                alert('Supplier is empty or already exists.');
+                alert('Supplier name is empty or already exists.');
             }
         }
 
-        function deleteSupplier(index) {
-            const supToDelete = componentSuppliers[index];
-            if(confirm(`Delete supplier "${supToDelete}"?`)) {
-                componentSuppliers.splice(index, 1);
+        function editSupplierPrompt(oldName) {
+            let newName = prompt(`Enter new name for supplier "${oldName}":`, oldName);
+            if(newName && newName.trim() !== "" && newName.trim() !== oldName) {
+                let trimmed = newName.trim();
+                if(componentSuppliers.includes(trimmed)) {
+                    alert('Supplier already exists.');
+                    return;
+                }
+                let idx = componentSuppliers.indexOf(oldName);
+                componentSuppliers[idx] = trimmed;
+
+                componentsList.forEach(c => { if(c.supplier === oldName) c.supplier = trimmed; });
+                archivedComponentsList.forEach(c => { if(c.supplier === oldName) c.supplier = trimmed; });
+
+                saveAllData();
+                renderSupplierModalList();
+            }
+        }
+
+        function deleteSupplierSafely(supName) {
+            let affectedCount = componentsList.filter(c => c.supplier === supName).length + archivedComponentsList.filter(c => c.supplier === supName).length;
+            if(affectedCount > 0) {
+                alert(`You cannot delete "${supName}" because it is currently assigned to ${affectedCount} component(s). Reassign those components before deleting this supplier.`);
+                return;
+            }
+            if(confirm(`Delete supplier "${supName}"?`)) {
+                componentSuppliers = componentSuppliers.filter(s => s !== supName);
                 saveAllData();
                 renderSupplierModalList();
             }
         }
 
         // ================= COMPONENTS & INVENTORY LOGIC =================
-
         function updateCategoryDropdowns() {
             const filterCat = document.getElementById('comp-filter-cat');
             const formCat = document.getElementById('comp-category');
@@ -1176,15 +1361,24 @@
         }
 
         function updateSupplierDropdowns() {
+            const filterSup = document.getElementById('comp-filter-sup');
             const formSup = document.getElementById('comp-supplier');
-            let currentSupVal = formSup.value;
+
+            let currentFilterVal = filterSup.value;
+            let currentFormVal = formSup.value;
+
+            filterSup.innerHTML = '<option value="">All Suppliers</option>';
+            componentSuppliers.forEach(sup => {
+                filterSup.innerHTML += `<option value="${sup}">${sup}</option>`;
+            });
+            filterSup.value = currentFilterVal;
 
             formSup.innerHTML = '';
             componentSuppliers.forEach(sup => {
                 formSup.innerHTML += `<option value="${sup}">${sup}</option>`;
             });
-            if(componentSuppliers.includes(currentSupVal)) {
-                formSup.value = currentSupVal;
+            if(componentSuppliers.includes(currentFormVal)) {
+                formSup.value = currentFormVal;
             }
         }
 
@@ -1200,16 +1394,24 @@
                 if(comp) {
                     document.getElementById('comp-edit-id').value = comp.id;
                     document.getElementById('comp-name').value = comp.name;
+                    document.getElementById('comp-sku').value = comp.sku;
                     document.getElementById('comp-qty').value = comp.qty;
                     document.getElementById('comp-cost').value = comp.cost;
+                    document.getElementById('comp-low-threshold').value = comp.lowThreshold !== undefined ? comp.lowThreshold : 20;
                     document.getElementById('comp-category').value = comp.category;
                     document.getElementById('comp-supplier').value = comp.supplier || componentSuppliers[0];
+                    document.getElementById('comp-location').value = comp.location || '';
+                    document.getElementById('comp-reorder-qty').value = comp.reorderQty || '';
+                    document.getElementById('comp-image').value = comp.image || '';
+                    document.getElementById('comp-supplier-url').value = comp.supplierUrl || '';
                     document.getElementById('comp-notes').value = comp.notes || '';
                 }
             } else {
                 title.innerText = 'Add Component';
                 document.getElementById('component-form').reset();
                 document.getElementById('comp-edit-id').value = '';
+                document.getElementById('comp-sku').value = generateNextSKU();
+                document.getElementById('comp-low-threshold').value = 20;
             }
             modal.classList.remove('hidden');
         }
@@ -1222,182 +1424,64 @@
             e.preventDefault();
             const id = document.getElementById('comp-edit-id').value;
             const name = document.getElementById('comp-name').value.trim();
+            const sku = document.getElementById('comp-sku').value.trim().toUpperCase();
             const qty = parseInt(document.getElementById('comp-qty').value) || 0;
             const cost = parseFloat(document.getElementById('comp-cost').value) || 0;
+            const lowThreshold = parseInt(document.getElementById('comp-low-threshold').value) || 20;
             const category = document.getElementById('comp-category').value;
             const supplier = document.getElementById('comp-supplier').value;
+            const location = document.getElementById('comp-location').value.trim();
+            const reorderQty = parseInt(document.getElementById('comp-reorder-qty').value) || 0;
+            const image = document.getElementById('comp-image').value.trim();
+            const supplierUrl = document.getElementById('comp-supplier-url').value.trim();
             const notes = document.getElementById('comp-notes').value.trim();
+
+            // Validate SKU uniqueness
+            const duplicateActive = componentsList.some(c => c.sku.toUpperCase() === sku && c.id != id);
+            const duplicateArchived = archivedComponentsList.some(c => c.sku.toUpperCase() === sku);
+            if(duplicateActive || duplicateArchived) {
+                alert(`SKU "${sku}" is already in use by another active or archived component. SKUs must be unique.`);
+                return;
+            }
+
+            let todayStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
 
             if(id) {
                 const comp = componentsList.find(c => c.id == id);
                 if(comp) {
+                    let diff = qty - comp.qty;
+                    if(diff !== 0) {
+                        if(!comp.history) comp.history = [];
+                        comp.history.unshift({
+                            date: todayStr,
+                            action: diff > 0 ? 'Stock Adjustment (+)' : 'Stock Adjustment (-)',
+                            change: (diff > 0 ? '+' : '') + diff,
+                            balance: qty
+                        });
+                    }
                     comp.name = name;
+                    comp.sku = sku;
                     comp.qty = qty;
                     comp.cost = cost;
+                    comp.lowThreshold = lowThreshold;
                     comp.category = category;
                     comp.supplier = supplier;
+                    comp.location = location;
+                    comp.reorderQty = reorderQty;
+                    comp.image = image;
+                    comp.supplierUrl = supplierUrl;
                     comp.notes = notes;
                 }
             } else {
-                componentsList.push({ id: Date.now(), name, qty, cost, category, supplier, notes });
-            }
-
-            saveAllData();
-            closeComponentModal();
-            renderComponents();
-        }
-
-        function deleteComponent(id) {
-            if(confirm("Are you sure you want to delete this component?")) {
-                componentsList = componentsList.filter(c => c.id !== id);
-                saveAllData();
-                renderComponents();
-            }
-        }
-
-        function batchDeleteComponents() {
-            const checkedBoxes = document.querySelectorAll('.comp-checkbox:checked');
-            if(checkedBoxes.length === 0) return;
-
-            if(confirm(`Are you sure you want to delete ${checkedBoxes.length} selected components?`)) {
-                const idsToDelete = Array.from(checkedBoxes).map(cb => parseInt(cb.dataset.id));
-                componentsList = componentsList.filter(c => !idsToDelete.includes(c.id));
-                saveAllData();
-                renderComponents();
-            }
-        }
-
-        function renderComponents() {
-            updateCategoryDropdowns();
-            updateSupplierDropdowns();
-
-            // Calculate Inventory Summary Stats
-            const totalComps = componentsList.length;
-            const totalUnits = componentsList.reduce((sum, c) => sum + c.qty, 0);
-            const lowStockCount = componentsList.filter(c => c.qty === 0).length;
-
-            document.getElementById('stat-total-comps').innerText = totalComps;
-            document.getElementById('stat-total-units').innerText = totalUnits.toLocaleString();
-            document.getElementById('stat-low-stock').innerText = lowStockCount;
-
-            const container = document.getElementById('components-list');
-            const paginationContainer = document.getElementById('components-pagination');
-            const searchVal = document.getElementById('comp-search').value.toLowerCase();
-            const catFilter = document.getElementById('comp-filter-cat').value;
-            const sortVal = document.getElementById('comp-sort').value;
-
-            let filtered = componentsList.filter(c => {
-                const matchesSearch = c.name.toLowerCase().includes(searchVal) || (c.supplier && c.supplier.toLowerCase().includes(searchVal));
-                const matchesCat = catFilter === "" || c.category === catFilter;
-                return matchesSearch && matchesCat;
-            });
-
-            filtered.sort((a, b) => {
-                if(sortVal === 'name_asc') return a.name.localeCompare(b.name);
-                if(sortVal === 'name_desc') return b.name.localeCompare(a.name);
-                if(sortVal === 'cost_high') return b.cost - a.cost;
-                if(sortVal === 'cost_low') return a.cost - b.cost;
-                if(sortVal === 'qty_high') return b.qty - a.qty;
-                if(sortVal === 'qty_low') return a.qty - b.qty;
-                if(sortVal === 'stock_out') {
-                    if(a.qty === 0 && b.qty > 0) return -1;
-                    if(a.qty > 0 && b.qty === 0) return 1;
-                    return a.name.localeCompare(b.name);
-                }
-                return 0;
-            });
-
-            const totalPages = Math.ceil(filtered.length / componentsPerPage) || 1;
-            if (currentComponentPage > totalPages) currentComponentPage = totalPages;
-            if (currentComponentPage < 1) currentComponentPage = 1;
-
-            const startIndex = (currentComponentPage - 1) * componentsPerPage;
-            const paginatedItems = filtered.slice(startIndex, startIndex + componentsPerPage);
-
-            container.innerHTML = '';
-            if(paginatedItems.length === 0) {
-                container.innerHTML = '<div class="text-center py-8 opacity-60 text-xs">No components found.</div>';
-                paginationContainer.innerHTML = '';
-                document.getElementById('batch-delete-bar').classList.add('hidden');
-                return;
-            }
-
-            paginatedItems.forEach(c => {
-                const card = document.createElement('div');
-                card.className = "custom-card p-3 rounded-2xl border shadow-sm space-y-2";
-                card.innerHTML = `
-                    <div class="flex items-start justify-between">
-                        <div class="flex items-start space-x-2.5 min-w-0">
-                            <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-3.5 h-3.5 rounded text-brand accent-brand cursor-pointer mt-0.5 shrink-0">
-                            <div class="min-w-0">
-                                <h4 class="font-bold text-xs truncate">${c.name}</h4>
-                                <p class="text-[11px] opacity-60">${c.category} · ${c.supplier || 'N/A'}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between pt-1 border-t border-neutral-100 dark:border-neutral-800 text-xs">
-                        <div class="flex space-x-4">
-                            <div>
-                                <span class="text-[10px] opacity-60 block">Cost per unit</span>
-                                <span class="font-bold">$${c.cost.toFixed(2)}</span>
-                            </div>
-                            <div>
-                                <span class="text-[10px] opacity-60 block">Quantity</span>
-                                <span class="font-bold ${c.qty === 0 ? 'text-red-500' : ''}">${c.qty} units</span>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-center space-x-3 text-xs font-semibold">
-                            <button onclick="openComponentModal(${c.id})" class="text-brand hover:underline">Edit</button>
-                            <span class="opacity-30">·</span>
-                            <button onclick="deleteComponent(${c.id})" class="text-red-500 hover:underline">Delete</button>
-                        </div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-
-            // Render pagination controls
-            paginationContainer.innerHTML = `
-                <button onclick="changeComponentPage(-1)" ${currentComponentPage === 1 ? 'disabled class="opacity-30 cursor-not-allowed"' : 'class="hover:text-brand font-medium transition"'}>
-                    ← Previous
-                </button>
-                <span class="opacity-70 font-medium">Page ${currentComponentPage} of ${totalPages}</span>
-                <button onclick="changeComponentPage(1)" ${currentComponentPage === totalPages ? 'disabled class="opacity-30 cursor-not-allowed"' : 'class="hover:text-brand font-medium transition"'}>
-                    Next →
-                </button>
-            `;
-
-            checkBatchSelection();
-        }
-
-        function changeComponentPage(direction) {
-            currentComponentPage += direction;
-            renderComponents();
-        }
-
-        function checkBatchSelection() {
-            const checkedBoxes = document.querySelectorAll('.comp-checkbox:checked');
-            const batchBar = document.getElementById('batch-delete-bar');
-            const countLabel = document.getElementById('selected-count-label');
-            if(checkedBoxes.length > 0) {
-                batchBar.classList.remove('hidden');
-                countLabel.innerText = `${checkedBoxes.length} selected`;
-            } else {
-                batchBar.classList.add('hidden');
-            }
-        }
-
-        // Initialize state on load
-        previewTheme(savedSettingsState.theme || 'blush');
-        previewFont(savedSettingsState.font || "'Plus Jakarta Sans', sans-serif");
-        document.getElementById('settings-bus-name').value = savedSettingsState.name;
-        document.getElementById('more-bus-name').innerText = savedSettingsState.name;
-        document.getElementById('header-greeting').innerText = `Welcome back, ${savedSettingsState.name}!`;
-        renderTrackingPlatforms();
-        renderComponents();
-    </script>
-</body>
-</html>
-
+                let initialHistory = [{
+                    date: todayStr,
+                    action: 'Initial stock',
+                    change: '+' + qty,
+                    balance: qty
+                }];
+                componentsList.push({
+                    id: Date.now(),
+                    name,
+                    sku,
+                    qty,
+                    cost
