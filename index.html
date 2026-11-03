@@ -48,34 +48,34 @@ button {
 }
 
 .component-card {
-    padding:17px;
-    border-radius:19px;
+    padding:12px 14px;
+    border-radius:16px;
     border:1px solid var(--border-color);
     background:var(--card-bg);
-    margin-bottom:12px;
+    margin-bottom:8px;
 }
 
 .component-action {
-    width:39px;
-    height:39px;
+    width:32px;
+    height:32px;
     display:flex;
     align-items:center;
     justify-content:center;
-    border-radius:12px;
-    font-size:14px;
+    border-radius:10px;
+    font-size:12px;
 }
 
 .form-label {
     display:block;
     font-size:12px;
     font-weight:700;
-    margin-bottom:7px;
+    margin-bottom:6px;
     opacity:.75;
 }
 
 .form-control {
     width:100%;
-    padding:12px;
+    padding:10px 12px;
     border:1px solid var(--border-color);
     border-radius:12px;
     font-size:13px;
@@ -114,15 +114,15 @@ button {
 .primary-button {
     background:var(--brand-primary);
     color:white;
-    padding:13px 17px;
-    border-radius:13px;
+    padding:12px 16px;
+    border-radius:12px;
     font-weight:700;
 }
 
 .secondary-button {
     background:var(--brand-light);
     color:var(--brand-dark);
-    padding:11px 14px;
+    padding:10px 14px;
     border-radius:12px;
     font-weight:700;
 }
@@ -130,7 +130,7 @@ button {
 .danger-button {
     background:#fee2e2;
     color:#dc2626;
-    padding:11px 14px;
+    padding:10px 14px;
     border-radius:12px;
     font-weight:700;
 }
@@ -140,10 +140,10 @@ button {
     align-items:center;
     justify-content:space-between;
     gap:10px;
-    padding:13px;
+    padding:11px 13px;
     border:1px solid var(--border-color);
-    border-radius:13px;
-    margin-bottom:9px;
+    border-radius:12px;
+    margin-bottom:8px;
 }
 
 @media(min-width:640px) {
@@ -157,14 +157,11 @@ button {
 <div class="w-full max-w-md sm:rounded-[35px] shadow-2xl overflow-hidden flex flex-col h-screen sm:h-[880px] relative border-0 sm:border-8 sm:border-neutral-800 custom-card">
 
 <!-- WELCOME SCREEN -->
-
 <div id="screen-welcome" class="flex flex-col justify-between flex-1 px-6 py-12 overflow-y-auto" style="background:linear-gradient(to bottom,transparent,var(--brand-light))">
-
     <div class="flex flex-col items-center text-center mt-12">
         <div class="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-sm" style="background:var(--brand-light);color:var(--brand-primary)">
             <i class="fa-solid fa-chart-line text-4xl"></i>
         </div>
-
         <h1 class="text-3xl font-bold">GRIMMS</h1>
         <h2 class="text-xl font-semibold mt-1" style="color:var(--brand-primary)">Business Tracker</h2>
         <p class="text-xs opacity-60 uppercase tracking-widest mt-3">Plan. Track. Grow.</p>
@@ -178,7 +175,6 @@ button {
         <button onclick="goToScreen('screen-setup')" class="primary-button w-full py-4">
             Get Started <i class="fa-solid fa-arrow-right ml-2"></i>
         </button>
-
         <button onclick="completeSetup()" class="w-full py-3 text-sm opacity-70">
             Sign In
         </button>
@@ -186,9 +182,7 @@ button {
 </div>
 
 <!-- SETUP SCREEN -->
-
 <div id="screen-setup" class="hidden flex-col flex-1 custom-card overflow-y-auto px-6 py-6">
-
     <div class="flex justify-between items-center mb-5">
         <button onclick="goToScreen('screen-welcome')">
             <i class="fa-solid fa-arrow-left"></i>
@@ -198,17 +192,14 @@ button {
     </div>
 
     <form id="setup-form" onsubmit="handleSetupSubmit(event)" class="space-y-4 pb-10">
-
         <div>
             <label class="form-label">Business Name</label>
             <input id="setup-bus-name" class="form-control" value="Grimms Reselling" required>
         </div>
-
         <div>
             <label class="form-label">Primary Industry</label>
             <input id="setup-industry" class="form-control" value="E-Commerce & Reselling" required>
         </div>
-
         <div>
             <label class="form-label">Preferred Currency</label>
             <select id="setup-currency" class="form-control">
@@ -218,7 +209,6 @@ button {
                 <option value="CAD ($)">CAD ($)</option>
             </select>
         </div>
-
         <div>
             <label class="form-label">App Color Theme</label>
             <select id="setup-theme" onchange="previewTheme(this.value)" class="form-control">
@@ -246,7 +236,6 @@ button {
                 <option value="crimson_noir">Crimson Noir</option>
             </select>
         </div>
-
         <div>
             <label class="form-label">App Font</label>
             <select id="setup-font" onchange="previewFont(this.value)" class="form-control">
@@ -262,7 +251,6 @@ button {
                 <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
             </select>
         </div>
-
         <div>
             <label class="form-label">Active Sales Platforms</label>
             <div id="platforms-container" class="space-y-2">
@@ -273,7 +261,6 @@ button {
                 + Add Platform
             </button>
         </div>
-
         <div>
             <label class="form-label">Expense Categories</label>
             <div id="expenses-container" class="space-y-2">
@@ -285,29 +272,22 @@ button {
                 + Add Expense Category
             </button>
         </div>
-
         <div>
             <label class="form-label">Initial Monthly Revenue Goal</label>
             <input type="number" id="setup-goal" class="form-control" value="6000">
         </div>
-
         <button type="submit" class="primary-button w-full py-4">
             Complete Setup & Launch
         </button>
-
     </form>
 </div>
 
 <!-- MAIN APPLICATION -->
-
 <div id="screen-app" class="hidden flex-col flex-1 overflow-hidden relative">
 
     <!-- HOME HEADER -->
-
     <div id="home-top-header" class="custom-card px-5 py-4 flex justify-between items-center border-b">
-
         <h1 class="text-sm font-bold" id="header-greeting">Welcome back, Grimms Reselling!</h1>
-
         <select id="dashboard-timeframe" onchange="updateTimeframe(this.value)" class="text-xs p-2 rounded-lg" style="background:var(--brand-light);color:var(--brand-dark)">
             <option value="this_month">This Month</option>
             <option value="today">Today</option>
@@ -315,36 +295,25 @@ button {
             <option value="this_year">This Year</option>
             <option value="all_time">All Time</option>
         </select>
-
     </div>
 
     <!-- COMPONENTS HEADER -->
-
     <div id="components-top-header" class="hidden custom-card px-5 py-4 justify-between items-center border-b">
-
         <button onclick="switchTab('inventory')" class="w-9 h-9 rounded-full" style="background:var(--brand-light);color:var(--brand-primary)">
             <i class="fa-solid fa-arrow-left"></i>
         </button>
-
         <h1 class="font-bold text-sm">Components & Supplies</h1>
-
         <div></div>
     </div>
 
     <!-- CONTENT -->
-
     <div id="main-scroll-container" class="flex-1 overflow-y-auto px-4 py-4 pb-24 hide-scrollbar">
 
         <!-- HOME -->
-
         <div id="tab-home-content" class="app-tab space-y-4">
-
             <div class="custom-card p-5 rounded-3xl border shadow-sm">
-
                 <span id="rev-card-title" class="text-xs uppercase font-bold opacity-60">This Month's Revenue</span>
-
                 <h2 id="display-revenue" class="text-3xl font-extrabold mt-2">$4,820</h2>
-
                 <div class="h-20 mt-4">
                     <svg viewBox="0 0 300 60" class="w-full h-full">
                         <path d="M0 45 Q60 30 120 35 T240 15 T300 5" fill="none" stroke="var(--brand-primary)" stroke-width="3"/>
@@ -353,24 +322,19 @@ button {
             </div>
 
             <div class="grid grid-cols-2 gap-3">
-
                 <div class="custom-card p-4 rounded-2xl border">
                     <span class="text-xs opacity-60">Total Orders</span>
                     <h3 id="metric-orders" class="text-2xl font-bold mt-2">52</h3>
                 </div>
-
                 <div class="custom-card p-4 rounded-2xl border">
                     <span class="text-xs opacity-60">Goal Progress</span>
                     <h3 class="text-2xl font-bold mt-2">76%</h3>
                 </div>
-
             </div>
 
             <div class="custom-card p-5 rounded-3xl border">
                 <h3 class="font-bold text-sm mb-4">Order Fulfillment Pipeline</h3>
-
                 <div class="grid grid-cols-2 gap-3 text-xs">
-
                     <div class="p-3 rounded-xl" style="background:var(--brand-light)">2 · Need Packaging</div>
                     <div class="p-3 rounded-xl" style="background:var(--brand-light)">3 · Packaged</div>
                     <div class="p-3 rounded-xl" style="background:var(--brand-light)">4 · Needs Shipping</div>
@@ -379,7 +343,6 @@ button {
                     <div class="p-3 rounded-xl" style="background:var(--brand-light)">8 · Delivered</div>
                     <div class="p-3 rounded-xl" style="background:var(--brand-light)">1 · Awaiting Payment</div>
                     <div class="p-3 rounded-xl" style="background:var(--brand-light)">25 · Fulfilled</div>
-
                 </div>
             </div>
 
@@ -411,11 +374,9 @@ button {
                     </button>
                 </div>
             </div>
-
         </div>
 
         <!-- TRACKING -->
-
         <div id="tab-tracking-content" class="app-tab hidden space-y-4">
             <div class="custom-card p-5 rounded-3xl border">
                 <h3 class="font-bold mb-3">Sales Tracking</h3>
@@ -424,14 +385,10 @@ button {
         </div>
 
         <!-- INVENTORY -->
-
         <div id="tab-inventory-content" class="app-tab hidden space-y-4">
-
             <div class="custom-card p-5 rounded-3xl border">
                 <h3 class="font-bold text-base mb-4">Inventory Hub</h3>
-
                 <div class="space-y-3">
-
                     <button onclick="switchTab('components')" class="w-full p-4 rounded-2xl border flex items-center justify-between">
                         <span class="font-bold text-sm">
                             <i class="fa-solid fa-boxes-stacked mr-2" style="color:var(--brand-primary)"></i>
@@ -439,7 +396,6 @@ button {
                         </span>
                         <i class="fa-solid fa-chevron-right opacity-40"></i>
                     </button>
-
                     <button onclick="alert('Products management coming soon!')" class="w-full p-4 rounded-2xl border flex items-center justify-between">
                         <span class="font-bold text-sm">
                             <i class="fa-solid fa-shirt mr-2" style="color:var(--brand-primary)"></i>
@@ -447,7 +403,6 @@ button {
                         </span>
                         <i class="fa-solid fa-chevron-right opacity-40"></i>
                     </button>
-
                     <button onclick="alert('Listings management coming soon!')" class="w-full p-4 rounded-2xl border flex items-center justify-between">
                         <span class="font-bold text-sm">
                             <i class="fa-solid fa-store mr-2" style="color:var(--brand-primary)"></i>
@@ -455,50 +410,36 @@ button {
                         </span>
                         <i class="fa-solid fa-chevron-right opacity-40"></i>
                     </button>
-
                 </div>
             </div>
         </div>
 
         <!-- COMPONENTS -->
-
         <div id="tab-components-content" class="app-tab hidden space-y-4">
-
-            <div class="custom-card p-4 rounded-3xl border shadow-sm space-y-4">
-
+            <div class="custom-card p-4 rounded-3xl border shadow-sm space-y-3">
                 <div class="flex justify-between items-center">
-
                     <div>
                         <h3 class="font-bold text-base">Raw Supplies & Parts</h3>
                         <p class="text-xs opacity-60">Packaging & inventory supplies</p>
                     </div>
-
                     <button onclick="openComponentModal()" class="primary-button">
                         <i class="fa-solid fa-plus mr-1"></i> Add New
                     </button>
-
                 </div>
 
                 <!-- SEARCH -->
-
                 <div class="flex gap-2">
-
-                    <input id="comp-search" oninput="renderComponents()" placeholder="Search components or suppliers..." class="form-control flex-1">
-
+                    <input id="comp-search" oninput="renderComponents()" placeholder="Search components..." class="form-control flex-1">
                     <button id="batch-delete-btn" onclick="batchDeleteComponents()" class="hidden danger-button">
                         <i class="fa-solid fa-trash"></i>
                     </button>
-
                 </div>
 
                 <!-- FILTERS -->
-
                 <div class="grid grid-cols-2 gap-2">
-
                     <select id="comp-filter-cat" onchange="renderComponents()" class="form-control">
                         <option value="">All Categories</option>
                     </select>
-
                     <select id="comp-sort" onchange="renderComponents()" class="form-control">
                         <option value="name_asc">Name A-Z</option>
                         <option value="name_desc">Name Z-A</option>
@@ -508,48 +449,36 @@ button {
                         <option value="qty_low">Quantity: Low-High</option>
                         <option value="stock_out">Out of Stock First</option>
                     </select>
-
                 </div>
 
                 <!-- CATEGORY AND SUPPLIER MANAGEMENT -->
-
                 <div class="grid grid-cols-2 gap-2">
-
                     <button onclick="openManagementModal('category')" class="secondary-button text-xs">
                         <i class="fa-solid fa-tags mr-1"></i> Manage Categories
                     </button>
-
                     <button onclick="openManagementModal('supplier')" class="secondary-button text-xs">
                         <i class="fa-solid fa-truck mr-1"></i> Manage Suppliers
                     </button>
-
                 </div>
 
                 <!-- COMPONENTS LIST -->
-
                 <div id="components-list" class="pt-1"></div>
-
             </div>
         </div>
 
         <!-- REPORTS -->
-
         <div id="tab-reports-content" class="app-tab hidden space-y-4">
-
             <div class="custom-card p-5 rounded-3xl border">
                 <h3 class="font-bold mb-3">Performance Reports</h3>
                 <p class="text-xs opacity-60 mb-4">Business performance overview.</p>
-
                 <div class="p-5 rounded-2xl text-center" style="background:var(--brand-light)">
                     <span class="text-xs opacity-70">Net Profit This Period</span>
                     <h2 id="report-net-profit" class="text-2xl font-bold mt-2" style="color:var(--brand-primary)">$3,960</h2>
                 </div>
             </div>
-
         </div>
 
         <!-- GOALS -->
-
         <div id="tab-goals-content" class="app-tab hidden">
             <div class="custom-card p-5 rounded-3xl border text-center">
                 <h3 class="font-bold text-lg">You're on track!</h3>
@@ -558,7 +487,6 @@ button {
         </div>
 
         <!-- MORE -->
-
         <div id="tab-more-content" class="app-tab hidden">
             <div class="custom-card p-5 rounded-3xl border">
                 <h3 id="more-bus-name" class="font-bold">Grimms Reselling</h3>
@@ -569,18 +497,13 @@ button {
         </div>
 
         <!-- SETTINGS -->
-
         <div id="tab-settings-content" class="app-tab hidden">
-
             <div class="custom-card p-5 rounded-3xl border space-y-4">
-
                 <h3 class="font-bold">Business Settings</h3>
-
                 <div>
                     <label class="form-label">Business Name</label>
                     <input id="settings-bus-name" class="form-control" value="Grimms Reselling">
                 </div>
-
                 <div>
                     <label class="form-label">Currency</label>
                     <select id="settings-currency" class="form-control">
@@ -590,7 +513,6 @@ button {
                         <option>CAD ($)</option>
                     </select>
                 </div>
-
                 <div>
                     <label class="form-label">Color Theme</label>
                     <select id="settings-theme" onchange="previewTheme(this.value)" class="form-control">
@@ -618,7 +540,6 @@ button {
                         <option value="crimson_noir">Crimson Noir</option>
                     </select>
                 </div>
-
                 <div>
                     <label class="form-label">Font Family</label>
                     <select id="settings-font" onchange="previewFont(this.value)" class="form-control">
@@ -634,167 +555,114 @@ button {
                         <option value="'Cormorant Garamond',serif">Cormorant Garamond</option>
                     </select>
                 </div>
-
                 <button onclick="saveSettingsChanges()" class="primary-button w-full">
                     Save Changes
                 </button>
-
             </div>
         </div>
 
     </div>
 
     <!-- BOTTOM NAVIGATION -->
-
     <div class="absolute bottom-0 left-0 right-0 custom-card border-t px-1 py-3 flex justify-around items-center z-40">
-
         <button onclick="switchTab('home')" id="nav-btn-home" class="nav-item flex flex-col items-center flex-1 text-brand">
             <i class="fa-solid fa-house text-base"></i>
             <span class="text-[10px] mt-1">Home</span>
         </button>
-
         <button onclick="switchTab('inventory')" id="nav-btn-inventory" class="nav-item flex flex-col items-center flex-1">
             <i class="fa-solid fa-boxes-stacked text-base"></i>
             <span class="text-[10px] mt-1">Inventory</span>
         </button>
-
         <button onclick="switchTab('tracking')" id="nav-btn-tracking" class="nav-item flex flex-col items-center flex-1">
             <i class="fa-solid fa-chart-line text-base"></i>
             <span class="text-[10px] mt-1">Tracking</span>
         </button>
-
         <button onclick="switchTab('reports')" id="nav-btn-reports" class="nav-item flex flex-col items-center flex-1">
             <i class="fa-solid fa-chart-column text-base"></i>
             <span class="text-[10px] mt-1">Reports</span>
         </button>
-
         <button onclick="switchTab('more')" id="nav-btn-more" class="nav-item flex flex-col items-center flex-1">
             <i class="fa-solid fa-bars text-base"></i>
             <span class="text-[10px] mt-1">More</span>
         </button>
-
         <button onclick="switchTab('settings')" id="nav-btn-settings" class="nav-item flex flex-col items-center flex-1">
             <i class="fa-solid fa-gear text-base"></i>
             <span class="text-[10px] mt-1">Settings</span>
         </button>
-
     </div>
 
 </div>
 </div>
 
 <!-- ADD / EDIT COMPONENT MODAL -->
-
 <div id="component-modal" class="modal-overlay hidden">
-
     <div class="modal-box">
-
         <div class="flex justify-between items-center mb-5">
             <h3 id="modal-title" class="font-bold text-lg">Add Component</h3>
             <button onclick="closeComponentModal()" class="text-xl opacity-60">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
-
         <form id="component-form" onsubmit="handleComponentSubmit(event)" class="space-y-4">
-
             <input type="hidden" id="comp-edit-id">
-
             <div>
                 <label class="form-label">Component Name *</label>
                 <input id="comp-name" required class="form-control" placeholder="e.g. Bubble Mailers">
             </div>
-
             <div class="grid grid-cols-2 gap-3">
-
                 <div>
                     <label class="form-label">Quantity *</label>
                     <input id="comp-qty" type="number" min="0" required class="form-control" placeholder="150">
                 </div>
-
                 <div>
                     <label class="form-label">Cost Per Unit</label>
                     <input id="comp-cost" type="number" min="0" step="0.01" class="form-control" placeholder="0.25">
                 </div>
-
             </div>
-
             <div>
                 <label class="form-label">Category</label>
-
-                <select id="comp-category" onchange="handleCategorySelection(this)" class="form-control"></select>
-
-                <button type="button" onclick="openManagementModal('category')" class="text-xs mt-2 font-bold" style="color:var(--brand-primary)">
-                    <i class="fa-solid fa-gear mr-1"></i> Manage Categories
-                </button>
+                <select id="comp-category" class="form-control"></select>
             </div>
-
             <div>
                 <label class="form-label">Supplier</label>
-
-                <select id="comp-supplier" onchange="handleSupplierSelection(this)" class="form-control"></select>
-
-                <button type="button" onclick="openManagementModal('supplier')" class="text-xs mt-2 font-bold" style="color:var(--brand-primary)">
-                    <i class="fa-solid fa-gear mr-1"></i> Manage Suppliers
-                </button>
+                <select id="comp-supplier" class="form-control"></select>
             </div>
-
             <div>
                 <label class="form-label">Notes</label>
-                <textarea id="comp-notes" class="form-control h-24 resize-none" placeholder="Dimensions, links, reorder reminders..."></textarea>
+                <textarea id="comp-notes" class="form-control h-20 resize-none" placeholder="Dimensions, links, reorder reminders..."></textarea>
             </div>
-
             <button type="submit" class="primary-button w-full">
                 Save Component
             </button>
-
         </form>
-
     </div>
 </div>
 
 <!-- CATEGORY / SUPPLIER MANAGEMENT MODAL -->
-
 <div id="management-modal" class="modal-overlay hidden">
-
     <div class="modal-box">
-
         <div class="flex justify-between items-center mb-4">
-
             <div>
                 <h3 id="management-title" class="font-bold text-lg">Manage Categories</h3>
                 <p id="management-subtitle" class="text-xs opacity-60 mt-1">Add, edit, or remove options.</p>
             </div>
-
             <button onclick="closeManagementModal()" class="text-xl opacity-60">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-
         </div>
-
         <button id="management-add-button" onclick="addManagedItem()" class="primary-button w-full mb-4">
             <i class="fa-solid fa-plus mr-2"></i> Add New
         </button>
-
         <div id="management-list"></div>
-
         <button onclick="closeManagementModal()" class="secondary-button w-full mt-3">
             Done
         </button>
-
     </div>
 </div>
 
 <!-- JAVASCRIPT -->
-
 <script>
-
-// ========================================
-// STORAGE AND APPLICATION DATA
-// ========================================
-
 const STORAGE_KEY = 'grimms_business_tracker_v2';
-
 let savedData = {};
 
 try {
@@ -804,321 +672,136 @@ try {
 }
 
 let userPlatforms = savedData.platforms || ['Vinted','eBay'];
-
-let userExpenses = savedData.expenses || [
-    'Shipping Supplies',
-    'Platform Fees',
-    'Inventory Acquisition'
-];
-
-let componentCategories = savedData.categories || [
-    'Packaging',
-    'Jewelry Supplies',
-    'Stickers & Labels'
-];
-
-let suppliers = savedData.suppliers || [
-    'Uline',
-    'Amazon',
-    'AliExpress',
-    'Rio Grande'
-];
+let userExpenses = savedData.expenses || ['Shipping Supplies', 'Platform Fees', 'Inventory Acquisition'];
+let componentCategories = savedData.categories || ['Packaging', 'Jewelry Supplies', 'Stickers & Labels'];
+let suppliers = savedData.suppliers || ['Uline', 'Amazon', 'AliExpress', 'Rio Grande'];
 
 let componentsList = savedData.components || [
-    {
-        id:1,
-        name:'4x8 Bubble Mailers',
-        qty:145,
-        cost:0.18,
-        category:'Packaging',
-        supplier:'Uline',
-        notes:'Kraft paper bubble mailers'
-    },
-    {
-        id:2,
-        name:'Gothic Bat Charms',
-        qty:0,
-        cost:0.45,
-        category:'Jewelry Supplies',
-        supplier:'AliExpress',
-        notes:'Out of stock, reorder soon'
-    },
-    {
-        id:3,
-        name:'Thank You Stickers (Roll)',
-        qty:320,
-        cost:0.03,
-        category:'Stickers & Labels',
-        supplier:'Amazon',
-        notes:'Pink foil logo stickers'
-    },
-    {
-        id:4,
-        name:'Stainless Steel Chains (18")',
-        qty:45,
-        cost:0.85,
-        category:'Jewelry Supplies',
-        supplier:'Rio Grande',
-        notes:'For pendant necklaces'
-    }
+    { id: 1, name: '4x8 Bubble Mailers', qty: 145, cost: 0.18, category: 'Packaging', supplier: 'Uline', notes: 'Kraft paper bubble mailers' },
+    { id: 2, name: 'Gothic Bat Charms', qty: 0, cost: 0.45, category: 'Jewelry Supplies', supplier: 'AliExpress', notes: 'Out of stock' },
+    { id: 3, name: 'Thank You Stickers', qty: 320, cost: 0.03, category: 'Stickers & Labels', supplier: 'Amazon', notes: 'Pink foil logo stickers' },
+    { id: 4, name: 'Stainless Steel Chains', qty: 45, cost: 0.85, category: 'Jewelry Supplies', supplier: 'Rio Grande', notes: 'For pendant necklaces' }
 ];
 
 let currentThemeKey = savedData.theme || 'blush';
-
 let savedSettingsState = {
-    name:savedData.name || 'Grimms Reselling',
-    currency:savedData.currency || 'USD ($)',
-    theme:currentThemeKey,
-    font:savedData.font || "'Plus Jakarta Sans',sans-serif"
+    name: savedData.name || 'Grimms Reselling',
+    currency: savedData.currency || 'USD ($)',
+    theme: currentThemeKey,
+    font: savedData.font || "'Plus Jakarta Sans',sans-serif"
 };
 
 let activeManagementType = 'category';
 
-let currentEditingComponent = false;
-
-// ========================================
-// SAVE DATA
-// ========================================
-
 function saveData() {
-
     const data = {
-        components:componentsList,
-        categories:componentCategories,
-        suppliers:suppliers,
-        platforms:userPlatforms,
-        expenses:userExpenses,
-        name:savedSettingsState.name,
-        currency:savedSettingsState.currency,
-        theme:currentThemeKey,
-        font:document.documentElement.style.getPropertyValue('--app-font') || savedSettingsState.font
+        components: componentsList,
+        categories: componentCategories,
+        suppliers: suppliers,
+        platforms: userPlatforms,
+        expenses: userExpenses,
+        name: savedSettingsState.name,
+        currency: savedSettingsState.currency,
+        theme: currentThemeKey,
+        font: document.documentElement.style.getPropertyValue('--app-font') || savedSettingsState.font
     };
-
     try {
-        localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch(error) {
-        alert('Unable to save data. Your browser storage may be full or unavailable.');
+        alert('Unable to save data.');
     }
 }
 
-// ========================================
-// THEMES
-// ========================================
-
 const themes = {
-
-blush:{
-primary:'#d97793',light:'#fdf2f4',dark:'#b35470',accent:'#f4aabf',
-appBg:'#f7f3f4',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-lavender:{
-primary:'#7c3aed',light:'#f5f3ff',dark:'#5b21b6',accent:'#c4b5fd',
-appBg:'#faf8fc',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-peach:{
-primary:'#ea580c',light:'#fff7ed',dark:'#9a3412',accent:'#fed7aa',
-appBg:'#fffaf5',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-sakura:{
-primary:'#db2777',light:'#fdf2f8',dark:'#9d174d',accent:'#fbcfe8',
-appBg:'#fdf8fa',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-vanilla:{
-primary:'#854d0e',light:'#fefce8',dark:'#713f12',accent:'#fef08a',
-appBg:'#fbf9f5',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-mint:{
-primary:'#059669',light:'#ecfdf5',dark:'#047857',accent:'#a7f3d0',
-appBg:'#f4f8f6',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-berry:{
-primary:'#be185d',light:'#fdf2f8',dark:'#831843',accent:'#f472b6',
-appBg:'#fcf6f8',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-golden:{
-primary:'#ca8a04',light:'#fefce8',dark:'#854d0e',accent:'#fde047',
-appBg:'#fcfbfa',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-cottoncandy:{
-primary:'#0284c7',light:'#f0f9ff',dark:'#0369a1',accent:'#bae6fd',
-appBg:'#f5f9fc',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-emerald:{
-primary:'#047857',light:'#ecfdf5',dark:'#064e3b',accent:'#34d399',
-appBg:'#f4f7f5',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-ruby_light:{
-primary:'#e11d48',light:'#fff1f2',dark:'#9f1239',accent:'#fecdd3',
-appBg:'#fff5f6',cardBg:'#ffffff',text:'#2d2d2d',border:'#e5e5e5'
-},
-
-midnight:{
-primary:'#38bdf8',light:'#1e293b',dark:'#0284c7',accent:'#1e2230',
-appBg:'#12151e',cardBg:'#1c2130',text:'#f1f5f9',border:'#2a324a'
-},
-
-rosewood:{
-primary:'#f43f5e',light:'#4c1d25',dark:'#e11d48',accent:'#2c151a',
-appBg:'#151012',cardBg:'#21181c',text:'#fce7f0',border:'#3d262e'
-},
-
-lavender_noir:{
-primary:'#a78bfa',light:'#2e1065',dark:'#8b5cf6',accent:'#231838',
-appBg:'#13111c',cardBg:'#1d1929',text:'#f5f3ff',border:'#312847'
-},
-
-espresso:{
-primary:'#fbbf24',light:'#422006',dark:'#d97706',accent:'#2a1b12',
-appBg:'#16110e',cardBg:'#241b14',text:'#fef3c7',border:'#3b2b20'
-},
-
-sage_noir:{
-primary:'#34d399',light:'#064e3b',dark:'#059669',accent:'#142820',
-appBg:'#0f1713',cardBg:'#17251e',text:'#ecfdf5',border:'#223d30'
-},
-
-champagne:{
-primary:'#fde047',light:'#422006',dark:'#ca8a04',accent:'#282314',
-appBg:'#14130f',cardBg:'#211e17',text:'#fef9c3',border:'#3d3726'
-},
-
-dusty_mauve:{
-primary:'#f472b6',light:'#500724',dark:'#db2777',accent:'#2c1522',
-appBg:'#151014',cardBg:'#211820',text:'#fdf2f8',border:'#3d2634'
-},
-
-oceanic:{
-primary:'#38bdf8',light:'#0c4a6e',dark:'#0284c7',accent:'#132230',
-appBg:'#0b131a',cardBg:'#15222d',text:'#f0f9ff',border:'#22384a'
-},
-
-emerald_luxe:{
-primary:'#34d399',light:'#022c22',dark:'#059669',accent:'#11261e',
-appBg:'#0a1410',cardBg:'#14221b',text:'#ecfdf5',border:'#1f382d'
-},
-
-graphite:{
-primary:'#cbd5e1',light:'#1e293b',dark:'#64748b',accent:'#1e222a',
-appBg:'#0f1115',cardBg:'#1a1f26',text:'#f1f5f9',border:'#2d3748'
-},
-
-crimson_noir:{
-primary:'#f87171',light:'#450a0a',dark:'#dc2626',accent:'#2a1414',
-appBg:'#140c0c',cardBg:'#211515',text:'#fef2f2',border:'#3d2222'
-}
-
+    blush: { primary:'#d97793', light:'#fdf2f4', dark:'#b35470', accent:'#f4aabf', appBg:'#f7f3f4', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    lavender: { primary:'#7c3aed', light:'#f5f3ff', dark:'#5b21b6', accent:'#c4b5fd', appBg:'#faf8fc', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    peach: { primary:'#ea580c', light:'#fff7ed', dark:'#9a3412', accent:'#fed7aa', appBg:'#fffaf5', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    sakura: { primary:'#db2777', light:'#fdf2f8', dark:'#9d174d', accent:'#fbcfe8', appBg:'#fdf8fa', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    vanilla: { primary:'#854d0e', light:'#fefce8', dark:'#713f12', accent:'#fef08a', appBg:'#fbf9f5', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    mint: { primary:'#059669', light:'#ecfdf5', dark:'#047857', accent:'#a7f3d0', appBg:'#f4f8f6', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    berry: { primary:'#be185d', light:'#fdf2f8', dark:'#831843', accent:'#f472b6', appBg:'#fcf6f8', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    golden: { primary:'#ca8a04', light:'#fefce8', dark:'#854d0e', accent:'#fde047', appBg:'#fcfbfa', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    cottoncandy: { primary:'#0284c7', light:'#f0f9ff', dark:'#0369a1', accent:'#bae6fd', appBg:'#f5f9fc', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    emerald: { primary:'#047857', light:'#ecfdf5', dark:'#064e3b', accent:'#34d399', appBg:'#f4f7f5', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    ruby_light: { primary:'#e11d48', light:'#fff1f2', dark:'#9f1239', accent:'#fecdd3', appBg:'#fff5f6', cardBg:'#ffffff', text:'#2d2d2d', border:'#e5e5e5' },
+    midnight: { primary:'#38bdf8', light:'#1e293b', dark:'#0284c7', accent:'#1e2230', appBg:'#12151e', cardBg:'#1c2130', text:'#f1f5f9', border:'#2a324a' },
+    rosewood: { primary:'#f43f5e', light:'#4c1d25', dark:'#e11d48', accent:'#2c151a', appBg:'#151012', cardBg:'#21181c', text:'#fce7f0', border:'#3d262e' },
+    lavender_noir: { primary:'#a78bfa', light:'#2e1065', dark:'#8b5cf6', accent:'#231838', appBg:'#13111c', cardBg:'#1d1929', text:'#f5f3ff', border:'#312847' },
+    espresso: { primary:'#fbbf24', light:'#422006', dark:'#d97706', accent:'#2a1b12', appBg:'#16110e', cardBg:'#241b14', text:'#fef3c7', border:'#3b2b20' },
+    sage_noir: { primary:'#34d399', light:'#064e3b', dark:'#059669', accent:'#142820', appBg:'#0f1713', cardBg:'#17251e', text:'#ecfdf5', border:'#223d30' },
+    champagne: { primary:'#fde047', light:'#422006', dark:'#ca8a04', accent:'#282314', appBg:'#14130f', cardBg:'#211e17', text:'#fef9c3', border:'#3d3726' },
+    dusty_mauve: { primary:'#f472b6', light:'#500724', dark:'#db2777', accent:'#2c1522', appBg:'#151014', cardBg:'#211820', text:'#fdf2f8', border:'#3d2634' },
+    oceanic: { primary:'#38bdf8', light:'#0c4a6e', dark:'#0284c7', accent:'#132230', appBg:'#0b131a', cardBg:'#15222d', text:'#f0f9ff', border:'#93c5fd' },
+    emerald_luxe: { primary:'#34d399', light:'#022c22', dark:'#059669', accent:'#11261e', appBg:'#0a1410', cardBg:'#14221b', text:'#ecfdf5', border:'#1f382d' },
+    graphite: { primary:'#cbd5e1', light:'#1e293b', dark:'#64748b', accent:'#1e222a', appBg:'#0f1115', cardBg:'#1a1f26', text:'#f1f5f9', border:'#2d3748' },
+    crimson_noir: { primary:'#f87171', light:'#450a0a', dark:'#dc2626', accent:'#2a1414', appBg:'#140c0c', cardBg:'#211515', text:'#fef2f2', border:'#3d2222' }
 };
 
 function previewTheme(themeName) {
-
     const t = themes[themeName];
-
     if(!t) return;
-
     currentThemeKey = themeName;
-
     const root = document.documentElement;
-
-    root.style.setProperty('--brand-primary',t.primary);
-    root.style.setProperty('--brand-light',t.light);
-    root.style.setProperty('--brand-dark',t.dark);
-    root.style.setProperty('--brand-accent',t.accent);
-    root.style.setProperty('--app-bg',t.appBg);
-    root.style.setProperty('--card-bg',t.cardBg);
-    root.style.setProperty('--text-main',t.text);
-    root.style.setProperty('--border-color',t.border);
+    root.style.setProperty('--brand-primary', t.primary);
+    root.style.setProperty('--brand-light', t.light);
+    root.style.setProperty('--brand-dark', t.dark);
+    root.style.setProperty('--brand-accent', t.accent);
+    root.style.setProperty('--app-bg', t.appBg);
+    root.style.setProperty('--card-bg', t.cardBg);
+    root.style.setProperty('--text-main', t.text);
+    root.style.setProperty('--border-color', t.border);
 
     const setup = document.getElementById('setup-theme');
     const settings = document.getElementById('settings-theme');
-
     if(setup) setup.value = themeName;
     if(settings) settings.value = themeName;
-
 }
 
 function previewFont(fontFamily) {
-
-    document.documentElement.style.setProperty('--app-font',fontFamily);
-
+    document.documentElement.style.setProperty('--app-font', fontFamily);
     document.getElementById('setup-font').value = fontFamily;
     document.getElementById('settings-font').value = fontFamily;
-
 }
 
-// ========================================
-// SCREEN NAVIGATION
-// ========================================
-
 function goToScreen(screenId) {
-
     ['screen-welcome','screen-setup','screen-app'].forEach(id => {
         const el = document.getElementById(id);
         el.classList.add('hidden');
         el.classList.remove('flex');
     });
-
     const target = document.getElementById(screenId);
-
     target.classList.remove('hidden');
     target.classList.add('flex');
-
 }
 
 function completeSetup() {
-
     document.getElementById('screen-welcome').classList.add('hidden');
     document.getElementById('screen-setup').classList.add('hidden');
-
     const app = document.getElementById('screen-app');
-
     app.classList.remove('hidden');
     app.classList.add('flex');
-
     switchTab('home');
-
 }
 
 function switchTab(tabName) {
-
-    document.querySelectorAll('.app-tab').forEach(tab => {
-        tab.classList.add('hidden');
-    });
-
+    document.querySelectorAll('.app-tab').forEach(tab => tab.classList.add('hidden'));
     const target = document.getElementById(`tab-${tabName}-content`);
-
     if(!target) return;
-
     target.classList.remove('hidden');
 
     const homeHeader = document.getElementById('home-top-header');
     const componentHeader = document.getElementById('components-top-header');
 
     if(tabName === 'components') {
-
         homeHeader.classList.add('hidden');
         componentHeader.classList.remove('hidden');
         componentHeader.classList.add('flex');
-
         renderComponents();
-
     } else {
-
         homeHeader.classList.remove('hidden');
         homeHeader.classList.add('flex');
-
         componentHeader.classList.add('hidden');
         componentHeader.classList.remove('flex');
-
     }
 
     document.querySelectorAll('.nav-item').forEach(btn => {
@@ -1126,66 +809,42 @@ function switchTab(tabName) {
         btn.style.color = 'var(--text-sub)';
     });
 
-    let activeId = `nav-btn-${tabName}`;
-
-    const active = document.getElementById(activeId);
-
+    const active = document.getElementById(`nav-btn-${tabName}`);
     if(active) {
         active.classList.add('text-brand');
         active.style.color = 'var(--brand-primary)';
     }
-
     document.getElementById('main-scroll-container').scrollTop = 0;
-
 }
 
-// ========================================
-// SETUP
-// ========================================
-
 function addPlatformInput() {
-
     const input = document.createElement('input');
-
     input.className = 'platform-input form-control';
     input.placeholder = 'Platform name';
-
     document.getElementById('platforms-container').appendChild(input);
-
 }
 
 function addExpenseInput() {
-
     const input = document.createElement('input');
-
     input.className = 'expense-input form-control';
     input.placeholder = 'Expense category';
-
     document.getElementById('expenses-container').appendChild(input);
-
 }
 
 function handleSetupSubmit(e) {
-
     e.preventDefault();
-
     const name = document.getElementById('setup-bus-name').value.trim();
     const currency = document.getElementById('setup-currency').value;
     const goal = document.getElementById('setup-goal').value;
 
-    userPlatforms = [...document.querySelectorAll('.platform-input')]
-        .map(i => i.value.trim())
-        .filter(Boolean);
-
-    userExpenses = [...document.querySelectorAll('.expense-input')]
-        .map(i => i.value.trim())
-        .filter(Boolean);
+    userPlatforms = [...document.querySelectorAll('.platform-input')].map(i => i.value.trim()).filter(Boolean);
+    userExpenses = [...document.querySelectorAll('.expense-input')].map(i => i.value.trim()).filter(Boolean);
 
     savedSettingsState = {
-        name:name || 'Grimms Reselling',
+        name: name || 'Grimms Reselling',
         currency,
-        theme:document.getElementById('setup-theme').value,
-        font:document.getElementById('setup-font').value
+        theme: document.getElementById('setup-theme').value,
+        font: document.getElementById('setup-font').value
     };
 
     previewTheme(savedSettingsState.theme);
@@ -1197,613 +856,297 @@ function handleSetupSubmit(e) {
     document.getElementById('settings-currency').value = currency;
 
     if(goal) {
-        document.getElementById('goal-target-text').textContent =
-            `Reach ${currency.includes('£') ? '£' : currency.includes('€') ? '€' : '$'}${Number(goal).toLocaleString()} this month`;
+        document.getElementById('goal-target-text').textContent = `Reach ${currency.includes('£') ? '£' : currency.includes('€') ? '€' : '$'}${Number(goal).toLocaleString()} this month`;
     }
 
     renderTrackingPlatforms();
-
     saveData();
     completeSetup();
-
 }
 
 function renderTrackingPlatforms() {
-
     const container = document.getElementById('tracking-platforms-list');
-
     container.innerHTML = '';
-
     if(userPlatforms.length === 0) {
         container.innerHTML = '<p class="text-xs opacity-60">No active platforms.</p>';
         return;
     }
-
     userPlatforms.forEach(platform => {
-
         const div = document.createElement('div');
-
         div.className = 'p-3 rounded-xl border flex justify-between text-xs';
-
         const name = document.createElement('strong');
         name.textContent = platform;
-
         const status = document.createElement('span');
         status.textContent = 'Active';
         status.className = 'text-emerald-600 font-bold';
-
-        div.append(name,status);
+        div.append(name, status);
         container.appendChild(div);
-
     });
-
 }
 
-// ========================================
-// TIMEFRAME
-// ========================================
-
 function updateTimeframe(timeframe) {
-
     const values = {
-        today:['Today\'s Revenue','$240','3','$195'],
-        this_week:['This Week\'s Revenue','$1,250','14','$980'],
-        this_month:['This Month\'s Revenue','$4,820','52','$3,960'],
-        this_year:['This Year\'s Revenue','$58,400','610','$46,200'],
-        all_time:['All-Time Revenue','$142,900','1,480','$112,500']
+        today: ['Today\'s Revenue','$240','3','$195'],
+        this_week: ['This Week\'s Revenue','$1,250','14','$980'],
+        this_month: ['This Month\'s Revenue','$4,820','52','$3,960'],
+        this_year: ['This Year\'s Revenue','$58,400','610','$46,200'],
+        all_time: ['All-Time Revenue','$142,900','1,480','$112,500']
     };
-
     const data = values[timeframe];
-
     if(!data) return;
-
     document.getElementById('rev-card-title').textContent = data[0];
     document.getElementById('display-revenue').textContent = data[1];
     document.getElementById('metric-orders').textContent = data[2];
     document.getElementById('report-net-profit').textContent = data[3];
-
 }
 
-// ========================================
-// SETTINGS
-// ========================================
-
 function saveSettingsChanges() {
-
     const name = document.getElementById('settings-bus-name').value.trim();
-
     if(!name) {
         alert('Please enter a business name.');
         return;
     }
-
     const currency = document.getElementById('settings-currency').value;
     const theme = document.getElementById('settings-theme').value;
     const font = document.getElementById('settings-font').value;
 
-    savedSettingsState = {
-        name,
-        currency,
-        theme,
-        font
-    };
-
+    savedSettingsState = { name, currency, theme, font };
     previewTheme(theme);
     previewFont(font);
 
     document.getElementById('header-greeting').textContent = `Welcome back, ${name}!`;
     document.getElementById('more-bus-name').textContent = name;
-
     saveData();
-
     alert('Settings saved successfully!');
-
     switchTab('home');
-
 }
 
-// ========================================
-// CATEGORY AND SUPPLIER DROPDOWNS
-// ========================================
-
+// DROPDOWNS WITHOUT "+ ADD NEW" (Managed exclusively via Manage Categories/Suppliers buttons)
 function updateCategoryDropdowns() {
-
     const filter = document.getElementById('comp-filter-cat');
     const form = document.getElementById('comp-category');
-
     const previousFilter = filter.value;
     const previousForm = form.value;
 
     filter.innerHTML = '<option value="">All Categories</option>';
-
-    componentCategories.forEach(category => {
-
-        const option = document.createElement('option');
-
-        option.value = category;
-        option.textContent = category;
-
-        filter.appendChild(option);
-
+    componentCategories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        filter.appendChild(opt);
     });
-
     filter.value = componentCategories.includes(previousFilter) ? previousFilter : '';
 
     form.innerHTML = '';
-
-    componentCategories.forEach(category => {
-
-        const option = document.createElement('option');
-
-        option.value = category;
-        option.textContent = category;
-
-        form.appendChild(option);
-
+    componentCategories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        form.appendChild(opt);
     });
-
-    const addOption = document.createElement('option');
-
-    addOption.value = '__new__';
-    addOption.textContent = '+ Add New Category...';
-
-    form.appendChild(addOption);
-
     if(componentCategories.includes(previousForm)) {
         form.value = previousForm;
     }
-
 }
 
 function updateSupplierDropdown() {
-
     const select = document.getElementById('comp-supplier');
-
     const previous = select.value;
 
     select.innerHTML = '';
-
     const blank = document.createElement('option');
-
     blank.value = '';
     blank.textContent = 'Select Supplier';
-
     select.appendChild(blank);
 
-    suppliers.forEach(supplier => {
-
-        const option = document.createElement('option');
-
-        option.value = supplier;
-        option.textContent = supplier;
-
-        select.appendChild(option);
-
+    suppliers.forEach(sup => {
+        const opt = document.createElement('option');
+        opt.value = sup;
+        opt.textContent = sup;
+        select.appendChild(opt);
     });
-
-    const addOption = document.createElement('option');
-
-    addOption.value = '__new__';
-    addOption.textContent = '+ Add New Supplier...';
-
-    select.appendChild(addOption);
-
     select.value = suppliers.includes(previous) ? previous : '';
-
 }
 
-function handleCategorySelection(select) {
-
-    if(select.value !== '__new__') return;
-
-    const name = prompt('Enter the new category name:');
-
-    if(!name || !name.trim()) {
-
-        select.value = componentCategories[0] || '';
-        return;
-
-    }
-
-    const clean = name.trim();
-
-    const existing = componentCategories.find(c => c.toLowerCase() === clean.toLowerCase());
-
-    if(existing) {
-
-        alert('This category already exists.');
-        select.value = existing;
-        return;
-
-    }
-
-    componentCategories.push(clean);
-
-    saveData();
-
-    updateCategoryDropdowns();
-
-    select.value = clean;
-
-    renderComponents();
-
-}
-
-function handleSupplierSelection(select) {
-
-    if(select.value !== '__new__') return;
-
-    const name = prompt('Enter the new supplier name:');
-
-    if(!name || !name.trim()) {
-
-        select.value = '';
-        return;
-
-    }
-
-    const clean = name.trim();
-
-    const existing = suppliers.find(s => s.toLowerCase() === clean.toLowerCase());
-
-    if(existing) {
-
-        alert('This supplier already exists.');
-        select.value = existing;
-        return;
-
-    }
-
-    suppliers.push(clean);
-
-    saveData();
-
-    updateSupplierDropdown();
-
-    select.value = clean;
-
-}
-
-// ========================================
-// CATEGORY / SUPPLIER MANAGEMENT
-// ========================================
-
+// MANAGEMENT MODAL
 function openManagementModal(type) {
-
     activeManagementType = type;
-
     const isCategory = type === 'category';
-
-    document.getElementById('management-title').textContent =
-        isCategory ? 'Manage Categories' : 'Manage Suppliers';
-
-    document.getElementById('management-subtitle').textContent =
-        isCategory
-        ? 'Add, edit, or delete your component categories.'
-        : 'Add, edit, or delete your suppliers.';
-
+    document.getElementById('management-title').textContent = isCategory ? 'Manage Categories' : 'Manage Suppliers';
+    document.getElementById('management-subtitle').textContent = isCategory ? 'Add, edit, or delete your component categories.' : 'Add, edit, or delete your suppliers.';
     renderManagementList();
-
     document.getElementById('management-modal').classList.remove('hidden');
-
 }
 
 function closeManagementModal() {
-
     document.getElementById('management-modal').classList.add('hidden');
-
     updateCategoryDropdowns();
     updateSupplierDropdown();
-
     renderComponents();
-
 }
 
 function getManagedArray() {
-
-    return activeManagementType === 'category'
-        ? componentCategories
-        : suppliers;
-
+    return activeManagementType === 'category' ? componentCategories : suppliers;
 }
 
 function renderManagementList() {
-
     const container = document.getElementById('management-list');
-
     const items = getManagedArray();
-
     container.innerHTML = '';
 
     if(items.length === 0) {
-
-        container.innerHTML =
-            '<p class="text-center text-sm opacity-60 py-6">No items added yet.</p>';
-
+        container.innerHTML = '<p class="text-center text-sm opacity-60 py-6">No items added yet.</p>';
         return;
-
     }
 
-    items.forEach((item,index) => {
-
+    items.forEach((item, index) => {
         const row = document.createElement('div');
-
         row.className = 'management-row';
 
         const name = document.createElement('span');
-
         name.textContent = item;
         name.className = 'font-semibold text-sm flex-1 break-words';
 
         const buttons = document.createElement('div');
-
         buttons.className = 'flex gap-2 shrink-0';
 
         const edit = document.createElement('button');
-
         edit.className = 'component-action';
         edit.style.background = 'var(--brand-light)';
         edit.style.color = 'var(--brand-primary)';
         edit.innerHTML = '<i class="fa-solid fa-pen"></i>';
-        edit.title = 'Edit';
-
         edit.onclick = () => editManagedItem(index);
 
         const remove = document.createElement('button');
-
         remove.className = 'component-action';
         remove.style.background = '#fee2e2';
         remove.style.color = '#dc2626';
         remove.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-        remove.title = 'Delete';
-
         remove.onclick = () => deleteManagedItem(index);
 
-        buttons.append(edit,remove);
-
-        row.append(name,buttons);
-
+        buttons.append(edit, remove);
+        row.append(name, buttons);
         container.appendChild(row);
-
     });
-
 }
 
 function addManagedItem() {
-
     const isCategory = activeManagementType === 'category';
-
     const label = isCategory ? 'category' : 'supplier';
-
     const name = prompt(`Enter the new ${label} name:`);
-
     if(!name || !name.trim()) return;
 
     const clean = name.trim();
-
     const items = getManagedArray();
-
-    if(items.some(item => item.toLowerCase() === clean.toLowerCase())) {
-
+    if(items.some(i => i.toLowerCase() === clean.toLowerCase())) {
         alert(`This ${label} already exists.`);
         return;
-
     }
 
     items.push(clean);
-
     saveData();
-
     updateCategoryDropdowns();
     updateSupplierDropdown();
-
     renderManagementList();
-
-    if(isCategory) {
-        document.getElementById('comp-category').value = clean;
-    } else {
-        document.getElementById('comp-supplier').value = clean;
-    }
-
 }
 
 function editManagedItem(index) {
-
     const items = getManagedArray();
-
     const oldName = items[index];
-
     const label = activeManagementType === 'category' ? 'category' : 'supplier';
-
-    const newName = prompt(`Edit ${label} name:`,oldName);
-
+    const newName = prompt(`Edit ${label} name:`, oldName);
     if(!newName || !newName.trim()) return;
 
     const clean = newName.trim();
-
-    if(clean.toLowerCase() !== oldName.toLowerCase() &&
-       items.some(item => item.toLowerCase() === clean.toLowerCase())) {
-
+    if(clean.toLowerCase() !== oldName.toLowerCase() && items.some(i => i.toLowerCase() === clean.toLowerCase())) {
         alert(`This ${label} already exists.`);
         return;
-
     }
 
     items[index] = clean;
-
     if(activeManagementType === 'category') {
-
-        componentsList.forEach(component => {
-
-            if(component.category === oldName) {
-                component.category = clean;
-            }
-
-        });
-
+        componentsList.forEach(c => { if(c.category === oldName) c.category = clean; });
     } else {
-
-        componentsList.forEach(component => {
-
-            if(component.supplier === oldName) {
-                component.supplier = clean;
-            }
-
-        });
-
+        componentsList.forEach(c => { if(c.supplier === oldName) c.supplier = clean; });
     }
 
     saveData();
-
     updateCategoryDropdowns();
     updateSupplierDropdown();
-
     renderManagementList();
     renderComponents();
-
 }
 
 function deleteManagedItem(index) {
-
     const items = getManagedArray();
-
     const item = items[index];
-
     const isCategory = activeManagementType === 'category';
-
     const label = isCategory ? 'category' : 'supplier';
-
-    const usedCount = isCategory
-        ? componentsList.filter(c => c.category === item).length
-        : componentsList.filter(c => c.supplier === item).length;
+    const usedCount = isCategory ? componentsList.filter(c => c.category === item).length : componentsList.filter(c => c.supplier === item).length;
 
     let message = `Are you sure you want to delete "${item}"?`;
-
     if(usedCount > 0) {
-
         message += `\n\nThis ${label} is currently assigned to ${usedCount} component(s).`;
-
-        message += isCategory
-            ? '\nTheir category will be changed to Uncategorized.'
-            : '\nTheir supplier will be cleared.';
-
+        message += isCategory ? '\nTheir category will be changed to Uncategorized.' : '\nTheir supplier will be cleared.';
     }
 
     if(!confirm(message)) return;
 
-    items.splice(index,1);
-
+    items.splice(index, 1);
     if(isCategory) {
-
-        componentsList.forEach(component => {
-
-            if(component.category === item) {
-                component.category = 'Uncategorized';
-            }
-
-        });
-
+        componentsList.forEach(c => { if(c.category === item) c.category = 'Uncategorized'; });
     } else {
-
-        componentsList.forEach(component => {
-
-            if(component.supplier === item) {
-                component.supplier = '';
-            }
-
-        });
-
+        componentsList.forEach(c => { if(c.supplier === item) c.supplier = ''; });
     }
 
     saveData();
-
     updateCategoryDropdowns();
     updateSupplierDropdown();
-
     renderManagementList();
     renderComponents();
-
 }
 
-// ========================================
 // COMPONENT MODAL
-// ========================================
-
 function openComponentModal(id = null) {
-
     const form = document.getElementById('component-form');
-
     form.reset();
-
     document.getElementById('comp-edit-id').value = '';
 
     updateCategoryDropdowns();
     updateSupplierDropdown();
 
-    document.getElementById('modal-title').textContent =
-        id !== null ? 'Edit Component' : 'Add Component';
+    document.getElementById('modal-title').textContent = id !== null ? 'Edit Component' : 'Add Component';
 
     if(id !== null) {
-
         const component = componentsList.find(c => String(c.id) === String(id));
-
         if(!component) return;
 
         document.getElementById('comp-edit-id').value = component.id;
         document.getElementById('comp-name').value = component.name;
         document.getElementById('comp-qty').value = component.qty;
         document.getElementById('comp-cost').value = component.cost;
-
-        if(!componentCategories.includes(component.category)) {
-            componentCategories.push(component.category);
-        }
-
-        if(component.supplier && !suppliers.includes(component.supplier)) {
-            suppliers.push(component.supplier);
-        }
-
-        updateCategoryDropdowns();
-        updateSupplierDropdown();
-
         document.getElementById('comp-category').value = component.category || '';
         document.getElementById('comp-supplier').value = component.supplier || '';
         document.getElementById('comp-notes').value = component.notes || '';
-
     } else {
-
         document.getElementById('comp-qty').value = 0;
-
-        document.getElementById('comp-category').value =
-            componentCategories[0] || '';
-
+        document.getElementById('comp-category').value = componentCategories[0] || '';
     }
-
     document.getElementById('component-modal').classList.remove('hidden');
-
 }
 
 function closeComponentModal() {
-
     document.getElementById('component-modal').classList.add('hidden');
-
 }
 
 function handleComponentSubmit(e) {
-
     e.preventDefault();
-
     const id = document.getElementById('comp-edit-id').value;
-
     const name = document.getElementById('comp-name').value.trim();
-
     const qty = Number(document.getElementById('comp-qty').value);
-
     const cost = Number(document.getElementById('comp-cost').value) || 0;
-
     const category = document.getElementById('comp-category').value;
-
     const supplier = document.getElementById('comp-supplier').value;
-
     const notes = document.getElementById('comp-notes').value.trim();
 
     if(!name) {
@@ -1811,395 +1154,207 @@ function handleComponentSubmit(e) {
         return;
     }
 
-    if(category === '__new__' || supplier === '__new__') {
-        alert('Please finish selecting your category and supplier.');
-        return;
-    }
-
-    const data = {
-        name,
-        qty,
-        cost,
-        category:category || 'Uncategorized',
-        supplier,
-        notes
-    };
+    const data = { name, qty, cost, category: category || 'Uncategorized', supplier, notes };
 
     if(id) {
-
         const component = componentsList.find(c => String(c.id) === String(id));
-
-        if(!component) {
-            alert('Component could not be found.');
-            return;
-        }
-
-        Object.assign(component,data);
-
+        if(!component) return;
+        Object.assign(component, data);
     } else {
-
-        componentsList.push({
-            id:Date.now() + Math.random(),
-            ...data
-        });
-
+        componentsList.push({ id: Date.now() + Math.random(), ...data });
     }
 
     saveData();
-
     closeComponentModal();
-
     renderComponents();
-
 }
 
-// ========================================
-// COMPONENT DELETION
-// ========================================
-
 function deleteComponent(id) {
-
     const component = componentsList.find(c => String(c.id) === String(id));
+    if(!component) return;
 
-    if(!component) {
-        alert('Component not found.');
-        return;
-    }
-
-    if(!confirm(`Are you sure you want to delete "${component.name}"?`)) {
-        return;
-    }
+    if(!confirm(`Are you sure you want to delete "${component.name}"?`)) return;
 
     componentsList = componentsList.filter(c => String(c.id) !== String(id));
-
     saveData();
-
     renderComponents();
-
 }
 
 function batchDeleteComponents() {
-
     const checked = [...document.querySelectorAll('.comp-checkbox:checked')];
-
     if(checked.length === 0) return;
 
     const ids = checked.map(box => box.dataset.id);
+    if(!confirm(`Are you sure you want to permanently delete ${ids.length} selected component(s)?`)) return;
 
-    if(!confirm(`Are you sure you want to permanently delete ${ids.length} selected component(s)?`)) {
-        return;
-    }
-
-    componentsList = componentsList.filter(component =>
-        !ids.includes(String(component.id))
-    );
-
+    componentsList = componentsList.filter(c => !ids.includes(String(c.id)));
     saveData();
-
     renderComponents();
-
 }
 
 function checkBatchSelection() {
-
     const count = document.querySelectorAll('.comp-checkbox:checked').length;
-
     const button = document.getElementById('batch-delete-btn');
-
     if(count > 0) {
-
         button.classList.remove('hidden');
         button.innerHTML = `<i class="fa-solid fa-trash-can mr-1"></i> ${count}`;
-
     } else {
-
         button.classList.add('hidden');
-
     }
-
 }
 
-// ========================================
-// RENDER COMPONENT CARDS
-// ========================================
-
+// COMPACT COMPONENT CARDS RENDERER (Thumb-friendly & space-efficient)
 function renderComponents() {
-
     updateCategoryDropdowns();
-
     const container = document.getElementById('components-list');
-
     const search = document.getElementById('comp-search').value.toLowerCase().trim();
-
     const category = document.getElementById('comp-filter-cat').value;
-
     const sort = document.getElementById('comp-sort').value;
 
     let filtered = componentsList.filter(component => {
-
-        const matchesSearch =
-            component.name.toLowerCase().includes(search) ||
-            (component.supplier || '').toLowerCase().includes(search) ||
-            (component.category || '').toLowerCase().includes(search) ||
-            (component.notes || '').toLowerCase().includes(search);
-
-        const matchesCategory =
-            !category || component.category === category;
-
+        const matchesSearch = component.name.toLowerCase().includes(search) || (component.supplier || '').toLowerCase().includes(search) || (component.category || '').toLowerCase().includes(search);
+        const matchesCategory = !category || component.category === category;
         return matchesSearch && matchesCategory;
-
     });
 
-    filtered.sort((a,b) => {
-
+    filtered.sort((a, b) => {
         switch(sort) {
-
-            case 'name_asc':
-                return a.name.localeCompare(b.name);
-
-            case 'name_desc':
-                return b.name.localeCompare(a.name);
-
-            case 'cost_high':
-                return b.cost - a.cost;
-
-            case 'cost_low':
-                return a.cost - b.cost;
-
-            case 'qty_high':
-                return b.qty - a.qty;
-
-            case 'qty_low':
-                return a.qty - b.qty;
-
-            case 'stock_out':
-                return a.qty - b.qty || a.name.localeCompare(b.name);
-
-            default:
-                return 0;
-
+            case 'name_asc': return a.name.localeCompare(b.name);
+            case 'name_desc': return b.name.localeCompare(a.name);
+            case 'cost_high': return b.cost - a.cost;
+            case 'cost_low': return a.cost - b.cost;
+            case 'qty_high': return b.qty - a.qty;
+            case 'qty_low': return a.qty - b.qty;
+            case 'stock_out': return a.qty - b.qty || a.name.localeCompare(b.name);
+            default: return 0;
         }
-
     });
 
     container.innerHTML = '';
 
     if(filtered.length === 0) {
-
         container.innerHTML = `
-            <div class="text-center py-12 opacity-60">
-                <i class="fa-solid fa-box-open text-3xl mb-3"></i>
-                <p class="text-sm font-semibold">No components found</p>
-                <p class="text-xs mt-1">Try another search or add a component.</p>
+            <div class="text-center py-8 opacity-60">
+                <i class="fa-solid fa-box-open text-2xl mb-2"></i>
+                <p class="text-xs font-semibold">No components found</p>
             </div>
         `;
-
         checkBatchSelection();
-
         return;
-
     }
 
     filtered.forEach(component => {
-
         const outOfStock = Number(component.qty) === 0;
-
         const card = document.createElement('div');
-
         card.className = 'component-card';
 
-        // CARD TOP
+        // Compact Layout Container
+        const inner = document.createElement('div');
+        inner.className = 'flex items-center justify-between gap-2';
 
-        const top = document.createElement('div');
-
-        top.className = 'flex items-start gap-3';
-
-        // CHECKBOX
+        // Left: Checkbox + Name & Category tag
+        const leftGroup = document.createElement('div');
+        leftGroup.className = 'flex items-center gap-2.5 min-w-0 flex-1';
 
         const checkbox = document.createElement('input');
-
         checkbox.type = 'checkbox';
-        checkbox.className = 'comp-checkbox mt-1 w-5 h-5 accent-brand shrink-0';
+        checkbox.className = 'comp-checkbox w-4 h-4 accent-brand shrink-0';
         checkbox.dataset.id = component.id;
         checkbox.onchange = checkBatchSelection;
 
-        // MAIN DETAILS
+        const info = document.createElement('div');
+        info.className = 'min-w-0 flex-1';
 
-        const details = document.createElement('div');
-
-        details.className = 'flex-1 min-w-0';
+        const titleRow = document.createElement('div');
+        titleRow.className = 'flex items-center gap-2';
 
         const title = document.createElement('h4');
-
-        title.className = 'font-bold text-sm break-words';
-
+        title.className = 'font-bold text-xs truncate';
         title.textContent = component.name;
+        titleRow.appendChild(title);
 
-        const supplierCost = document.createElement('div');
+        const metaRow = document.createElement('div');
+        metaRow.className = 'flex items-center gap-2 text-[11px] opacity-70 mt-0.5';
 
-        supplierCost.className = 'flex flex-wrap items-center gap-x-2 gap-y-1 mt-2 text-xs opacity-70';
+        const catSpan = document.createElement('span');
+        catSpan.className = 'px-1.5 py-0.5 rounded text-[10px] font-semibold';
+        catSpan.style.background = 'var(--brand-light)';
+        catSpan.style.color = 'var(--brand-dark)';
+        catSpan.textContent = component.category || 'General';
 
-        const supplierText = document.createElement('span');
+        const costSpan = document.createElement('span');
+        costSpan.textContent = `$${Number(component.cost).toFixed(2)}/ea`;
 
-        supplierText.textContent = `Supplier: ${component.supplier || 'N/A'}`;
+        metaRow.append(catSpan, costSpan);
+        info.append(titleRow, metaRow);
+        leftGroup.append(checkbox, info);
 
-        const separator = document.createElement('span');
+        // Right: Quantity status & Action buttons
+        const rightGroup = document.createElement('div');
+        rightGroup.className = 'flex items-center gap-3 shrink-0';
 
-        separator.textContent = '•';
+        const qtyBadge = document.createElement('div');
+        qtyBadge.className = 'text-right';
 
-        const costText = document.createElement('span');
+        const qtyNum = document.createElement('div');
+        qtyNum.className = 'text-xs font-extrabold';
+        qtyNum.textContent = `${Number(component.qty).toLocaleString()} u`;
 
-        costText.textContent = `Cost: $${Number(component.cost).toFixed(2)}`;
+        const stockLabel = document.createElement('div');
+        stockLabel.className = 'text-[9px] font-bold px-1.5 py-0.5 rounded inline-block';
+        stockLabel.textContent = outOfStock ? 'OUT' : 'OK';
+        stockLabel.style.background = outOfStock ? '#fee2e2' : '#dcfce7';
+        stockLabel.style.color = outOfStock ? '#dc2626' : '#15803d';
 
-        supplierCost.append(supplierText,separator,costText);
-
-        // CATEGORY ON ITS OWN LINE UNDER SUPPLIER AND COST
-
-        const categoryLine = document.createElement('div');
-
-        categoryLine.className = 'mt-2';
-
-        const categoryTag = document.createElement('span');
-
-        categoryTag.className = 'inline-block text-[11px] font-semibold px-3 py-1 rounded-full';
-
-        categoryTag.style.background = 'var(--brand-light)';
-        categoryTag.style.color = 'var(--brand-dark)';
-
-        categoryTag.textContent = component.category || 'Uncategorized';
-
-        categoryLine.appendChild(categoryTag);
-
-        details.append(title,supplierCost,categoryLine);
-
-        top.append(checkbox,details);
-
-        // BOTTOM INFORMATION
-
-        const bottom = document.createElement('div');
-
-        bottom.className = 'flex justify-between items-center mt-4 pt-3 border-t gap-3';
-
-        bottom.style.borderColor = 'var(--border-color)';
-
-        const stockInfo = document.createElement('div');
-
-        const quantity = document.createElement('div');
-
-        quantity.className = 'font-extrabold text-base';
-
-        // FIXED UNITS TEXT
-
-        quantity.textContent = `${Number(component.qty).toLocaleString()} units`;
-
-        const status = document.createElement('span');
-
-        status.className = 'inline-block text-[10px] font-bold px-2 py-1 rounded-full mt-1';
-
-        status.textContent = outOfStock ? 'OUT OF STOCK' : 'IN STOCK';
-
-        status.style.background = outOfStock ? '#fee2e2' : '#dcfce7';
-
-        status.style.color = outOfStock ? '#dc2626' : '#15803d';
-
-        stockInfo.append(quantity,status);
-
-        // ACTION BUTTONS
+        qtyBadge.append(qtyNum, stockLabel);
 
         const actions = document.createElement('div');
+        actions.className = 'flex gap-1';
 
-        actions.className = 'flex gap-2';
+        const editBtn = document.createElement('button');
+        editBtn.className = 'component-action';
+        editBtn.style.background = 'var(--brand-light)';
+        editBtn.style.color = 'var(--brand-primary)';
+        editBtn.innerHTML = '<i class="fa-solid fa-pen text-[10px]"></i>';
+        editBtn.onclick = () => openComponentModal(component.id);
 
-        const edit = document.createElement('button');
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'component-action';
+        deleteBtn.style.background = '#fee2e2';
+        deleteBtn.style.color = '#dc2626';
+        deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can text-[10px]"></i>';
+        deleteBtn.onclick = () => deleteComponent(component.id);
 
-        edit.className = 'component-action';
+        actions.append(editBtn, deleteBtn);
+        rightGroup.append(qtyBadge, actions);
 
-        edit.style.background = 'var(--brand-light)';
-        edit.style.color = 'var(--brand-primary)';
-
-        edit.innerHTML = '<i class="fa-solid fa-pen"></i>';
-
-        edit.title = 'Edit Component';
-
-        edit.onclick = () => openComponentModal(component.id);
-
-        const remove = document.createElement('button');
-
-        remove.className = 'component-action';
-
-        remove.style.background = '#fee2e2';
-        remove.style.color = '#dc2626';
-
-        remove.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-
-        remove.title = 'Delete Component';
-
-        remove.onclick = () => deleteComponent(component.id);
-
-        actions.append(edit,remove);
-
-        bottom.append(stockInfo,actions);
-
-        card.append(top,bottom);
-
-        if(component.notes) {
-
-            const notes = document.createElement('p');
-
-            notes.className = 'text-xs opacity-60 mt-3 break-words';
-
-            notes.textContent = component.notes;
-
-            card.appendChild(notes);
-
-        }
+        inner.append(leftGroup, rightGroup);
+        card.appendChild(inner);
 
         container.appendChild(card);
-
     });
 
     checkBatchSelection();
-
 }
 
-// ========================================
-// INITIALIZATION
-// ========================================
-
 function initializeApp() {
-
     previewTheme(currentThemeKey);
-
     previewFont(savedSettingsState.font);
-
     document.getElementById('settings-bus-name').value = savedSettingsState.name;
-
     document.getElementById('settings-currency').value = savedSettingsState.currency;
-
     document.getElementById('settings-theme').value = savedSettingsState.theme;
-
     document.getElementById('settings-font').value = savedSettingsState.font;
-
-    document.getElementById('header-greeting').textContent =
-        `Welcome back, ${savedSettingsState.name}!`;
-
-    document.getElementById('more-bus-name').textContent =
-        savedSettingsState.name;
+    document.getElementById('header-greeting').textContent = `Welcome back, ${savedSettingsState.name}!`;
+    document.getElementById('more-bus-name').textContent = savedSettingsState.name;
 
     updateCategoryDropdowns();
-
     updateSupplierDropdown();
-
     renderTrackingPlatforms();
-
     renderComponents();
-
     saveData();
-
 }
 
 initializeApp();
-
 </script>
 
 </body>
