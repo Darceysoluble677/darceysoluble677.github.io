@@ -111,12 +111,12 @@
             <form id="setup-form" onsubmit="handleSetupSubmit(event)" class="space-y-4 pb-12">
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Business Name</label>
-                    <input type="text" id="setup-bus-name" placeholder="e.g. Grimms Reselling" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
+                    <input type="text" id="setup-bus-name" placeholder="e.g. Grimms Reselling" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card placeholder:text-neutral-400">
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Primary Industry</label>
-                    <input type="text" id="setup-industry" placeholder="e.g. E-Commerce & Vintage Collectibles" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
+                    <input type="text" id="setup-industry" placeholder="e.g. E-Commerce & Vintage Collectibles" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card placeholder:text-neutral-400">
                 </div>
 
                 <div>
@@ -181,11 +181,11 @@
                     <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Active Sales Platforms</label>
                     <div id="platforms-container" class="space-y-2 mb-2">
                         <div class="flex items-center space-x-2">
-                            <input type="text" placeholder="e.g. Vinted" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
+                            <input type="text" placeholder="e.g. Vinted" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card placeholder:text-neutral-400">
                             <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                         <div class="flex items-center space-x-2">
-                            <input type="text" placeholder="e.g. eBay" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
+                            <input type="text" placeholder="e.g. eBay" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card placeholder:text-neutral-400">
                             <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
                         </div>
                     </div>
@@ -196,7 +196,7 @@
 
                 <div>
                     <label class="block text-xs font-semibold uppercase tracking-wider opacity-70 mb-1">Initial Monthly Revenue Goal</label>
-                    <input type="number" id="setup-goal" placeholder="e.g. 6000" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
+                    <input type="number" id="setup-goal" placeholder="e.g. 6000" required class="w-full px-4 py-3 rounded-xl border text-sm font-medium custom-card placeholder:text-neutral-400">
                 </div>
 
                 <div class="pt-4">
@@ -448,46 +448,49 @@
                     </div>
                 </div>
 
-                <!-- TAB 4: COMPONENTS TRACKER -->
+                <!-- TAB 4: COMPONENTS TRACKER (REDESIGNED) -->
                 <div id="tab-components-content" class="app-tab hidden space-y-4">
-                    <div class="custom-card p-5 rounded-3xl shadow-sm border space-y-4">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="font-bold text-base">Raw Supplies & Parts</h3>
-                                <p class="text-xs opacity-70">Max 8 components per page</p>
-                            </div>
-                            <button onclick="openComponentModal()" class="px-4 py-2.5 bg-brand text-white font-semibold rounded-xl text-xs shadow-md hover:opacity-90 transition flex items-center space-x-1.5 shrink-0">
-                                <i class="fa-solid fa-plus text-xs"></i>
-                                <span>Add New</span>
-                            </button>
+                    
+                    <!-- 1. Inventory Summary Bar -->
+                    <div class="grid grid-cols-3 gap-2.5">
+                        <div class="custom-card p-3 rounded-2xl border text-center">
+                            <span class="text-[10px] uppercase font-semibold opacity-60 block">Components</span>
+                            <span class="text-lg font-bold" id="stat-total-comps">9</span>
                         </div>
-
-                        <!-- Management Buttons Bar -->
-                        <div class="flex space-x-2">
-                            <button onclick="manageCategories()" class="flex-1 py-2.5 bg-brand-light text-brand text-xs font-semibold rounded-xl border border-brand/20 hover:opacity-80 transition flex items-center justify-center space-x-1.5">
-                                <i class="fa-solid fa-folder-gear"></i> <span>Manage Categories</span>
-                            </button>
-                            <button onclick="manageSuppliers()" class="flex-1 py-2.5 bg-brand-light text-brand text-xs font-semibold rounded-xl border border-brand/20 hover:opacity-80 transition flex items-center justify-center space-x-1.5">
-                                <i class="fa-solid fa-truck-field"></i> <span>Manage Suppliers</span>
-                            </button>
+                        <div class="custom-card p-3 rounded-2xl border text-center">
+                            <span class="text-[10px] uppercase font-semibold opacity-60 block">Total Units</span>
+                            <span class="text-lg font-bold" id="stat-total-units">1,380</span>
                         </div>
-
-                        <div class="flex space-x-2">
-                            <div class="relative flex-1">
-                                <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-xs opacity-40"></i>
-                                <input type="text" id="comp-search" oninput="currentComponentPage=1; renderComponents()" placeholder="Search components or supplier..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border text-xs custom-card outline-none">
-                            </div>
-                            <button id="batch-delete-btn" onclick="batchDeleteComponents()" class="hidden px-4 py-2.5 bg-red-500 text-white font-semibold rounded-xl text-xs hover:bg-red-600 transition shrink-0 flex items-center space-x-1">
-                                <i class="fa-solid fa-trash-can"></i>
-                                <span>Delete</span>
-                            </button>
+                        <div class="custom-card p-3 rounded-2xl border text-center">
+                            <span class="text-[10px] uppercase font-semibold opacity-60 block">Low Stock</span>
+                            <span class="text-lg font-bold text-amber-600" id="stat-low-stock">1</span>
                         </div>
+                    </div>
 
-                        <div class="grid grid-cols-2 gap-2.5 text-xs">
-                            <select id="comp-filter-cat" onchange="currentComponentPage=1; renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
+                    <!-- 2. Main Action Button & Management Links -->
+                    <div class="space-y-2">
+                        <button onclick="openComponentModal()" class="w-full py-3.5 bg-brand text-white font-semibold rounded-2xl text-xs shadow-md shadow-brand/20 hover:opacity-95 transition flex items-center justify-center space-x-2">
+                            <i class="fa-solid fa-plus text-xs"></i>
+                            <span>Add Component</span>
+                        </button>
+                        <div class="flex justify-center items-center space-x-2 text-[11px] font-medium opacity-70 pt-1">
+                            <span onclick="openCategoryModal()" class="hover:text-brand cursor-pointer underline">Manage Categories</span>
+                            <span>·</span>
+                            <span onclick="openSupplierModal()" class="hover:text-brand cursor-pointer underline">Manage Suppliers</span>
+                        </div>
+                    </div>
+
+                    <!-- 3. Search and Filters Toolbar -->
+                    <div class="space-y-2 pt-1">
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-xs opacity-40"></i>
+                            <input type="text" id="comp-search" oninput="currentComponentPage=1; renderComponents()" placeholder="Search components or supplier..." class="w-full pl-9 pr-3 py-3 rounded-2xl border text-xs custom-card outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <select id="comp-filter-cat" onchange="currentComponentPage=1; renderComponents()" class="p-3 rounded-2xl border custom-card outline-none font-medium">
                                 <option value="">All Categories</option>
                             </select>
-                            <select id="comp-sort" onchange="currentComponentPage=1; renderComponents()" class="p-2.5 rounded-xl border custom-card outline-none font-medium">
+                            <select id="comp-sort" onchange="currentComponentPage=1; renderComponents()" class="p-3 rounded-2xl border custom-card outline-none font-medium">
                                 <option value="name_asc">Sort: A - Z</option>
                                 <option value="name_desc">Sort: Z - A</option>
                                 <option value="cost_high">Cost: High to Low</option>
@@ -497,13 +500,19 @@
                                 <option value="stock_out">Status: Out of Stock First</option>
                             </select>
                         </div>
-
-                        <!-- Spaced, Clean Component Cards List -->
-                        <div id="components-list" class="space-y-3 pt-1"></div>
-
-                        <!-- Pagination Controls -->
-                        <div id="components-pagination" class="flex justify-between items-center pt-2 text-xs"></div>
                     </div>
+
+                    <!-- Batch Delete bar if items selected -->
+                    <div id="batch-delete-bar" class="hidden flex justify-between items-center bg-brand-light px-4 py-2.5 rounded-2xl text-xs">
+                        <span id="selected-count-label" class="font-semibold text-brand">0 selected</span>
+                        <button onclick="batchDeleteComponents()" class="text-red-500 font-bold hover:underline">Delete Selected</button>
+                    </div>
+
+                    <!-- 4. Component Cards Container (Slimmed & Cleaned) -->
+                    <div id="components-list" class="space-y-2.5 pt-1"></div>
+
+                    <!-- 5. Simple Pagination -->
+                    <div id="components-pagination" class="flex justify-between items-center pt-2 text-xs"></div>
                 </div>
 
                 <!-- TAB 5: REPORTS -->
@@ -708,20 +717,54 @@
         </div>
     </div>
 
+    <!-- ================= MANAGE CATEGORIES MODAL ================= -->
+    <div id="category-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="custom-card w-full max-w-sm rounded-3xl p-6 border shadow-2xl relative space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-base">Manage Categories</h3>
+                <button onclick="closeCategoryModal()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="flex space-x-2">
+                <input type="text" id="new-category-input" placeholder="New category name..." class="flex-1 p-2.5 border rounded-xl text-xs custom-card outline-none">
+                <button onclick="addNewCategory()" class="px-4 py-2.5 bg-brand text-white text-xs font-semibold rounded-xl">Add</button>
+            </div>
+            <div id="category-modal-list" class="space-y-2 max-h-48 overflow-y-auto text-xs"></div>
+        </div>
+    </div>
+
+    <!-- ================= MANAGE SUPPLIERS MODAL ================= -->
+    <div id="supplier-modal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div class="custom-card w-full max-w-sm rounded-3xl p-6 border shadow-2xl relative space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-base">Manage Suppliers</h3>
+                <button onclick="closeSupplierModal()" class="opacity-60 hover:opacity-100"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="flex space-x-2">
+                <input type="text" id="new-supplier-input" placeholder="New supplier name..." class="flex-1 p-2.5 border rounded-xl text-xs custom-card outline-none">
+                <button onclick="addNewSupplier()" class="px-4 py-2.5 bg-brand text-white text-xs font-semibold rounded-xl">Add</button>
+            </div>
+            <div id="supplier-modal-list" class="space-y-2 max-h-48 overflow-y-auto text-xs"></div>
+        </div>
+    </div>
+
     <!-- JavaScript Application Controller -->
     <script>
         let hasNotification = true;
         let hasComponentNotification = true;
         let userPlatforms = ['Vinted', 'eBay'];
 
-        let savedSettingsState = {
+        // Persistent State via localStorage
+        let savedSettingsState = JSON.parse(localStorage.getItem('grimms_settings')) || {
             name: 'Grimms Reselling',
             currency: 'USD ($)',
             theme: 'blush',
             font: "'Plus Jakarta Sans', sans-serif"
         };
 
-        let componentsList = [
+        let componentCategories = JSON.parse(localStorage.getItem('grimms_categories')) || ['Packaging', 'Jewelry Supplies', 'Stickers & Labels'];
+        let componentSuppliers = JSON.parse(localStorage.getItem('grimms_suppliers')) || ['Uline', 'AliExpress', 'Amazon', 'Rio Grande'];
+
+        let componentsList = JSON.parse(localStorage.getItem('grimms_components')) || [
             { id: 1, name: '4x8 Bubble Mailers', qty: 145, cost: 0.18, category: 'Packaging', supplier: 'Uline', notes: 'Kraft paper bubble mailers' },
             { id: 2, name: 'Gothic Bat Charms', qty: 0, cost: 0.45, category: 'Jewelry Supplies', supplier: 'AliExpress', notes: 'Out of stock, reorder soon' },
             { id: 3, name: 'Thank You Stickers (Roll)', qty: 320, cost: 0.03, category: 'Stickers & Labels', supplier: 'Amazon', notes: 'Pink foil logo stickers' },
@@ -732,9 +775,6 @@
             { id: 8, name: 'Cardboard Backing Sheets', qty: 60, cost: 0.20, category: 'Packaging', supplier: 'Uline', notes: '5x7 rigid sheets' },
             { id: 9, name: 'Crystal Glass Beads', qty: 15, cost: 0.05, category: 'Jewelry Supplies', supplier: 'AliExpress', notes: 'Mixed dark shades' }
         ];
-
-        let componentCategories = ['Packaging', 'Jewelry Supplies', 'Stickers & Labels'];
-        let componentSuppliers = ['Uline', 'AliExpress', 'Amazon', 'Rio Grande'];
 
         let currentComponentPage = 1;
         const componentsPerPage = 8;
@@ -763,6 +803,13 @@
             graphite: { primary: '#cbd5e1', light: '#1e293b', dark: '#64748b', accent: '#1e222a', appBg: '#0f1115', cardBg: '#1a1f26', text: '#f1f5f9', subText: '#94a3b8', border: '#2d3748' },
             crimson_noir: { primary: '#f87171', light: '#450a0a', dark: '#dc2626', accent: '#2a1414', appBg: '#140c0c', cardBg: '#211515', text: '#fef2f2', subText: '#fca5a5', border: '#3d2222' }
         };
+
+        function saveAllData() {
+            localStorage.setItem('grimms_components', JSON.stringify(componentsList));
+            localStorage.setItem('grimms_categories', JSON.stringify(componentCategories));
+            localStorage.setItem('grimms_suppliers', JSON.stringify(componentSuppliers));
+            localStorage.setItem('grimms_settings', JSON.stringify(savedSettingsState));
+        }
 
         function previewTheme(themeName) {
             const t = themes[themeName];
@@ -841,7 +888,7 @@
             const div = document.createElement('div');
             div.className = "flex items-center space-x-2";
             div.innerHTML = `
-                <input type="text" placeholder="e.g. Depop" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card placeholder:text-neutral-400 dark:placeholder:text-neutral-500">
+                <input type="text" placeholder="e.g. Depop" class="platform-input flex-1 px-3 py-2 rounded-lg border text-sm custom-card placeholder:text-neutral-400">
                 <button type="button" onclick="removeRow(this)" class="opacity-60 hover:text-red-500 px-2"><i class="fa-solid fa-trash-can"></i></button>
             `;
             container.appendChild(div);
@@ -877,6 +924,7 @@
                 theme: selectedTheme,
                 font: selectedFont
             };
+            saveAllData();
 
             document.getElementById('header-greeting').innerText = `Welcome back, ${finalBusName}!`;
             document.getElementById('more-bus-name').innerText = finalBusName;
@@ -1000,12 +1048,107 @@
                 theme: selectedTheme,
                 font: selectedFont
             };
+            saveAllData();
 
             document.getElementById('header-greeting').innerText = `Welcome back, ${newName}!`;
             document.getElementById('more-bus-name').innerText = newName;
             
             alert('Settings, theme, and font updated successfully!');
             switchTab('home');
+        }
+
+        // ================= CATEGORY & SUPPLIER MODAL MANAGEMENT =================
+
+        function openCategoryModal() {
+            renderCategoryModalList();
+            document.getElementById('category-modal').classList.remove('hidden');
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('category-modal').classList.add('hidden');
+            renderComponents();
+        }
+
+        function renderCategoryModalList() {
+            const listContainer = document.getElementById('category-modal-list');
+            listContainer.innerHTML = '';
+            componentCategories.forEach((cat, index) => {
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center p-2 border rounded-xl custom-card";
+                row.innerHTML = `
+                    <span class="font-medium">${cat}</span>
+                    <button onclick="deleteCategory(${index})" class="text-red-500 hover:text-red-700 px-2 py-1"><i class="fa-solid fa-trash-can"></i></button>
+                `;
+                listContainer.appendChild(row);
+            });
+        }
+
+        function addNewCategory() {
+            const input = document.getElementById('new-category-input');
+            const val = input.value.trim();
+            if(val && !componentCategories.includes(val)) {
+                componentCategories.push(val);
+                input.value = '';
+                saveAllData();
+                renderCategoryModalList();
+            } else {
+                alert('Category is empty or already exists.');
+            }
+        }
+
+        function deleteCategory(index) {
+            const catToDelete = componentCategories[index];
+            if(confirm(`Delete category "${catToDelete}"?`)) {
+                componentCategories.splice(index, 1);
+                saveAllData();
+                renderCategoryModalList();
+            }
+        }
+
+        function openSupplierModal() {
+            renderSupplierModalList();
+            document.getElementById('supplier-modal').classList.remove('hidden');
+        }
+
+        function closeSupplierModal() {
+            document.getElementById('supplier-modal').classList.add('hidden');
+            renderComponents();
+        }
+
+        function renderSupplierModalList() {
+            const listContainer = document.getElementById('supplier-modal-list');
+            listContainer.innerHTML = '';
+            componentSuppliers.forEach((sup, index) => {
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center p-2 border rounded-xl custom-card";
+                row.innerHTML = `
+                    <span class="font-medium">${sup}</span>
+                    <button onclick="deleteSupplier(${index})" class="text-red-500 hover:text-red-700 px-2 py-1"><i class="fa-solid fa-trash-can"></i></button>
+                `;
+                listContainer.appendChild(row);
+            });
+        }
+
+        function addNewSupplier() {
+            const input = document.getElementById('new-supplier-input');
+            const val = input.value.trim();
+            if(val && !componentSuppliers.includes(val)) {
+                componentSuppliers.push(val);
+                input.value = '';
+                saveAllData();
+                renderSupplierModalList();
+            } else {
+                alert('Supplier is empty or already exists.');
+            }
+        }
+
+        function deleteSupplier(index) {
+            const supToDelete = componentSuppliers[index];
+            if(confirm(`Delete supplier "${supToDelete}"?`)) {
+                componentSuppliers.splice(index, 1);
+                saveAllData();
+                renderSupplierModalList();
+            }
         }
 
         // ================= COMPONENTS & INVENTORY LOGIC =================
@@ -1042,110 +1185,6 @@
             });
             if(componentSuppliers.includes(currentSupVal)) {
                 formSup.value = currentSupVal;
-            }
-        }
-
-        function manageCategories() {
-            let catListStr = componentCategories.join('\n');
-            let action = prompt("Current Categories:\n" + catListStr + "\n\nType 'add', 'edit', or 'delete':");
-            if(!action) return;
-            
-            action = action.toLowerCase().trim();
-            if(action === 'add') {
-                let added = prompt("Enter name of new category:");
-                if(added && added.trim() !== "") {
-                    let trimmed = added.trim();
-                    if(!componentCategories.includes(trimmed)) {
-                        componentCategories.push(trimmed);
-                        alert("Category added successfully!");
-                        updateCategoryDropdowns();
-                        renderComponents();
-                    } else {
-                        alert("Category already exists.");
-                    }
-                }
-            } else if(action === 'edit') {
-                let target = prompt("Enter exact name of category to edit/rename:");
-                if(target && componentCategories.includes(target.trim())) {
-                    let replacement = prompt("Enter new name for '" + target.trim() + "':");
-                    if(replacement && replacement.trim() !== "") {
-                        let trimmedNew = replacement.trim();
-                        let idx = componentCategories.indexOf(target.trim());
-                        componentCategories[idx] = trimmedNew;
-                        componentsList.forEach(c => {
-                            if(c.category === target.trim()) c.category = trimmedNew;
-                        });
-                        alert("Category updated successfully and components updated!");
-                        updateCategoryDropdowns();
-                        renderComponents();
-                    }
-                } else {
-                    alert("Category not found.");
-                }
-            } else if(action === 'delete') {
-                let target = prompt("Enter exact name of category to delete:");
-                if(target && componentCategories.includes(target.trim())) {
-                    if(confirm("Are you sure you want to delete category '" + target.trim() + "'?")) {
-                        componentCategories = componentCategories.filter(c => c !== target.trim());
-                        alert("Category deleted successfully.");
-                        updateCategoryDropdowns();
-                        renderComponents();
-                    }
-                } else {
-                    alert("Category not found.");
-                }
-            }
-        }
-
-        function manageSuppliers() {
-            let supListStr = componentSuppliers.join('\n');
-            let action = prompt("Current Suppliers:\n" + supListStr + "\n\nType 'add', 'edit', or 'delete':");
-            if(!action) return;
-
-            action = action.toLowerCase().trim();
-            if(action === 'add') {
-                let added = prompt("Enter name of new supplier:");
-                if(added && added.trim() !== "") {
-                    let trimmed = added.trim();
-                    if(!componentSuppliers.includes(trimmed)) {
-                        componentSuppliers.push(trimmed);
-                        alert("Supplier added successfully!");
-                        updateSupplierDropdowns();
-                        renderComponents();
-                    } else {
-                        alert("Supplier already exists.");
-                    }
-                }
-            } else if(action === 'edit') {
-                let target = prompt("Enter exact name of supplier to edit/rename:");
-                if(target && componentSuppliers.includes(target.trim())) {
-                    let replacement = prompt("Enter new name for '" + target.trim() + "':");
-                    if(replacement && replacement.trim() !== "") {
-                        let trimmedNew = replacement.trim();
-                        let idx = componentSuppliers.indexOf(target.trim());
-                        componentSuppliers[idx] = trimmedNew;
-                        componentsList.forEach(c => {
-                            if(c.supplier === target.trim()) c.supplier = trimmedNew;
-                        });
-                        alert("Supplier updated successfully and components updated!");
-                        updateSupplierDropdowns();
-                        renderComponents();
-                    }
-                } else {
-                    alert("Supplier not found.");
-                }
-            } else if(action === 'delete') {
-                let target = prompt("Enter exact name of supplier to delete:");
-                if(target && componentSuppliers.includes(target.trim())) {
-                    if(confirm("Are you sure you want to delete supplier '" + target.trim() + "'?")) {
-                        componentSuppliers = componentSuppliers.filter(s => s !== target.trim());
-                        alert("Supplier deleted successfully.");
-                        updateSupplierDropdowns();
-                        renderComponents();
-                    }
-                } else {
-                    alert("Supplier not found.");
-                }
             }
         }
 
@@ -1203,6 +1242,7 @@
                 componentsList.push({ id: Date.now(), name, qty, cost, category, supplier, notes });
             }
 
+            saveAllData();
             closeComponentModal();
             renderComponents();
         }
@@ -1210,6 +1250,7 @@
         function deleteComponent(id) {
             if(confirm("Are you sure you want to delete this component?")) {
                 componentsList = componentsList.filter(c => c.id !== id);
+                saveAllData();
                 renderComponents();
             }
         }
@@ -1221,6 +1262,7 @@
             if(confirm(`Are you sure you want to delete ${checkedBoxes.length} selected components?`)) {
                 const idsToDelete = Array.from(checkedBoxes).map(cb => parseInt(cb.dataset.id));
                 componentsList = componentsList.filter(c => !idsToDelete.includes(c.id));
+                saveAllData();
                 renderComponents();
             }
         }
@@ -1228,6 +1270,16 @@
         function renderComponents() {
             updateCategoryDropdowns();
             updateSupplierDropdowns();
+
+            // Calculate Inventory Summary Stats
+            const totalComps = componentsList.length;
+            const totalUnits = componentsList.reduce((sum, c) => sum + c.qty, 0);
+            const lowStockCount = componentsList.filter(c => c.qty === 0).length;
+
+            document.getElementById('stat-total-comps').innerText = totalComps;
+            document.getElementById('stat-total-units').innerText = totalUnits.toLocaleString();
+            document.getElementById('stat-low-stock').innerText = lowStockCount;
+
             const container = document.getElementById('components-list');
             const paginationContainer = document.getElementById('components-pagination');
             const searchVal = document.getElementById('comp-search').value.toLowerCase();
@@ -1266,44 +1318,40 @@
             if(paginatedItems.length === 0) {
                 container.innerHTML = '<div class="text-center py-8 opacity-60 text-xs">No components found.</div>';
                 paginationContainer.innerHTML = '';
-                document.getElementById('batch-delete-btn').classList.add('hidden');
+                document.getElementById('batch-delete-bar').classList.add('hidden');
                 return;
             }
 
             paginatedItems.forEach(c => {
-                const isOutOfStock = c.qty === 0;
                 const card = document.createElement('div');
-                card.className = "custom-card p-4 rounded-2xl border shadow-sm space-y-3";
+                card.className = "custom-card p-3 rounded-2xl border shadow-sm space-y-2";
                 card.innerHTML = `
-                    <div class="flex items-start justify-between gap-2">
-                        <div class="flex items-start space-x-3 flex-1 min-w-0">
-                            <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-4 h-4 rounded text-brand accent-brand cursor-pointer mt-1 shrink-0">
+                    <div class="flex items-start justify-between">
+                        <div class="flex items-start space-x-2.5 min-w-0">
+                            <input type="checkbox" data-id="${c.id}" onchange="checkBatchSelection()" class="comp-checkbox w-3.5 h-3.5 rounded text-brand accent-brand cursor-pointer mt-0.5 shrink-0">
                             <div class="min-w-0">
-                                <h4 class="font-bold text-sm truncate">${c.name}</h4>
-                                <p class="text-xs opacity-70 mt-0.5">Supplier: <span class="font-medium">${c.supplier || 'N/A'}</span></p>
+                                <h4 class="font-bold text-xs truncate">${c.name}</h4>
+                                <p class="text-[11px] opacity-60">${c.category} · ${c.supplier || 'N/A'}</p>
                             </div>
                         </div>
-                        <span class="text-[10px] px-2.5 py-1 rounded-full font-semibold bg-brand-light text-brand shrink-0">${c.category}</span>
                     </div>
 
-                    <div class="flex items-center justify-between pt-2 border-t border-neutral-100 dark:border-neutral-800 text-xs">
-                        <div class="space-y-1">
-                            <span class="opacity-70">Cost: <strong>$${c.cost.toFixed(2)}</strong></span>
-                            <div class="flex items-center space-x-2">
-                                <span class="font-extrabold">${c.qty} units</span>
-                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${isOutOfStock ? 'bg-red-50 text-red-600 dark:bg-red-950/50' : 'bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50'}">
-                                    ${isOutOfStock ? 'Out of Stock' : 'In Stock'}
-                                </span>
+                    <div class="flex items-center justify-between pt-1 border-t border-neutral-100 dark:border-neutral-800 text-xs">
+                        <div class="flex space-x-4">
+                            <div>
+                                <span class="text-[10px] opacity-60 block">Cost per unit</span>
+                                <span class="font-bold">$${c.cost.toFixed(2)}</span>
+                            </div>
+                            <div>
+                                <span class="text-[10px] opacity-60 block">Quantity</span>
+                                <span class="font-bold ${c.qty === 0 ? 'text-red-500' : ''}">${c.qty} units</span>
                             </div>
                         </div>
                         
-                        <div class="flex items-center space-x-2.5">
-                            <button onclick="openComponentModal(${c.id})" class="px-3 py-1.5 rounded-xl bg-brand/10 text-brand hover:bg-brand/20 transition text-xs font-semibold flex items-center space-x-1">
-                                <i class="fa-solid fa-pen text-[10px]"></i> <span>Edit</span>
-                            </button>
-                            <button onclick="deleteComponent(${c.id})" class="px-3 py-1.5 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-500 hover:bg-red-100 transition text-xs font-semibold flex items-center space-x-1">
-                                <i class="fa-solid fa-trash-can text-[10px]"></i> <span>Delete</span>
-                            </button>
+                        <div class="flex items-center space-x-3 text-xs font-semibold">
+                            <button onclick="openComponentModal(${c.id})" class="text-brand hover:underline">Edit</button>
+                            <span class="opacity-30">·</span>
+                            <button onclick="deleteComponent(${c.id})" class="text-red-500 hover:underline">Delete</button>
                         </div>
                     </div>
                 `;
@@ -1312,12 +1360,12 @@
 
             // Render pagination controls
             paginationContainer.innerHTML = `
-                <button onclick="changeComponentPage(-1)" ${currentComponentPage === 1 ? 'disabled class="opacity-30 cursor-not-allowed px-3 py-1.5 rounded-lg border custom-card"' : 'class="px-3 py-1.5 rounded-lg border custom-card hover:border-brand transition"'}>
-                    <i class="fa-solid fa-chevron-left mr-1"></i> Prev
+                <button onclick="changeComponentPage(-1)" ${currentComponentPage === 1 ? 'disabled class="opacity-30 cursor-not-allowed"' : 'class="hover:text-brand font-medium transition"'}>
+                    ← Previous
                 </button>
                 <span class="opacity-70 font-medium">Page ${currentComponentPage} of ${totalPages}</span>
-                <button onclick="changeComponentPage(1)" ${currentComponentPage === totalPages ? 'disabled class="opacity-30 cursor-not-allowed px-3 py-1.5 rounded-lg border custom-card"' : 'class="px-3 py-1.5 rounded-lg border custom-card hover:border-brand transition"'}>
-                    Next <i class="fa-solid fa-chevron-right ml-1"></i>
+                <button onclick="changeComponentPage(1)" ${currentComponentPage === totalPages ? 'disabled class="opacity-30 cursor-not-allowed"' : 'class="hover:text-brand font-medium transition"'}>
+                    Next →
                 </button>
             `;
 
@@ -1330,17 +1378,23 @@
         }
 
         function checkBatchSelection() {
-            const checkedCount = document.querySelectorAll('.comp-checkbox:checked').length;
-            const batchBtn = document.getElementById('batch-delete-btn');
-            if(checkedCount > 0) {
-                batchBtn.classList.remove('hidden');
+            const checkedBoxes = document.querySelectorAll('.comp-checkbox:checked');
+            const batchBar = document.getElementById('batch-delete-bar');
+            const countLabel = document.getElementById('selected-count-label');
+            if(checkedBoxes.length > 0) {
+                batchBar.classList.remove('hidden');
+                countLabel.innerText = `${checkedBoxes.length} selected`;
             } else {
-                batchBtn.classList.add('hidden');
+                batchBar.classList.add('hidden');
             }
         }
 
-        // Initialize default theme and components
-        previewTheme('blush');
+        // Initialize state on load
+        previewTheme(savedSettingsState.theme || 'blush');
+        previewFont(savedSettingsState.font || "'Plus Jakarta Sans', sans-serif");
+        document.getElementById('settings-bus-name').value = savedSettingsState.name;
+        document.getElementById('more-bus-name').innerText = savedSettingsState.name;
+        document.getElementById('header-greeting').innerText = `Welcome back, ${savedSettingsState.name}!`;
         renderTrackingPlatforms();
         renderComponents();
     </script>
